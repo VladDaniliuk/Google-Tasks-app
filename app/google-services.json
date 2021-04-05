@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "736419814952",
+    "project_id": "tasks-app-add3f",
+    "storage_bucket": "tasks-app-add3f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736419814952:android:696acce1ec2d839a4e1f1d",
+        "android_client_info": {
+          "package_name": "com.example.tasklist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736419814952-vdjoopeqc4oroe0ssr7snaosqoshhs2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtSQOb8J-QGqrG-4krpGTzpkrrykv8hTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736419814952-vdjoopeqc4oroe0ssr7snaosqoshhs2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
