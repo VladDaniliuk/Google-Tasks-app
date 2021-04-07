@@ -19,9 +19,9 @@ data class Task (
     val completed : String,
     val deleted : Boolean,
     val hidden : Boolean,
-    val links : List<Links>
+    val links : List<Link>
 )
-data class Links (
+data class Link (//?
     val type : String,
     val description : String,
     val link : String
