@@ -1,9 +1,6 @@
 package com.example.tasklist
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface TaskListDao {
@@ -19,9 +16,9 @@ interface TaskListDao {
     @Query("SELECT * FROM taskList")
     fun getAll(): List<TaskList>
 
-    @Query("UPDATE taskList SET title = :title WHERE id = :id")
-    fun patchTaskList(id: String, title: String): TaskList
+    @Update
+    fun patchTaskList(taskList: TaskList): TaskList
 
-    @Query("UPDATE tasklist SET title = :title, id = :id WHERE id = :id")
-    fun updateTaskList(id: String, title: String): TaskList
+    @Update
+    fun updateTaskList(taskList: TaskList): TaskList
 }
