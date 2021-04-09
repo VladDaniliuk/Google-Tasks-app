@@ -1,5 +1,6 @@
-package com.example.tasklist
+package com.example.tasklist.model
 
+import com.example.tasklist.Task
 import retrofit2.Call
 import retrofit2.http.*
 

@@ -1,7 +1,8 @@
-package com.example.tasklist
+package com.example.tasklist.viewModel
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.tasklist.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

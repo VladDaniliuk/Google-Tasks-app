@@ -1,6 +1,7 @@
-package com.example.tasklist
+package com.example.tasklist.model
 
 import androidx.room.*
+import com.example.tasklist.model.TaskList
 
 @Dao
 interface TaskListDao {
