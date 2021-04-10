@@ -5,28 +5,28 @@ import com.example.tasklist.Task
 
 @Dao
 interface TaskDao {
-    //?tasks.clear
+	//?tasks.clear
 
-    @Delete
-    fun deleteTask(task: Task)
+	@Delete
+	fun deleteTask(task: Task)
 
-    @Query("SELECT * FROM task WHERE (id = :taskId)")//?
-    fun getTask(taskList: TaskList, taskId: String): Task
+	@Query("SELECT * FROM task WHERE (id = :taskId)")//?
+	fun getTask(taskList: TaskList, taskId: String): Task
 
-    @Insert
-    fun insertTask(taskList: TaskList, taskParent: Task, taskPrevious: Task): Task
+	@Insert
+	fun insertTask(taskList: TaskList, taskParent: Task, taskPrevious: Task): Task
 
-    @Query("SELECT * FROM task")//?
-    fun getAll(taskList: TaskList): List<Task>
+	@Query("SELECT * FROM task")//?
+	fun getAll(taskList: TaskList): List<Task>
 
-    @Query("UPDATE task SET position = 0 WHERE :parentTaskId = NULL")
-    fun moveTask(taskListId: String, taskPosition: String, parentTaskId: String, previousTaskPosition: String): Task
+	@Query("UPDATE task SET position = 0 WHERE :parentTaskId = NULL")
+	fun moveTask(taskListId: String, taskPosition: String, parentTaskId: String, previousTaskPosition: String): Task
 
-    @Update
-    fun updateTask(task: Task): Task
+	@Update
+	fun updateTask(task: Task): Task
 
-    @Update
-    fun patchTask(task: Task): Task
+	@Update
+	fun patchTask(task: Task): Task
 }
 
 /*

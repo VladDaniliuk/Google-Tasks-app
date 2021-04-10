@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+	xmlns:android="http://schemas.android.com/apk/res/android">
 
 <androidx.fragment.app.FragmentContainerView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/fragment_container_view"
-    tools:context=".viewModel.MainActivity"/>
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:id="@+id/fragment_container_view"
+	tools:context=".viewModel.MainActivity"/>
 </layout>
