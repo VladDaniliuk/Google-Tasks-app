@@ -33,22 +33,22 @@ interface TasksApi {
 	fun deleteTask(@Path("taskList") taskListId: String, @Path("task") taskId: String)
 
 	@GET("/tasks/v1/lists/{taskList}/tasks/{task}")
-	fun getTask(@Path("taskList") taskListId: String, @Path("task") taskId: String): Call<Task>
+	fun getTask(@Path("taskList") taskListId: String, @Path("task") taskId: String): Call<Task<Any?>>
 
 	@POST("/tasks/v1/lists/{taskList}/tasks")
-	fun insertTask(@Path("taskList") taskListId: String, @Body task: Task): Call<Task>
+	fun insertTask(@Path("taskList") taskListId: String, @Body task: Task<Any?>): Call<Task<Any?>>
 
 	@GET("/tasks/v1/lists/{taskList}/tasks")
-	fun getAllTasks(@Path("taskList") taskListId: String): Call<List<Task>>
+	fun getAllTasks(@Path("taskList") taskListId: String): Call<List<Task<Any?>>>
 
 	@POST("/tasks/v1/lists/{taskList}/tasks/{task}/move")
-	fun moveTask(@Path("taskList") taskListId: String, @Path("task") taskId: String): Call<Task>//request body must be empty
+	fun moveTask(@Path("taskList") taskListId: String, @Path("task") taskId: String): Call<Task<Any?>>//request body must be empty
 
 	@PATCH("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun patchTask(@Path("taskList") taskListId: String, @Path("task") taskId: String
-				  , @Body task: Task): Call<Task>
+				  , @Body task: Task<Any?>): Call<Task<Any?>>
 
 	@PUT("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun updateTask(@Path("taskList") taskListId: String, @Path("task") taskId: String
-				   , @Body task: Task): Call<Task>
+				   , @Body task: Task<Any?>): Call<Task<Any?>>
 }
