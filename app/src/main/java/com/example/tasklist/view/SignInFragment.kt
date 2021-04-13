@@ -3,14 +3,13 @@ package com.example.tasklist.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentSignInBinding
 import com.example.tasklist.viewModel.SignInViewModel
@@ -24,6 +23,7 @@ class SignInFragment: Fragment() {
 
 	private val viewModel: SignInViewModel by viewModels()
 
+	private lateinit var navController: NavController
 	private lateinit var binding: FragmentSignInBinding
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?
@@ -41,10 +41,13 @@ class SignInFragment: Fragment() {
 			onSignInClick()
 		}
 
+		navController = NavHostFragment.findNavController(this)
+
 		if (GoogleSignIn.getLastSignedInAccount(view.context) == null) {
 			onSignInClick()
 		} else {
 			binding.signInButton.visibility = View.GONE
+			navController.navigate(R.id.taskListListFragment)
 		}
 	}
 
@@ -62,9 +65,8 @@ class SignInFragment: Fragment() {
 
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
-
 		if(requestCode == RC_SIGN_IN && resultCode == Activity.RESULT_OK) {
-
+			navController.navigate(R.id.taskListListFragment)
 		} else if(resultCode == Activity.RESULT_CANCELED) {
 			binding.contentLoadingProgressBar2.hide()
 			binding.signInButton.visibility = View.VISIBLE
