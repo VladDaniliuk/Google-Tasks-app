@@ -46,7 +46,6 @@ class SignInFragment: Fragment() {
 		if (GoogleSignIn.getLastSignedInAccount(view.context) == null) {
 			onSignInClick()
 		} else {
-			binding.signInButton.visibility = View.GONE
 			navController.navigate(R.id.taskListListFragment)
 		}
 	}
@@ -57,9 +56,6 @@ class SignInFragment: Fragment() {
 		val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 		val signInIntent = mGoogleSignInClient.signInIntent
 
-		binding.contentLoadingProgressBar2.show()
-		binding.signInButton.visibility = View.GONE
-
 		startActivityForResult(signInIntent, RC_SIGN_IN)
 	}
 
@@ -68,8 +64,6 @@ class SignInFragment: Fragment() {
 		if(requestCode == RC_SIGN_IN && resultCode == Activity.RESULT_OK) {
 			navController.navigate(R.id.taskListListFragment)
 		} else if(resultCode == Activity.RESULT_CANCELED) {
-			binding.contentLoadingProgressBar2.hide()
-			binding.signInButton.visibility = View.VISIBLE
 		}
 	}
 }
