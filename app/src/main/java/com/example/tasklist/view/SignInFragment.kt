@@ -31,6 +31,8 @@ class SignInFragment: Fragment() {
 		binding = FragmentSignInBinding.inflate(inflater, container, false)
 		binding.viewModel = viewModel
 
+		binding.lifecycleOwner = viewLifecycleOwner
+
 		return binding.root
 	}
 
@@ -41,6 +43,8 @@ class SignInFragment: Fragment() {
 			onSignInClick()
 		}
 
+		viewModel.onStartSignIn()
+
 		if (GoogleSignIn.getLastSignedInAccount(view.context) == null) {
 			onSignInClick()
 		} else {
@@ -49,8 +53,7 @@ class SignInFragment: Fragment() {
 	}
 
 	private fun onSignInClick() {
-		viewModel.changeVisibility()
-
+		viewModel.onStartSignIn()
 		val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
 				.build()
 		val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
@@ -60,8 +63,10 @@ class SignInFragment: Fragment() {
 
 	private val startForResult = registerForActivityResult(ActivityResultContracts
 		.StartActivityForResult()) { result: ActivityResult ->
-		viewModel.changeVisibility()//does'nt work/call
+
 		if (result.resultCode == Activity.RESULT_OK)
 			findNavController().navigate(R.id.taskListListFragment)
+		else
+			viewModel.onCancelSignIn()
 	}
 }

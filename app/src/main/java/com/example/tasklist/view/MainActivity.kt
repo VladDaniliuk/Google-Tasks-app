@@ -3,8 +3,6 @@ package com.example.tasklist.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
 import androidx.navigation.fragment.NavHostFragment
 import com.example.tasklist.R
 import com.example.tasklist.databinding.ActivityMainBinding
@@ -18,10 +16,5 @@ class MainActivity : AppCompatActivity() {
 		)
 
 		supportFragmentManager.findFragmentById(R.id.nav_graph) as NavHostFragment? ?: return
-
-		supportFragmentManager.commit {
-			setReorderingAllowed(true)
-			add<SignInFragment>(R.id.fragment_container_view)
-		}
 	}
 }
