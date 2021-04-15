@@ -14,16 +14,16 @@ class SignInViewModel : ViewModel() {
 		onSignInClick.call()
 	}
 
-	var progressBarVisibility = MutableLiveData<Int>()
-	var buttonVisibility = MutableLiveData<Int>()
+	var progressBarVisibility = MutableLiveData(true)
+	var buttonVisibility = MutableLiveData(false)
 
 	fun onStartSignIn() {
-		progressBarVisibility.postValue(View.VISIBLE)
-		buttonVisibility.postValue(View.GONE)
+		progressBarVisibility.postValue(true)
+		buttonVisibility.postValue(false)
 	}
 
 	fun onCancelSignIn() {
-		progressBarVisibility.postValue(View.GONE)
-		buttonVisibility.postValue(View.VISIBLE)
+		progressBarVisibility.postValue(false)
+		buttonVisibility.postValue(true)
 	}
 }

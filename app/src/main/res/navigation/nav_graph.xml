@@ -17,5 +17,5 @@
         android:id="@+id/taskListListFragment"
         android:name="com.example.tasklist.view.TaskListListFragment"
         android:label="task_list_list_fragment"
-        tools:layout="@layout/task_list_list_fragment" />
+        tools:layout="@layout/fragment_task_list_list" />
 </navigation>
