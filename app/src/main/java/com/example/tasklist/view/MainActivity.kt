@@ -17,9 +17,7 @@ class MainActivity : AppCompatActivity() {
 			this, R.layout.activity_main
 		)
 
-		val host: NavHostFragment = supportFragmentManager
-			.findFragmentById(R.id.nav_graph) as NavHostFragment? ?: return
-		host.navController
+		supportFragmentManager.findFragmentById(R.id.nav_graph) as NavHostFragment? ?: return
 
 		supportFragmentManager.commit {
 			setReorderingAllowed(true)
