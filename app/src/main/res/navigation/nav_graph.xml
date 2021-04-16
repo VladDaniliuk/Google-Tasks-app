@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.tasklist.view.SignInFragment"
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_signInFragment_to_taskListListFragment"
+            app:destination="@id/taskListListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskListListFragment"
+        android:name="com.example.tasklist.view.TaskListListFragment"
+        android:label="task_list_list_fragment"
+        tools:layout="@layout/fragment_task_list_list" />
+</navigation>

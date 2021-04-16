@@ -89,6 +89,7 @@ lint/tmp/
 .gradle
 .idea
 /local.properties
+/keystore.properties
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
@@ -99,3 +100,5 @@ lint/tmp/
 /build
 /captures
 .cxx
+/.run/
+/Key
