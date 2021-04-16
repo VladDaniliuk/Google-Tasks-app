@@ -19,6 +19,7 @@ import com.example.tasklist.viewModel.SignInViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import dagger.hilt.android.AndroidEntryPoint
 
 class SignInFragment: Fragment() {
 
@@ -45,7 +46,7 @@ class SignInFragment: Fragment() {
 
 		viewModel.onStartSignIn()
 
-		if (GoogleSignIn.getLastSignedInAccount(view.context) == null) {
+		if (/*GoogleSignIn.getLastSignedInAccount(view.context) == null*/viewModel.getToken == null) {
 			onSignInClick()
 		} else {
 			findNavController().navigate(R.id.taskListListFragment)
@@ -64,8 +65,10 @@ class SignInFragment: Fragment() {
 	private val startForResult = registerForActivityResult(ActivityResultContracts
 		.StartActivityForResult()) { result: ActivityResult ->
 
-		if (result.resultCode == Activity.RESULT_OK)
+		if (result.resultCode == Activity.RESULT_OK) {
+			viewModel.setToken(GoogleSignIn.getLastSignedInAccount(view?.context)?.idToken.toString())
 			findNavController().navigate(R.id.taskListListFragment)
+		}
 		else
 			viewModel.onCancelSignIn()
 	}

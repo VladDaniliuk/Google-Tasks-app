@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Task List</string>
 	<string name="sign_in_with_google">Sign In with Google</string>
+	<string name="string_button_create_list">Create new Task list</string>
 </resources>
