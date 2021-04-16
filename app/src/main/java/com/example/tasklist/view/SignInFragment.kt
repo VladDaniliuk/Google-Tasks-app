@@ -43,12 +43,14 @@ class SignInFragment: Fragment() {
 			onSignInClick()
 		}
 
-		viewModel.onStartSignIn()
+		if (savedInstanceState == null) {
+			viewModel.onStartSignIn()
 
-		if (GoogleSignIn.getLastSignedInAccount(view.context) == null) {
-			onSignInClick()
-		} else {
-			findNavController().navigate(R.id.taskListListFragment)
+			if (GoogleSignIn.getLastSignedInAccount(view.context) == null) {
+				onSignInClick()
+			} else {
+				findNavController().navigate(R.id.taskListListFragment)
+			}
 		}
 	}
 
