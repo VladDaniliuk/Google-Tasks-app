@@ -1,7 +1,6 @@
 package com.example.tasklist.view
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +9,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentSignInBinding
@@ -21,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignInFragment: Fragment() {
 
 	private val viewModel: SignInViewModel by viewModels()
@@ -46,7 +44,7 @@ class SignInFragment: Fragment() {
 
 		viewModel.onStartSignIn()
 
-		if (/*GoogleSignIn.getLastSignedInAccount(view.context) == null*/viewModel.getToken == null) {
+		if (GoogleSignIn.getLastSignedInAccount(view.context) == null/*viewModel.getToken == null*/) {
 			onSignInClick()
 		} else {
 			findNavController().navigate(R.id.taskListListFragment)
