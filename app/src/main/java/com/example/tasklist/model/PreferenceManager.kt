@@ -2,10 +2,7 @@ package com.example.tasklist.model
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.tasklist.view.SignInFragment
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 interface PreferenceManager {
@@ -14,7 +11,7 @@ interface PreferenceManager {
 	fun setToken(userToken: String)
 }
 
-class PreferenceManagerImpl(context: Context)
+class PreferenceManagerImpl @Inject constructor(@ApplicationContext context: Context)
 	: PreferenceManager  {
 
 	override var sharedPref: SharedPreferences = context

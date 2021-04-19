@@ -13,16 +13,9 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ApplicationModule {
+abstract class ApplicationModule {
 
-	@Provides
-	@ApplicationContext
-	fun provideContext(application: Application): Context {
-		return application.applicationContext
-	}
+	@Binds
+	abstract fun bindPreferenceManager(preferenceManagerImpl: PreferenceManagerImpl): PreferenceManager
 
-	@Provides
-	 fun providePreferenceManager(context: Context): PreferenceManager {
-	 	return PreferenceManagerImpl(context)
-	 }
 }
