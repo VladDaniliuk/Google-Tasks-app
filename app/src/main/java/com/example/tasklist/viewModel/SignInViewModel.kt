@@ -8,6 +8,7 @@ import com.example.tasklist.model.PreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class SignInViewModel @Inject constructor(private val preferenceManager: PreferenceManager) : ViewModel() {
 
 	val onSignInClick = SingleLiveEvent<Unit>()
@@ -23,7 +24,7 @@ class SignInViewModel @Inject constructor(private val preferenceManager: Prefere
 		preferenceManager.setToken(string)
 	}
 
-	val getToken: String = preferenceManager.getToken
+	val getToken: String? = preferenceManager.getToken
 
 	fun onStartSignIn() {
 		progressBarVisibility.postValue(true)

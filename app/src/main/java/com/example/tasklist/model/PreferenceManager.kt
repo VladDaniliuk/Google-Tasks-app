@@ -10,19 +10,17 @@ import javax.inject.Inject
 
 interface PreferenceManager {
 	var sharedPref: SharedPreferences
-	var getToken: String
+	var getToken: String?
 	fun setToken(userToken: String)
 }
 
-@InstallIn(SignInFragment::class)
-@Module
-class PreferenceManagerImpl @Inject constructor(@ActivityContext private val context: Context)
+class PreferenceManagerImpl(context: Context)
 	: PreferenceManager  {
 
 	override var sharedPref: SharedPreferences = context
 		.getSharedPreferences("TOKEN_PREFERENCES", Context.MODE_PRIVATE)
 
-	override var getToken: String = sharedPref.getString("USER_TOKEN", null).toString()
+	override var getToken: String? = sharedPref.getString("USER_TOKEN", null)
 
 	override fun setToken(userToken: String) {
 		with (sharedPref.edit()) {
