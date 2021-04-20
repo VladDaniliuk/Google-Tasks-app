@@ -53,7 +53,9 @@ class SignInFragment: Fragment() {
 
 	private fun onSignInClick() {
 		viewModel.onStartSignIn()
-		val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
+		val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+			.requestEmail()
+			.requestIdToken(getString(R.string.default_web_client_id))
 				.build()
 		val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 		val signInIntent = mGoogleSignInClient.signInIntent

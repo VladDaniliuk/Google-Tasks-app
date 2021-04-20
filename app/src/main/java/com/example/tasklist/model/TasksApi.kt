@@ -1,6 +1,7 @@
 package com.example.tasklist.model
 
 import com.example.tasklist.Task
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -16,7 +17,7 @@ interface TasksApi {
 	fun insertTaskList(@Body taskList: TaskList): Call<TaskList>
 
 	@GET("/tasks/v1/users/@me/lists")
-	fun getALLTaskLists(): Call<List<TaskList>>
+	fun getALLTaskLists(): Single<List<TaskList>>
 
 	@PATCH("/tasks/v1/users/@me/lists/{taskList}")
 	fun patchTaskList(@Path("taskList") taskListId: String, @Body taskList: TaskList):
