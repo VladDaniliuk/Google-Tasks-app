@@ -1,4 +1,4 @@
-package com.example.tasklist.model
+package com.example.tasklist.api.model.body
 
 import com.google.gson.annotations.SerializedName
 

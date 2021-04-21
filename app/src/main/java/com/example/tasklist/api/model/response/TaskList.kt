@@ -1,4 +1,4 @@
-package com.example.tasklist.model
+package com.example.tasklist.api.model.response
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

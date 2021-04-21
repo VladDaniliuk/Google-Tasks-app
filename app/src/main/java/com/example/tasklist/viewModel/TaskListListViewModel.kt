@@ -1,6 +1,7 @@
 package com.example.tasklist.viewModel
 
 import android.util.Log
+import androidx.constraintlayout.solver.state.State
 import androidx.lifecycle.ViewModel
 import com.example.tasklist.model.PreferenceManager
 import com.example.tasklist.model.RetrofitF
@@ -25,16 +26,4 @@ class TaskListListViewModel @Inject constructor(
 				Log.d("TAG", "err: $err")
 			})
 	}
-
-	/*.enqueue(object : Callback<List<TaskList>> {
-		override fun onResponse(
-			call: Call<List<TaskList>>,
-			response: Response<List<TaskList>>
-		) {
-		}
-
-		override fun onFailure(call: Call<List<TaskList>>, t: Throwable) {
-		}
-
-	})*/
 }

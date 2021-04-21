@@ -5,7 +5,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tasklist.dev.SingleLiveEvent
-import com.example.tasklist.model.GoogleAuthTokenBody
+import com.example.tasklist.api.model.body.GoogleAuthTokenBody
 import com.example.tasklist.model.PreferenceManager
 import com.example.tasklist.model.RetrofitF
 import dagger.hilt.android.lifecycle.HiltViewModel
