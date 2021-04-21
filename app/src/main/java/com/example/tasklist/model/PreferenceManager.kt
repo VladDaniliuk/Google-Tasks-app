@@ -6,21 +6,21 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 interface PreferenceManager {
-	var sharedPref: SharedPreferences
-	var getToken: String?
+	val sharedPref: SharedPreferences
+	val getToken: String?
 	fun setToken(userToken: String)
 }
 
-class PreferenceManagerImpl @Inject constructor(@ApplicationContext context: Context)
-	: PreferenceManager  {
+class PreferenceManagerImpl @Inject constructor(@ApplicationContext context: Context) :
+	PreferenceManager {
 
-	override var sharedPref: SharedPreferences = context
+	override val sharedPref: SharedPreferences = context
 		.getSharedPreferences("TOKEN_PREFERENCES", Context.MODE_PRIVATE)
 
-	override var getToken: String? = sharedPref.getString("USER_TOKEN", null)
+	override val getToken: String? = sharedPref.getString("USER_TOKEN", null)
 
 	override fun setToken(userToken: String) {
-		with (sharedPref.edit()) {
+		with(sharedPref.edit()) {
 			putString("USER_TOKEN", userToken)
 			apply()
 		}
