@@ -2,6 +2,7 @@ package com.example.tasklist.view
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,12 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentSignInBinding
 import com.example.tasklist.viewModel.SignInViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
+import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,8 +59,9 @@ class SignInFragment: Fragment() {
 	private fun onSignInClick() {
 		viewModel.onStartSignIn()
 		val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+			.requestScopes(Scope("https://www.googleapis.com/auth/tasks"))
 			.requestEmail()
-			.requestIdToken(getString(R.string.default_web_client_id))
+			//.requestIdToken(getString(R.string.default_web_client_id))
 				.build()
 		val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 		val signInIntent = mGoogleSignInClient.signInIntent
@@ -66,6 +72,13 @@ class SignInFragment: Fragment() {
 		.StartActivityForResult()) { result: ActivityResult ->
 
 		if (result.resultCode == Activity.RESULT_OK) {
+
+			val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+			val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+			val authCode = account?.serverAuthCode
+			Log.d("TAG", authCode.toString())
+
 			viewModel.setToken(GoogleSignIn.getLastSignedInAccount(view?.context)?.idToken.toString())
 			findNavController().navigate(R.id.taskListListFragment)
 		}
