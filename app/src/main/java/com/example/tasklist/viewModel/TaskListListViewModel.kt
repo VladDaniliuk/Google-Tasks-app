@@ -1,7 +1,6 @@
 package com.example.tasklist.viewModel
 
 import android.util.Log
-import androidx.constraintlayout.solver.state.State
 import androidx.lifecycle.ViewModel
 import com.example.tasklist.model.PreferenceManager
 import com.example.tasklist.model.RetrofitF

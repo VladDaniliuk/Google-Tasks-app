@@ -14,10 +14,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class TaskListListFragment : Fragment() {
 
 	private val viewModel: TaskListListViewModel by viewModels()
+	private lateinit var binding: FragmentTaskListListBinding
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?
 							  , savedInstanceState: Bundle?): View {
-		val binding = FragmentTaskListListBinding.inflate(inflater, container, false)
+		binding = FragmentTaskListListBinding.inflate(inflater, container, false)
 
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner

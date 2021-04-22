@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.R
+import com.example.tasklist.api.model.body.GoogleAuthTokenBody
 import com.example.tasklist.databinding.FragmentSignInBinding
 import com.example.tasklist.viewModel.SignInViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -53,7 +54,7 @@ class SignInFragment : Fragment() {
 
 		viewModel.onStartSignIn()
 
-		if (GoogleSignIn.getLastSignedInAccount(view.context) == null/*viewModel.getToken == null*/) {
+		if (viewModel.getToken == null) {
 			onSignInClick()
 		} else {
 			findNavController().navigate(R.id.taskListListFragment)
@@ -73,23 +74,23 @@ class SignInFragment : Fragment() {
 	}
 
 	private val startForResult = registerForActivityResult(
-		ActivityResultContracts
-			.StartActivityForResult()
+		ActivityResultContracts.StartActivityForResult()
 	) { result: ActivityResult ->
-
 		if (result.resultCode == Activity.RESULT_OK) {
 			val task: Task<GoogleSignInAccount> =
 				GoogleSignIn.getSignedInAccountFromIntent(result.data)
 			if (task.isSuccessful) {
 				val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
 				val authCode = account?.serverAuthCode
-				viewModel.getToken(
-					getString(R.string.default_web_client_id),
-					"5GR5Wg2iMzQmvSGaEI66DBoX",
-					authCode,
-					"authorization_code"
+				viewModel.setToken(
+					GoogleAuthTokenBody(
+						getString(R.string.default_web_client_id),
+						getString(R.string.secret),
+						authCode,
+						"authorization_code",
+						""
+					)
 				)
-
 			}
 		} else
 			viewModel.onCancelSignIn()
