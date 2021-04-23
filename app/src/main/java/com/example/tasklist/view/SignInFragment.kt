@@ -11,9 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.R
-import com.example.tasklist.api.model.body.GoogleAuthTokenBody
 import com.example.tasklist.databinding.FragmentSignInBinding
-import com.example.tasklist.model.LogInRepository
+import com.example.tasklist.domain.LogInRepository
 import com.example.tasklist.viewModel.SignInViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -26,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SignInFragment  : Fragment() {
+class SignInFragment : Fragment() {
 
 	@Inject
 	lateinit var logInRepository: LogInRepository
@@ -39,7 +38,6 @@ class SignInFragment  : Fragment() {
 	): View {
 		binding = FragmentSignInBinding.inflate(inflater, container, false)
 		binding.viewModel = viewModel
-
 		binding.lifecycleOwner = viewLifecycleOwner
 
 		return binding.root
@@ -52,11 +50,9 @@ class SignInFragment  : Fragment() {
 			onSignInClick()
 		}
 
-		viewModel.loginEvent.observe(viewLifecycleOwner) {
+		viewModel.onLoginSuccessEvent.observe(viewLifecycleOwner) {
 			findNavController().navigate(R.id.taskListListFragment)
 		}
-
-		//viewModel.onStartSignIn()
 
 		if (viewModel.getToken == null) {
 			onSignInClick()
@@ -66,7 +62,7 @@ class SignInFragment  : Fragment() {
 	}
 
 	private fun onSignInClick() {
-		/*viewModel.onStartSignIn()
+		viewModel.onStartSignIn()
 		val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 			.requestScopes(Scope("https://www.googleapis.com/auth/tasks"))
 			.requestServerAuthCode(getString(R.string.default_web_client_id))
@@ -74,30 +70,28 @@ class SignInFragment  : Fragment() {
 			.build()
 		val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 		val signInIntent = mGoogleSignInClient.signInIntent
-		startForResult.launch(signInIntent)*/
-		logInRepository.onLogIn(this, viewModel)
+		startForResult.launch(signInIntent)
 	}
 
-	/*private val startForResult = registerForActivityResult(
+	private val startForResult = registerForActivityResult(
 		ActivityResultContracts.StartActivityForResult()
 	) { result: ActivityResult ->
 		if (result.resultCode == Activity.RESULT_OK) {
 			val task: Task<GoogleSignInAccount> =
 				GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
 			if (task.isSuccessful) {
 				val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
-				val authCode = account?.serverAuthCode
-				viewModel.setToken(
-					GoogleAuthTokenBody(
-						getString(R.string.default_web_client_id),
-						getString(R.string.secret),
-						authCode,
-						"authorization_code",
-						""
-					)
+
+				viewModel.continueAuth(
+					getString(R.string.default_web_client_id),
+					getString(R.string.secret),
+					account?.serverAuthCode,
+					"authorization_code",
+					""
 				)
 			}
 		} else
 			viewModel.onCancelSignIn()
-	}*/
+	}
 }

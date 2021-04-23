@@ -1,6 +1,7 @@
 package com.example.tasklist.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,10 @@ class TaskListListFragment : Fragment() {
 			onList()
 		}
 
+		viewModel.onCreateTaskListClick.observe(viewLifecycleOwner) {
+			onCreateTaskListClick()
+		}
+
 		viewModel.getTaskListList()
 	}
 
@@ -51,5 +56,9 @@ class TaskListListFragment : Fragment() {
 			viewModel.list
 		)
 		binding.listView.adapter = adapter
+	}
+
+	private fun onCreateTaskListClick() {
+		Log.d("CREATE", "create")
 	}
 }
