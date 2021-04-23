@@ -1,9 +1,6 @@
 package com.example.tasklist.di
 
-import com.example.tasklist.model.PreferenceManager
-import com.example.tasklist.model.PreferenceManagerImpl
-import com.example.tasklist.model.RetrofitF
-import com.example.tasklist.model.RetrofitImpl
+import com.example.tasklist.model.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,4 +15,7 @@ abstract class ApplicationModule {
 
 	@Binds
 	abstract fun bindRetrofit(retrofitImpl: RetrofitImpl): RetrofitF
+
+	@Binds
+	abstract fun bindLogInRepository(logInRepositoryImpl: LogInRepositoryImpl): LogInRepository
 }
