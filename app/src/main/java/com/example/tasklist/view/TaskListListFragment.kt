@@ -38,22 +38,22 @@ class TaskListListFragment : Fragment() {
 		binding.listView.layoutManager =
 			LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
 
-		viewModel.getTaskListListEvent.observe(viewLifecycleOwner) {
-			onList()
+		viewModel.list.observe(viewLifecycleOwner) {
+			onList(it)
 		}
 
 		viewModel.onCreateTaskListClick.observe(viewLifecycleOwner) {
 			onCreateTaskListClick()
 		}
 
-		viewModel.getTaskListList()
+		context?.let { viewModel.checkInternet(it) }
 	}
 
-	private fun onList() {
+	private fun onList(it: List<TaskListItemModel>) {
 		val adapter = ListAdapter<TaskListItemModel, LayoutTaskListBinding>(
 			BR.model,
 			R.layout.layout_task_list,
-			viewModel.list
+			it
 		)
 		binding.listView.adapter = adapter
 	}

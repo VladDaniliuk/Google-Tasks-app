@@ -18,7 +18,7 @@ interface TaskListsApi {
 	fun insertTaskList(@Body taskList: TaskList): Call<TaskList>
 
 	@GET("/tasks/v1/users/@me/lists")
-	fun getALLTaskLists(): Single<BaseListResponse<TaskList>>
+	fun getAllTaskLists(): Single<BaseListResponse<TaskList>>
 
 	@PATCH("/tasks/v1/users/@me/lists/{taskList}")
 	fun patchTaskList(@Path("taskList") taskListId: String, @Body taskList: TaskList):
