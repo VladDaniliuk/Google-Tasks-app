@@ -7,7 +7,7 @@ import com.example.tasklist.db.dao.TaskDao
 import com.example.tasklist.db.dao.TaskListDao
 import com.google.api.services.tasks.model.TaskList
 
-@Database(entities = [Task::class, TaskList::class], version = 1)
+@Database(entities = [TaskDao::class, TaskList::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
 	abstract fun taskListDao(): TaskListDao
 

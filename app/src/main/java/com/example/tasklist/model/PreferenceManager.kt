@@ -20,9 +20,14 @@ class PreferenceManagerImpl @Inject constructor(@ApplicationContext context: Con
 	override val sharedPref: SharedPreferences = context
 		.getSharedPreferences("TOKEN_PREFERENCES", Context.MODE_PRIVATE)
 
-	override val getToken: String? = sharedPref.getString("USER_TOKEN", null)
-
-	override val getTokenType: String? = sharedPref.getString("USER_TOKEN_TYPE", null)
+	override val getToken: String?
+	get() {
+		return sharedPref.getString("USER_TOKEN", null)
+	}
+	override val getTokenType: String?
+	get() {
+		return sharedPref.getString("USER_TOKEN_TYPE", null)
+	}
 
 	override fun setToken(userToken: AccessTokenResponse) {
 		sharedPref.edit(true) {

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tasklist.BR
 import com.example.tasklist.R
@@ -46,6 +47,10 @@ class TaskListListFragment : Fragment() {
 			onCreateTaskListClick()
 		}
 
+		viewModel.onGetTaskList.observe(viewLifecycleOwner) {
+			onGetTaskList(viewModel.list)
+		}
+
 		context?.let { viewModel.checkInternet(it) }
 	}
 
@@ -59,6 +64,10 @@ class TaskListListFragment : Fragment() {
 	}
 
 	private fun onCreateTaskListClick() {
-		Log.d("CREATE", "create")
+
+	}
+
+	private fun onGetTaskList(list: MutableLiveData<List<TaskListItemModel>>) {
+		viewModel.insertTaskLists(list)
 	}
 }
