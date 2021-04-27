@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "TaskList")
 data class TaskList (
 	@ColumnInfo(name = "kind") val kind : String?,
 	@PrimaryKey val id : String,

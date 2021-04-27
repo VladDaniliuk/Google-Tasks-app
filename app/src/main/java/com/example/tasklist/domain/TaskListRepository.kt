@@ -4,19 +4,17 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Log
-import androidx.room.Room
+import com.example.tasklist.api.model.response.TaskList
 import com.example.tasklist.api.service.TaskListsApi
 import com.example.tasklist.db.dao.TaskListDao
-import com.example.tasklist.di.AppDatabase
 import com.example.tasklist.view.itemModel.TaskListItemModel
-import com.google.api.services.tasks.model.TaskList
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 interface TaskListRepository {
 	fun onTaskListsUpload(context: Context): Boolean
 	fun getTaskList(): Single<List<TaskListItemModel>>
+	fun getTaskListOffline(): Single<List<TaskListItemModel>>
 }
 
 class TaskListRepositoryImpl @Inject constructor(
@@ -30,13 +28,27 @@ class TaskListRepositoryImpl @Inject constructor(
 	}
 
 	override fun getTaskList(): Single<List<TaskListItemModel>> {
-		return taskListsApi.getAllTaskLists()
-			.flatMap { m ->
-				taskListDao.insertAllTaskLists(m.items)
-				Single.just(m)
+		lateinit var list: List<TaskList>
+		return taskListsApi.getAllTaskLists().doOnSuccess {
+			list = it.items
+		}
+			.flatMapCompletable {
+				taskListDao.insertAllTaskLists(it.items)
+			}
+			.toSingle {
+				list
 			}
 			.map { m ->
-			m.items.map { TaskListItemModel(it.id, it.title) }
+				m.map { TaskListItemModel(it.id, it.title) }
+			}
+	}
+
+	override fun getTaskListOffline(): Single<List<TaskListItemModel>> {
+		return taskListDao.getAll().map { m ->
+			m.map {
+				Log.d("GET", TaskListItemModel(it.id, it.title).title)
+				TaskListItemModel(it.id, it.title)
+			}
 		}
 	}
 }

@@ -2,6 +2,7 @@ package com.example.tasklist.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.tasklist.db.dao.TaskDao
 import com.example.tasklist.db.dao.TaskListDao
 import dagger.Module
 import dagger.Provides
@@ -27,4 +28,10 @@ class RoomModule {
 	fun provideTaskListDao(database: AppDatabase): TaskListDao {
 		return database.taskListDao()
 	}
+
+	/*@Provides
+	@Singleton
+	fun provideTaskDao(database: AppDatabase): TaskDao {
+		return database.taskDao()
+	}*/
 }

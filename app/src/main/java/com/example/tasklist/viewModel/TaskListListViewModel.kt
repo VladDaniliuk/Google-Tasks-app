@@ -5,10 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
-import com.example.tasklist.db.dao.TaskListDao
 import com.example.tasklist.dev.SingleLiveEvent
-import com.example.tasklist.di.AppDatabase
 import com.example.tasklist.domain.TaskListRepository
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,7 +37,13 @@ class TaskListListViewModel @Inject constructor(
 					list.postValue(it)
 				}, { Log.d("GET", "false") })
 		} else {
-			Log.d("INTERNET", "false")
+			Log.d("GET", "OFFline True")
+			taskListRepository.getTaskListOffline().subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe({
+					list.postValue(it)
+					Log.d("GET", it.toString())
+				}, { Log.d("GET", "OFFline false") })
 		}
 	}
 }
