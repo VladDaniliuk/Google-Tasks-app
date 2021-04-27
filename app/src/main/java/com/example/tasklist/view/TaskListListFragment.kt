@@ -43,14 +43,6 @@ class TaskListListFragment : Fragment() {
 			onList(it)
 		}
 
-		viewModel.onCreateTaskListClick.observe(viewLifecycleOwner) {
-			onCreateTaskListClick()
-		}
-
-		viewModel.onGetTaskList.observe(viewLifecycleOwner) {
-			onGetTaskList(viewModel.list)
-		}
-
 		context?.let { viewModel.checkInternet(it) }
 	}
 
@@ -61,13 +53,5 @@ class TaskListListFragment : Fragment() {
 			it
 		)
 		binding.listView.adapter = adapter
-	}
-
-	private fun onCreateTaskListClick() {
-
-	}
-
-	private fun onGetTaskList(list: MutableLiveData<List<TaskListItemModel>>) {
-		viewModel.insertTaskLists(list)
 	}
 }
