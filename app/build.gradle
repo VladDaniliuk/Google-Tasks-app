@@ -73,8 +73,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation 'com.google.apis:google-api-services-tasks:v1-rev49-1.23.0'
-    implementation "androidx.room:room-runtime:2.2.6"
-    implementation "androidx.room:room-ktx:2.2.6"
+    implementation "androidx.room:room-runtime:2.3.0"
+    implementation "androidx.room:room-ktx:2.3.0"
+    implementation "androidx.room:room-rxjava3:2.3.0"
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
@@ -85,4 +86,5 @@ dependencies {
     implementation "com.google.oauth-client:google-oauth-client-jetty:1.23.0"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    kapt "androidx.room:room-compiler:2.3.0"
 }

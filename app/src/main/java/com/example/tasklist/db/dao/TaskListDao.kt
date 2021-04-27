@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Single
 @Dao
 interface TaskListDao {
 	@Delete
-	fun delete(taskList: TaskList)
+	fun delete(taskList: TaskList): Completable//Single
 
 	@Query("SELECT * FROM taskList WHERE id IN(:id)")
 	fun getTaskList(id: String): Single<TaskList>
@@ -20,7 +20,7 @@ interface TaskListDao {
 	fun insertTaskList(taskList: TaskList): Completable
 
 	@Query("SELECT * FROM taskList")
-	fun getAll(): List<TaskList>
+	fun getAll(): Single<List<TaskList>>
 
 	@Update
 	fun patchTaskList(taskList: TaskList): Single<TaskList>
