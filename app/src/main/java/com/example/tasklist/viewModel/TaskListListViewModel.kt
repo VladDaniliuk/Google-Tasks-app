@@ -16,6 +16,8 @@ class TaskListListViewModel @Inject constructor(
 	private val taskListRepository: TaskListRepository
 ) : ViewModel() {
 
+	val fetchInProgress = MutableLiveData(false)
+
 	private val _list = MutableLiveData<List<TaskListItemModel>>()
 	val list: LiveData<List<TaskListItemModel>> = _list
 
@@ -35,10 +37,12 @@ class TaskListListViewModel @Inject constructor(
 		fetchTaskLists()
 	}
 
-	private fun fetchTaskLists() {
+	fun fetchTaskLists() {
 		taskListRepository.fetchTaskLists()
 			.subscribeOn(Schedulers.io())
 			.onErrorComplete()
-			.subscribe()
+			.subscribe {
+				fetchInProgress.postValue(false)
+			}
 	}
 }

@@ -2,6 +2,7 @@ package com.example.tasklist.extensions
 
 import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.common.SignInButton
 
 @BindingAdapter("onClick")
@@ -16,4 +17,9 @@ fun setVisibility(view: View, isVisible: Boolean) {
 	} else {
 		view.visibility = View.GONE
 	}
+}
+
+@BindingAdapter("isRefreshing")
+fun setRefreshing(view: SwipeRefreshLayout, isRefreshing: Boolean) {
+	view.isRefreshing = isRefreshing
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
@@ -37,6 +38,10 @@ class TaskListListFragment : Fragment() {
 
 		binding.listView.layoutManager =
 			LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
+
+		binding.swipeRefresh.setOnRefreshListener {
+			viewModel.fetchTaskLists()
+		}
 
 		viewModel.list.observe(viewLifecycleOwner) {
 			onList(it)
