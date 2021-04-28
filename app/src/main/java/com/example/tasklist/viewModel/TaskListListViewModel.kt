@@ -1,15 +1,13 @@
 package com.example.tasklist.viewModel
 
-import android.content.Context
-import android.util.Log
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.domain.TaskListRepository
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -18,7 +16,8 @@ class TaskListListViewModel @Inject constructor(
 	private val taskListRepository: TaskListRepository
 ) : ViewModel() {
 
-	var list = MutableLiveData<List<TaskListItemModel>>()
+	private val _list = MutableLiveData<List<TaskListItemModel>>()
+	val list: LiveData<List<TaskListItemModel>> = _list
 
 	private val onCreateTaskListClick = SingleLiveEvent<Unit>()
 
@@ -26,24 +25,20 @@ class TaskListListViewModel @Inject constructor(
 		onCreateTaskListClick.call()
 	}
 
-	fun checkInternet(context: Context) {
-		if (taskListRepository.onTaskListsUpload(context)) {
-			Log.d("INTERNET", "true")
+	init {
+		taskListRepository.getTaskList()
+			.subscribeOn(Schedulers.computation())
+			.subscribe {
+				_list.postValue(it)
+			}
 
-			taskListRepository.getTaskList()
-				.subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe({
-					list.postValue(it)
-				}, { Log.d("GET", "false") })
-		} else {
-			Log.d("GET", "OFFline True")
-			taskListRepository.getTaskListOffline().subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe({
-					list.postValue(it)
-					Log.d("GET", it.toString())
-				}, { Log.d("GET", "OFFline false") })
-		}
+		fetchTaskLists()
+	}
+
+	private fun fetchTaskLists() {
+		taskListRepository.fetchTaskLists()
+			.subscribeOn(Schedulers.io())
+			.onErrorComplete()
+			.subscribe()
 	}
 }
