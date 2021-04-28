@@ -9,7 +9,7 @@
 			type="com.example.tasklist.viewModel.TaskListListViewModel" />
 	</data>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
@@ -17,14 +17,14 @@
 			android:id="@+id/swipe_refresh"
 			isRefreshing="@{viewModel.fetchInProgress}"
 			android:layout_width="match_parent"
-			android:layout_height="0sp"
+			android:layout_height="match_parent"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintTop_toTopOf="parent">
 
 		<androidx.recyclerview.widget.RecyclerView
 			android:id="@+id/list_view"
 			android:layout_width="match_parent"
-			android:layout_height="0dp"
+			android:layout_height="match_parent"
 			app:layout_constraintBottom_toTopOf="@+id/insertTaskList"
 			app:layout_constraintTop_toTopOf="parent"
 			tools:listitem="@layout/layout_task_list"
@@ -39,7 +39,7 @@
 			android:onClick="@{viewModel.createTaskListClickListener}"
 			android:text="@string/create_task_list"
 			android:textAllCaps="false"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent" />
-	</androidx.constraintlayout.widget.ConstraintLayout>
+			android:layout_gravity="bottom|end"
+			app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
