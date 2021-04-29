@@ -3,6 +3,7 @@ package com.example.tasklist.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.NavHostFragment
 import com.example.tasklist.R
 import com.example.tasklist.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
