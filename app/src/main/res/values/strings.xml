@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Task List</string>
+	<string name="secret">5GR5Wg2iMzQmvSGaEI66DBoX</string>
+	<string name="app_name">Task List</string>
 	<string name="sign_in_with_google">Sign In with Google</string>
+	<string name="string_button_create_list">Create new Task list</string>
+	<string name="create_task_list">Create Task list</string>
 </resources>
