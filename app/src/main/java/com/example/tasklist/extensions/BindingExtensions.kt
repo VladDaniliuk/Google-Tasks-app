@@ -20,6 +20,6 @@ fun setVisibility(view: View, isVisible: Boolean) {
 }
 
 @BindingAdapter("isRefreshing")
-fun setRefreshing(view: SwipeRefreshLayout, isRefreshing: Boolean) {
-	view.isRefreshing = isRefreshing
+fun SwipeRefreshLayout.bindingSetRefreshing(isRefreshing: Boolean) {
+	this.isRefreshing = isRefreshing
 }

@@ -38,11 +38,13 @@ class TaskListListViewModel @Inject constructor(
 	}
 
 	fun fetchTaskLists() {
+		fetchInProgress.postValue(true)
 		taskListRepository.fetchTaskLists()
 			.subscribeOn(Schedulers.io())
 			.onErrorComplete()
-			.subscribe {
+			.doFinally {
 				fetchInProgress.postValue(false)
 			}
+			.subscribe()
 	}
 }
