@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
@@ -46,6 +46,17 @@ class TaskListListFragment : Fragment() {
 		viewModel.list.observe(viewLifecycleOwner) {
 			onList(it)
 		}
+
+		viewModel.onTaskListClick.observe(viewLifecycleOwner) {
+			navigateToTaskList(it)
+		}
+	}
+
+	private fun navigateToTaskList(id: String) {
+		findNavController().navigate(
+			R.id.action_taskListListFragment_to_taskListFragment,
+			bundleOf("id" to id)
+		)
 	}
 
 	private fun onList(it: List<TaskListItemModel>) {

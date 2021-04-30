@@ -6,6 +6,10 @@
 	<data>
 
 		<variable
+			name="viewModel"
+			type="com.example.tasklist.viewModel.TaskListListViewModel" />
+
+		<variable
 			name="model"
 			type="com.example.tasklist.view.itemModel.TaskListItemModel" />
 	</data>
@@ -15,6 +19,9 @@
 		android:layout_height="wrap_content"
 		android:layout_marginHorizontal="16dp"
 		android:layout_marginVertical="8dp"
+		android:clickable="true"
+		android:focusable="true"
+		android:onClick="@{(v) -> model.click()}"
 		app:cardCornerRadius="8dp"
 		app:cardElevation="8dp">
 

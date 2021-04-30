@@ -22,6 +22,7 @@ class TaskListListViewModel @Inject constructor(
 	val list: LiveData<List<TaskListItemModel>> = _list
 
 	private val onCreateTaskListClick = SingleLiveEvent<Unit>()
+	val onTaskListClick = SingleLiveEvent<String>()
 
 	val createTaskListClickListener = View.OnClickListener {
 		onCreateTaskListClick.call()
@@ -30,6 +31,13 @@ class TaskListListViewModel @Inject constructor(
 	init {
 		taskListRepository.getTaskList()
 			.subscribeOn(Schedulers.computation())
+			.map { m ->
+				m.map { taskList ->
+					TaskListItemModel(taskList.id, taskList.title) {
+						onTaskListClick.postValue(it)
+					}
+				}
+			}
 			.subscribe {
 				_list.postValue(it)
 			}
