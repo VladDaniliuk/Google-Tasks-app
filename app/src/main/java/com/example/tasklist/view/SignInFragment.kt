@@ -51,13 +51,13 @@ class SignInFragment : Fragment() {
 		}
 
 		viewModel.onLoginSuccessEvent.observe(viewLifecycleOwner) {
-			findNavController().navigate(R.id.taskListListFragment)
+			findNavController().navigate(R.id.action_signInFragment_to_taskListListFragment)
 		}
 
 		if (viewModel.getToken == null) {
 			onSignInClick()
 		} else {
-			findNavController().navigate(R.id.taskListListFragment)
+			findNavController().navigate(R.id.action_signInFragment_to_taskListListFragment)
 		}
 	}
 

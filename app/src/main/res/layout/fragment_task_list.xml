@@ -7,18 +7,16 @@
 
 		<variable
 			name="viewModel"
-			type="com.example.tasklist.viewModel.TaskListListViewModel" />
+			type="com.example.tasklist.viewModel.TaskListViewModel" />
 	</data>
 
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
-
 		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 			android:id="@+id/swipe_refresh"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			app:isRefreshing="@{viewModel.fetchInProgress}">
+			android:layout_height="match_parent">
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/list_view"
@@ -35,10 +33,9 @@
 			android:layout_gravity="bottom|end"
 			android:layout_margin="16dp"
 			android:elevation="6dp"
-			android:onClick="@{viewModel.createTaskListClickListener}"
-			android:text="@string/create_task_list"
+			app:layout_behavior=".extensions.Behavior"
+			android:text="@string/add_task"
 			android:textAllCaps="false"
-			app:icon="@drawable/ic_baseline_add_24"
-			app:layout_behavior=".extensions.Behavior" />
+			app:icon="@drawable/ic_baseline_add_24" />
 	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

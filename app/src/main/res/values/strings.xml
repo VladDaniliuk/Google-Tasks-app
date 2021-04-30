@@ -4,4 +4,5 @@
 	<string name="sign_in_with_google">Sign In with Google</string>
 	<string name="string_button_create_list">Create new Task list</string>
 	<string name="create_task_list">Create Task list</string>
+	<string name="add_task">Add Task</string>
 </resources>
