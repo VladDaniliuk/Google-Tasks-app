@@ -13,10 +13,12 @@
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
+
 		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 			android:id="@+id/swipe_refresh"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="match_parent"
+			app:isRefreshing="@{viewModel.fetchInProgress}">
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/list_view"
@@ -33,9 +35,9 @@
 			android:layout_gravity="bottom|end"
 			android:layout_margin="16dp"
 			android:elevation="6dp"
-			app:layout_behavior=".extensions.Behavior"
 			android:text="@string/add_task"
 			android:textAllCaps="false"
-			app:icon="@drawable/ic_baseline_add_24" />
+			app:icon="@drawable/ic_baseline_add_24"
+			app:layout_behavior=".extensions.Behavior" />
 	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

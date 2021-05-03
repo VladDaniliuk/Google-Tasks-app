@@ -1,12 +1,16 @@
 package com.example.tasklist.api.service
 
+import com.example.tasklist.api.model.response.BaseListResponse
 import com.example.tasklist.api.model.response.Task
-import retrofit2.Call
-import retrofit2.http.*
+import io.reactivex.rxjava3.core.Single
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TasksApi {
 
-	@DELETE("/tasks/v1/lists/{taskList}/tasks/{task}")
+	/*@DELETE("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun deleteTask(
 		@Path("taskList") taskListId: String, @Path("task") taskId: String
 	)
@@ -18,10 +22,14 @@ interface TasksApi {
 
 	@POST("/tasks/v1/lists/{taskList}/tasks")
 	fun insertTask(@Path("taskList") taskListId: String, @Body task: Task): Call<Task>
-
+*/
 	@GET("/tasks/v1/lists/{taskList}/tasks")
-	fun getAllTasks(@Path("taskList") taskListId: String): Call<List<Task>>
-
+	fun getAllTasks(
+		@Path("taskList") taskListId: String,
+		@Query("showCompleted") showCompleted: Boolean = true,
+		@Query("showHidden") showHidden: Boolean = true
+	): Single<BaseListResponse<Task>>
+/*
 	@POST("/tasks/v1/lists/{taskList}/tasks/{task}/move")
 	fun moveTask(
 		@Path("taskList") taskListId: String,
@@ -38,5 +46,5 @@ interface TasksApi {
 	fun updateTask(
 		@Path("taskList") taskListId: String, @Path("task") taskId: String,
 		@Body task: Task
-	): Call<Task>
+	): Call<Task>*/
 }

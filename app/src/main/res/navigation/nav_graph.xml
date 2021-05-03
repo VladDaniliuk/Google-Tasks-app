@@ -30,5 +30,9 @@
 		android:id="@+id/taskListFragment"
 		android:name="com.example.tasklist.view.TaskListFragment"
 		android:label="task_list_fragment"
-		tools:layout="@layout/fragment_task_list"/>
+		tools:layout="@layout/fragment_task_list">
+		<argument
+			android:name="parentId"
+			app:argType="string" />
+	</fragment>
 </navigation>
