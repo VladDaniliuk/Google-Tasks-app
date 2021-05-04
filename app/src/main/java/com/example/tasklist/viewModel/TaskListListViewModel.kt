@@ -4,8 +4,12 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tasklist.BR
+import com.example.tasklist.R
+import com.example.tasklist.databinding.LayoutTaskListBinding
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.domain.TaskListRepository
+import com.example.tasklist.view.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -27,6 +31,11 @@ class TaskListListViewModel @Inject constructor(
 	val createTaskListClickListener = View.OnClickListener {
 		onCreateTaskListClick.call()
 	}
+
+	val adapter = BaseItemAdapter<TaskListItemModel, LayoutTaskListBinding>(
+		BR.model,
+		R.layout.layout_task_list
+	)
 
 	init {
 		taskListRepository.getTaskList()

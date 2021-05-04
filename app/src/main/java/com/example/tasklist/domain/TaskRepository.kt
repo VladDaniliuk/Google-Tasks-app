@@ -1,6 +1,6 @@
 package com.example.tasklist.domain
 
-import com.example.tasklist.api.model.response.Task
+import com.example.tasklist.api.model.response.TaskWithSubTasks
 import com.example.tasklist.api.service.TasksApi
 import com.example.tasklist.db.dao.TaskDao
 import io.reactivex.rxjava3.core.Completable
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 interface TaskRepository {
 	fun fetchTasks(taskListId: String): Completable
-	fun getTask(parentId: String): Flowable<List<Task>>
+	fun getTask(parentId: String): Flowable<List<TaskWithSubTasks>>
 }
 
 class TaskRepositoryImpl @Inject constructor(
@@ -25,10 +25,10 @@ class TaskRepositoryImpl @Inject constructor(
 		}
 	}
 
-	override fun getTask(parentId: String): Flowable<List<Task>> {
-		return taskDao.getAll(parentId).flatMap {list ->
-			Flowable.fromIterable(list).filter {task->
-				task.parent == null
+	override fun getTask(parentId: String): Flowable<List<TaskWithSubTasks>> {
+		return taskDao.getAll(parentId).flatMap { list ->
+			Flowable.fromIterable(list).filter { task ->
+				task.task.parent == null
 			}.toList().toFlowable()
 		}
 	}

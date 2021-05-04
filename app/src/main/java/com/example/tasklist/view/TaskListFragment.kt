@@ -7,11 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tasklist.BR
-import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
-import com.example.tasklist.databinding.LayoutTaskBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.TaskListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,11 +37,12 @@ class TaskListFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		binding.listView.layoutManager =
-			LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
-
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchTasks(args.parentId)
+		}
+
+		viewModel.onTaskClick.observe(viewLifecycleOwner) {
+			viewModel
 		}
 
 		viewModel.list.observe(viewLifecycleOwner) {
@@ -54,11 +51,6 @@ class TaskListFragment : Fragment() {
 	}
 
 	private fun onList(it: List<TaskItemModel>) {
-		val adapter = ListAdapter<TaskItemModel, LayoutTaskBinding>(
-			BR.model,
-			R.layout.layout_task,
-			it
-		)
-		binding.listView.adapter = adapter
+		viewModel.adapter.submitList(it)
 	}
 }

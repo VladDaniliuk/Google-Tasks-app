@@ -1,6 +1,8 @@
 package com.example.tasklist.extensions
 
-import android.graphics.Paint
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StrikethroughSpan
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
@@ -27,12 +29,19 @@ fun SwipeRefreshLayout.bindingSetRefreshing(isRefreshing: Boolean) {
 	this.isRefreshing = isRefreshing
 }
 
-@BindingAdapter("isCompletedText")
-fun TextView.bindingSetChecked(isCompleted: String) {
+@BindingAdapter("isCompletedText", "text")
+fun TextView.bindingSetChecked(isCompleted: String, title: String) {
 	if (isCompleted == "completed") {
-		this.paintFlags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+		val spannable = SpannableStringBuilder(title)
+		spannable.setSpan(
+			StrikethroughSpan(),
+			0, // start
+			spannable.length, // end
+			Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+		)
+		this.text = spannable
 	} else {
-		this.paintFlags = this.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG
+		this.text = title
 	}
 }
 

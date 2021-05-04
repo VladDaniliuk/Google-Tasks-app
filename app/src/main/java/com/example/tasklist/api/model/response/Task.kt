@@ -20,3 +20,12 @@ data class Task(
 	@ColumnInfo(name = "hidden") val hidden: Boolean?,
 	@ColumnInfo(name = "parent_id") var parentId: String?
 )
+
+data class TaskWithSubTasks(
+	@Embedded val task: Task,
+	@Relation(
+		parentColumn = "id",
+		entityColumn = "parent"
+	)
+	val subTasks: List<Task>
+)

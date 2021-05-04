@@ -17,6 +17,7 @@
 		android:layout_marginVertical="8dp"
 		android:clickable="true"
 		android:focusable="true"
+		android:onClick="@{() -> model.click()}"
 		app:cardCornerRadius="8dp"
 		app:cardElevation="8dp">
 
@@ -24,11 +25,11 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 
-			<com.google.android.material.checkbox.MaterialCheckBox
+			<CheckBox
 				android:id="@+id/materialCheckBox"
+				isCompleted="@{model.status}"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				isCompleted="@{model.status}"
 				android:layout_marginStart="8dp"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
@@ -36,27 +37,41 @@
 			<TextView
 				android:id="@+id/textView"
 				isCompletedText="@{model.status}"
+				text="@{model.title}"
 				android:layout_width="0sp"
 				android:layout_height="wrap_content"
 				android:layout_margin="8dp"
 				android:gravity="center_vertical"
-				android:text="@{model.title}"
 				android:textAppearance="?textAppearanceHeadline5"
 				app:layout_constraintEnd_toStartOf="@+id/imageView"
 				app:layout_constraintStart_toEndOf="@+id/materialCheckBox"
 				app:layout_constraintTop_toTopOf="parent"
 				tools:text="Test" />
 
-			<ImageView
+			<ImageButton
 				android:id="@+id/imageView"
 				android:layout_width="wrap_content"
-				android:layout_marginEnd="8dp"
 				android:layout_height="wrap_content"
+				android:layout_marginEnd="8dp"
+				android:background="?selectableItemBackgroundBorderless"
+				android:clickable="true"
+				android:focusable="true"
+				android:onClick="@{() -> model.onExpand()}"
 				android:src="@drawable/ic_baseline_expand_more_24"
-				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintBottom_toBottomOf="@+id/textView"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
 
+			<androidx.recyclerview.widget.RecyclerView
+				android:layout_width="0sp"
+				android:layout_height="wrap_content"
+				app:adapter="@{model.adapter}"
+				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+				app:layout_constraintEnd_toStartOf="@+id/imageView"
+				app:layout_constraintStart_toEndOf="@+id/materialCheckBox"
+				app:layout_constraintTop_toBottomOf="@+id/textView"
+				tools:itemCount="3"
+				tools:listitem="@layout/layout_sub_task" />
 		</androidx.constraintlayout.widget.ConstraintLayout>
 	</com.google.android.material.card.MaterialCardView>
 </layout>

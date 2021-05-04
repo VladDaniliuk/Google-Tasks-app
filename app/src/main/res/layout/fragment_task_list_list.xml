@@ -24,6 +24,8 @@
 				android:id="@+id/list_view"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
+				app:adapter="@{viewModel.adapter}"
+				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 				tools:itemCount="20"
 				tools:listitem="@layout/layout_task_list" />
 		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

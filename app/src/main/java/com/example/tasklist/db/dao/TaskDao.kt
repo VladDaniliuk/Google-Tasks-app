@@ -1,7 +1,11 @@
 package com.example.tasklist.db.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.example.tasklist.api.model.response.Task
+import com.example.tasklist.api.model.response.TaskWithSubTasks
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 
@@ -13,7 +17,7 @@ interface TaskDao {
 	fun insertAllTasks(list: List<Task>): Completable
 
 	@Query("SELECT * FROM Task WHERE (parent_id = :parentId)")
-	fun getAll(parentId: String): Flowable<List<Task>>
+	fun getAll(parentId: String): Flowable<List<TaskWithSubTasks>>
 
 	/*@Delete
 	fun deleteTask(task: Task): Completable

@@ -4,8 +4,12 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tasklist.BR
+import com.example.tasklist.R
+import com.example.tasklist.databinding.LayoutTaskBinding
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.domain.TaskRepository
+import com.example.tasklist.view.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -28,28 +32,48 @@ class TaskListViewModel @Inject constructor(
 		onCreateTaskClick.call()
 	}
 
-	var parentId : String? = null
-	set(value) {
-		field = value
-		field?.let { getTask(it) }
-	}
+	val adapter = BaseItemAdapter<TaskItemModel, LayoutTaskBinding>(
+		BR.model,
+		R.layout.layout_task
+	)
+
+	var parentId: String? = null
+		set(value) {
+			field = value
+			field?.let {
+				getTask(it)
+				fetchTasks(it)
+			}
+		}
 
 
 	private fun getTask(parentId: String) {
 		taskRepository.getTask(parentId)
-			.subscribeOn(Schedulers.computation())
-			.map { m ->
-				m.map { task ->
-					TaskItemModel(task.id, task.title, task.status) {
-						onTaskClick.postValue(it)
-					}
+			.subscribeOn(Schedulers.io()).map { list ->
+				list.map { task ->
+					TaskItemModel(
+						task.task.id,
+						task.task.title,
+						task.task.status,
+						{
+							onTaskClick.postValue(it)
+						},
+						{
+							onTaskClick.postValue(it)
+						},
+						{
+
+						},
+						task.subTasks.map {
+							TaskItemModel(it.id, it.title, it.status, {}, {}, {}, null)
+						}
+					)
+
 				}
 			}
 			.subscribe {
 				_list.postValue(it)
 			}
-
-		fetchTasks(parentId)
 	}
 
 	fun fetchTasks(parentId: String) {
