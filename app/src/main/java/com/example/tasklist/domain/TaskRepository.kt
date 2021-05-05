@@ -28,7 +28,7 @@ class TaskRepositoryImpl @Inject constructor(
 	override fun getTask(parentId: String): Flowable<List<TaskWithSubTasks>> {
 		return taskDao.getAll(parentId).flatMap { list ->
 			Flowable.fromIterable(list).filter { task ->
-				task.task.parent == null
+				task.task.parent == null && task.task.deleted == null
 			}.toList().toFlowable()
 		}
 	}

@@ -27,6 +27,7 @@ interface TasksApi {
 	fun getAllTasks(
 		@Path("taskList") taskListId: String,
 		@Query("showCompleted") showCompleted: Boolean = true,
+		@Query("showDeleted") showDeleted: Boolean = true,
 		@Query("showHidden") showHidden: Boolean = true
 	): Single<BaseListResponse<Task>>
 /*

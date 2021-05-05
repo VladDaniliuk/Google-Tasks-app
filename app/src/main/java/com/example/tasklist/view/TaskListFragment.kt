@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -53,4 +54,6 @@ class TaskListFragment : Fragment() {
 	private fun onList(it: List<TaskItemModel>) {
 		viewModel.adapter.submitList(it)
 	}
+
+
 }

@@ -1,5 +1,7 @@
 package com.example.tasklist.view.itemModel
 
+import android.opengl.Visibility
+import androidx.lifecycle.MutableLiveData
 import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskBinding
@@ -8,10 +10,8 @@ import com.example.tasklist.view.BaseItemAdapter
 class TaskItemModel(
 	override val id: String,
 	val title: String,
-	val status: String,
-	val onTaskItemClick: (id: String) -> Unit,
-	val onExpandItemClick: (id: String) -> Unit,
-	val onTaskExecuteClick: (id: String) -> Unit,
+	var status: String,
+	val onTaskClickListener: OnTaskClickListener? = null,
 	val list: List<TaskItemModel>?
 ) : BaseItemModel() {
 
@@ -23,15 +23,15 @@ class TaskItemModel(
 	}
 
 	fun click() {
-		onTaskItemClick(id)
+		onTaskClickListener?.onTaskItemClick(id)
 	}
 
 	fun onExpand() {
-		onExpandItemClick(id)
+		onTaskClickListener?.onExpandItemClick(id)
 	}
 
 	fun onExecute() {
-		onTaskExecuteClick(id)
+		onTaskClickListener?.onTaskExecuteClick(id)
 	}
 
 	override fun hashCode(): Int {
@@ -54,5 +54,11 @@ class TaskItemModel(
 		if (list != other.list) return false
 
 		return true
+	}
+
+	interface OnTaskClickListener {
+		fun onTaskItemClick(id: String)
+		fun onExpandItemClick(id: String)
+		fun onTaskExecuteClick(id: String)
 	}
 }

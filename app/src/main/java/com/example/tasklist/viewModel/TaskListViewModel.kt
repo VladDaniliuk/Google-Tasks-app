@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskBinding
+import com.example.tasklist.dev.SimpleTaskClickListener
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.domain.TaskRepository
 import com.example.tasklist.view.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -49,23 +51,38 @@ class TaskListViewModel @Inject constructor(
 
 	private fun getTask(parentId: String) {
 		taskRepository.getTask(parentId)
-			.subscribeOn(Schedulers.io()).map { list ->
+			.observeOn(AndroidSchedulers.mainThread())
+			.map { list ->
 				list.map { task ->
 					TaskItemModel(
 						task.task.id,
 						task.task.title,
 						task.task.status,
-						{
-							onTaskClick.postValue(it)
-						},
-						{
-							onTaskClick.postValue(it)
-						},
-						{
+						object : SimpleTaskClickListener() {
+							override fun onTaskItemClick(id: String) {
 
+							}
 						},
 						task.subTasks.map {
-							TaskItemModel(it.id, it.title, it.status, {}, {}, {}, null)
+							TaskItemModel(
+								it.id,
+								it.title,
+								it.status,
+								object : TaskItemModel.OnTaskClickListener {
+									override fun onTaskItemClick(id: String) {
+
+									}
+
+									override fun onExpandItemClick(id: String) {
+									}
+
+									override fun onTaskExecuteClick(id: String) {
+									}
+
+
+								},
+								null
+							)
 						}
 					)
 
