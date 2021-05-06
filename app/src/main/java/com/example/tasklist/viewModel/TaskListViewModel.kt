@@ -59,8 +59,24 @@ class TaskListViewModel @Inject constructor(
 						task.task.title,
 						task.task.status,
 						object : SimpleTaskClickListener() {
-							override fun onTaskItemClick(id: String) {
+							override fun onExpandItemClick(id: String) {
+								_list.value?.let { currentList ->
+									_list.postValue(currentList.map { taskItemModel ->
+										taskItemModel.copy(
+											subTaskVisibility =
+											if (taskItemModel.id == id && taskItemModel
+													.subTaskVisibility == View.GONE
+											)
+												View.VISIBLE
+											else
+												View.GONE
+										)
 
+									})
+								}
+							}
+
+							override fun onTaskExecuteClick(id: String) {
 							}
 						},
 						task.subTasks.map {
@@ -68,20 +84,7 @@ class TaskListViewModel @Inject constructor(
 								it.id,
 								it.title,
 								it.status,
-								object : TaskItemModel.OnTaskClickListener {
-									override fun onTaskItemClick(id: String) {
-
-									}
-
-									override fun onExpandItemClick(id: String) {
-									}
-
-									override fun onTaskExecuteClick(id: String) {
-									}
-
-
-								},
-								null
+								object : SimpleTaskClickListener() {}
 							)
 						}
 					)

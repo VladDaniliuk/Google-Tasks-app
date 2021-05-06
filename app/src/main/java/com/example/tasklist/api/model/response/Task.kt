@@ -13,7 +13,7 @@ data class Task(
 	@ColumnInfo(name = "parent") val parent: String?,
 	@ColumnInfo(name = "position") val position: String?,
 	@ColumnInfo(name = "notes") val notes: String?,
-	@ColumnInfo(name = "status") val status: String,
+	@ColumnInfo(name = "status") var status: String,
 	@ColumnInfo(name = "due") val due: String?,
 	@ColumnInfo(name = "completed") val completed: String?,
 	@ColumnInfo(name = "deleted") val deleted: Boolean?,

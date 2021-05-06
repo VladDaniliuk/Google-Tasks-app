@@ -1,7 +1,6 @@
 package com.example.tasklist.view.itemModel
 
-import android.opengl.Visibility
-import androidx.lifecycle.MutableLiveData
+import android.view.View
 import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskBinding
@@ -11,8 +10,9 @@ class TaskItemModel(
 	override val id: String,
 	val title: String,
 	var status: String,
-	val onTaskClickListener: OnTaskClickListener? = null,
-	val list: List<TaskItemModel>?
+	val onTaskClickListener: OnTaskClickListener?,
+	val list: List<TaskItemModel>? = null,
+	var subTaskVisibility: Int = View.GONE
 ) : BaseItemModel() {
 
 	val adapter = BaseItemAdapter<TaskItemModel, LayoutTaskBinding>(
@@ -38,6 +38,7 @@ class TaskItemModel(
 		var result = id.hashCode()
 		result = 31 * result + title.hashCode()
 		result = 31 * result + status.hashCode()
+		result = 31 * result + subTaskVisibility
 		result = 31 * result + (list?.hashCode() ?: 0)
 		return result
 	}
@@ -51,6 +52,7 @@ class TaskItemModel(
 		if (id != other.id) return false
 		if (title != other.title) return false
 		if (status != other.status) return false
+		if (subTaskVisibility != other.subTaskVisibility) return false
 		if (list != other.list) return false
 
 		return true
@@ -60,5 +62,23 @@ class TaskItemModel(
 		fun onTaskItemClick(id: String)
 		fun onExpandItemClick(id: String)
 		fun onTaskExecuteClick(id: String)
+	}
+
+	fun copy(
+		id: String? = null,
+		title: String? = null,
+		status: String? = null,
+		subTaskVisibility: Int? = null,
+		onTaskClickListener: OnTaskClickListener? = null,
+		list: List<TaskItemModel>? = null
+	): TaskItemModel {
+		return TaskItemModel(
+			id ?: this.id,
+			title ?: this.title,
+			status ?: this.status,
+			onTaskClickListener ?: this.onTaskClickListener,
+			list ?: this.list,
+			subTaskVisibility ?: this.subTaskVisibility
+		)
 	}
 }

@@ -5,9 +5,11 @@ import android.text.SpannableStringBuilder
 import android.text.style.StrikethroughSpan
 import android.view.View
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.tasklist.view.itemModel.TaskItemModel
 import com.google.android.gms.common.SignInButton
 
 @BindingAdapter("onClick")
@@ -48,4 +50,14 @@ fun TextView.bindingSetChecked(isCompleted: String, title: String) {
 @BindingAdapter("isCompleted")
 fun CheckBox.bindingSetChecked(isCompleted: String) {
 	this.isChecked = isCompleted == "completed"
+}
+
+@BindingAdapter("hasSubTask")
+fun ImageButton.bindingHasSubTask(list: List<TaskItemModel>) {
+	this.visibility = if (list.isEmpty()) View.GONE else View.VISIBLE
+}
+
+@BindingAdapter("isSubTaskVisible")
+fun ImageButton.bindingIsSubtaskVisible(isSubTaskVisible: Int) {
+	this.rotation = if (isSubTaskVisible == View.VISIBLE) 180F else 0F
 }
