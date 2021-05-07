@@ -8,6 +8,7 @@ import com.example.tasklist.view.BaseItemAdapter
 
 class TaskItemModel(
 	override val id: String,
+	val parentId: String,
 	val title: String,
 	var status: String,
 	val onTaskClickListener: OnTaskClickListener?,
@@ -23,19 +24,20 @@ class TaskItemModel(
 	}
 
 	fun click() {
-		onTaskClickListener?.onTaskItemClick(id)
+		onTaskClickListener?.onTaskItemClick(this)
 	}
 
 	fun onExpand() {
-		onTaskClickListener?.onExpandItemClick(id)
+		onTaskClickListener?.onExpandItemClick(this)
 	}
 
 	fun onExecute() {
-		onTaskClickListener?.onTaskExecuteClick(id)
+		onTaskClickListener?.onTaskExecuteClick(this)
 	}
 
 	override fun hashCode(): Int {
 		var result = id.hashCode()
+		result = 31 * result + parentId.hashCode()
 		result = 31 * result + title.hashCode()
 		result = 31 * result + status.hashCode()
 		result = 31 * result + subTaskVisibility
@@ -50,6 +52,7 @@ class TaskItemModel(
 		other as TaskItemModel
 
 		if (id != other.id) return false
+		if (parentId != other.parentId) return false
 		if (title != other.title) return false
 		if (status != other.status) return false
 		if (subTaskVisibility != other.subTaskVisibility) return false
@@ -59,13 +62,14 @@ class TaskItemModel(
 	}
 
 	interface OnTaskClickListener {
-		fun onTaskItemClick(id: String)
-		fun onExpandItemClick(id: String)
-		fun onTaskExecuteClick(id: String)
+		fun onTaskItemClick(model: TaskItemModel)
+		fun onExpandItemClick(model: TaskItemModel)
+		fun onTaskExecuteClick(model: TaskItemModel)
 	}
 
 	fun copy(
 		id: String? = null,
+		parentId: String? = null,
 		title: String? = null,
 		status: String? = null,
 		subTaskVisibility: Int? = null,
@@ -74,6 +78,7 @@ class TaskItemModel(
 	): TaskItemModel {
 		return TaskItemModel(
 			id ?: this.id,
+			parentId ?: this.parentId,
 			title ?: this.title,
 			status ?: this.status,
 			onTaskClickListener ?: this.onTaskClickListener,

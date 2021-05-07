@@ -1,24 +1,26 @@
 package com.example.tasklist.api.model.response
 
+import androidx.annotation.StringDef
 import androidx.room.*
+
 
 @Entity
 data class Task(
-	@ColumnInfo(name = "kind") val kind: String?,
+	@ColumnInfo(name = "kind") val kind: String? = null,
 	@PrimaryKey val id: String,
-	@ColumnInfo(name = "etag") val etag: String?,
+	@ColumnInfo(name = "etag") val etag: String?  = null,
 	@ColumnInfo(name = "title") val title: String,
-	@ColumnInfo(name = "updated") val updated: String?,
-	@ColumnInfo(name = "self_link") val selfLink: String?,
-	@ColumnInfo(name = "parent") val parent: String?,
-	@ColumnInfo(name = "position") val position: String?,
-	@ColumnInfo(name = "notes") val notes: String?,
-	@ColumnInfo(name = "status") var status: String,
-	@ColumnInfo(name = "due") val due: String?,
-	@ColumnInfo(name = "completed") val completed: String?,
-	@ColumnInfo(name = "deleted") val deleted: Boolean?,
-	@ColumnInfo(name = "hidden") val hidden: Boolean?,
-	@ColumnInfo(name = "parent_id") var parentId: String?
+	@ColumnInfo(name = "updated") val updated: String?  = null,
+	@ColumnInfo(name = "self_link") val selfLink: String?  = null,
+	@ColumnInfo(name = "parent") val parent: String?  = null,
+	@ColumnInfo(name = "position") val position: String? = null,
+	@ColumnInfo(name = "notes") val notes: String? = null,
+	@ColumnInfo(name = "status") @TaskStatus var status: String,
+	@ColumnInfo(name = "due") val due: String? = null,
+	@ColumnInfo(name = "completed") val completed: String? = null,
+	@ColumnInfo(name = "deleted") val deleted: Boolean? = null,
+	@ColumnInfo(name = "hidden") val hidden: Boolean? = null,
+	@ColumnInfo(name = "parent_id") var parentId: String? = null
 )
 
 data class TaskWithSubTasks(
@@ -29,3 +31,10 @@ data class TaskWithSubTasks(
 	)
 	val subTasks: List<Task>
 )
+
+@Retention(AnnotationRetention.SOURCE)
+@StringDef(STATUS_COMPLETED, STATUS_NEEDS_ACTION)
+annotation class TaskStatus
+
+const val STATUS_COMPLETED = "completed"
+const val STATUS_NEEDS_ACTION = "needsAction"

@@ -33,8 +33,8 @@ fun SwipeRefreshLayout.bindingSetRefreshing(isRefreshing: Boolean) {
 
 @BindingAdapter("isCompletedText", "text")
 fun TextView.bindingSetChecked(isCompleted: String, title: String) {
+	val spannable = SpannableStringBuilder(title)
 	if (isCompleted == "completed") {
-		val spannable = SpannableStringBuilder(title)
 		spannable.setSpan(
 			StrikethroughSpan(),
 			0, // start
@@ -43,6 +43,7 @@ fun TextView.bindingSetChecked(isCompleted: String, title: String) {
 		)
 		this.text = spannable
 	} else {
+		spannable.removeSpan(StrikethroughSpan())
 		this.text = title
 	}
 }

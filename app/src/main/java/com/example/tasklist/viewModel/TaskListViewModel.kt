@@ -56,15 +56,16 @@ class TaskListViewModel @Inject constructor(
 				list.map { task ->
 					TaskItemModel(
 						task.task.id,
+						task.task.parentId!!,
 						task.task.title,
 						task.task.status,
 						object : SimpleTaskClickListener() {
-							override fun onExpandItemClick(id: String) {
+							override fun onExpandItemClick(model: TaskItemModel) {
 								_list.value?.let { currentList ->
 									_list.postValue(currentList.map { taskItemModel ->
 										taskItemModel.copy(
 											subTaskVisibility =
-											if (taskItemModel.id == id && taskItemModel
+											if (taskItemModel.id == model.id && taskItemModel
 													.subTaskVisibility == View.GONE
 											)
 												View.VISIBLE
@@ -76,12 +77,16 @@ class TaskListViewModel @Inject constructor(
 								}
 							}
 
-							override fun onTaskExecuteClick(id: String) {
+							override fun onTaskExecuteClick(model: TaskItemModel) {
+								taskRepository.completeTask(model)
+									.subscribeOn(Schedulers.computation())
+									.subscribe()
 							}
 						},
 						task.subTasks.map {
 							TaskItemModel(
 								it.id,
+								it.parentId!!,
 								it.title,
 								it.status,
 								object : SimpleTaskClickListener() {}

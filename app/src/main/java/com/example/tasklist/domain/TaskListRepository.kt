@@ -18,7 +18,7 @@ class TaskListRepositoryImpl @Inject constructor(
 ) : TaskListRepository {
 	override fun fetchTaskLists(): Completable {
 		return taskListsApi.getAllTaskLists().flatMapCompletable {
-			taskListDao.insertAllTaskLists(it.items)
+			Completable.fromCallable { taskListDao.updateAllTaskLists(it.items) }
 		}
 	}
 
