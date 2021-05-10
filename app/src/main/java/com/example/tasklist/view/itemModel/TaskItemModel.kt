@@ -12,7 +12,6 @@ class TaskItemModel(
 	val title: String,
 	var status: String,
 	val dueDate: String? = null,
-	val dueLocal: String? = null,
 	private val onTaskClickListener: OnTaskClickListener?,
 	val list: List<TaskItemModel>? = null,
 	var subTaskVisibility: Int = View.GONE
@@ -42,8 +41,7 @@ class TaskItemModel(
 		result = 31 * result + parentId.hashCode()
 		result = 31 * result + title.hashCode()
 		result = 31 * result + status.hashCode()
-		result = 31 * result + dueDate.hashCode()
-		result = 31 * result + dueLocal.hashCode()
+		result = 31 * result + dueDate?.hashCode()!!
 		result = 31 * result + subTaskVisibility
 		result = 31 * result + (list?.hashCode() ?: 0)
 		return result
@@ -60,7 +58,6 @@ class TaskItemModel(
 		if (title != other.title) return false
 		if (status != other.status) return false
 		if (dueDate != other.dueDate) return false
-		if (dueLocal != other.dueLocal) return false
 		if (subTaskVisibility != other.subTaskVisibility) return false
 		if (list != other.list) return false
 
@@ -80,7 +77,6 @@ class TaskItemModel(
 		status: String? = null,
 		onTaskClickListener: OnTaskClickListener? = null,
 		dueDate: String? = null,
-		dueLocal: String? = null,
 		list: List<TaskItemModel>? = null,
 		subTaskVisibility: Int? = null
 	): TaskItemModel {
@@ -90,7 +86,6 @@ class TaskItemModel(
 			title ?: this.title,
 			status ?: this.status,
 			dueDate ?: this.dueDate,
-			dueLocal ?: this.dueLocal,
 			onTaskClickListener ?: this.onTaskClickListener,
 			list ?: this.list,
 			subTaskVisibility ?: this.subTaskVisibility
