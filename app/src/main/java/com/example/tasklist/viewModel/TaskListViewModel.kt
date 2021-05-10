@@ -59,6 +59,7 @@ class TaskListViewModel @Inject constructor(
 						task.task.parentId!!,
 						task.task.title,
 						task.task.status,
+						task.task.due,
 						object : SimpleTaskClickListener() {
 							override fun onExpandItemClick(model: TaskItemModel) {
 								_list.value?.let { currentList ->
@@ -89,7 +90,14 @@ class TaskListViewModel @Inject constructor(
 								it.parentId!!,
 								it.title,
 								it.status,
-								object : SimpleTaskClickListener() {}
+								it.due,
+								object : SimpleTaskClickListener() {
+									override fun onTaskExecuteClick(model: TaskItemModel) {
+										taskRepository.completeTask(model)
+											.subscribeOn(Schedulers.computation())
+											.subscribe()
+									}
+								}
 							)
 						}
 					)
