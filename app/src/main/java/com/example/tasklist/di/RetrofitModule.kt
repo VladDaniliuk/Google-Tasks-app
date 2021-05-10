@@ -60,9 +60,7 @@ class RetrofitModule {
 				HttpLoggingInterceptor().setLevel(
 					HttpLoggingInterceptor.Level.BODY
 				)
-			).addInterceptor { chain ->
-				provideInterceptor(preferenceManager, chain)
-			}
+			)
 				.authenticator(tokenAuthenticator)
 				.build()
 		).addCallAdapterFactory(RxJava3CallAdapterFactory.create())
@@ -106,22 +104,23 @@ class TokenAuthenticator @Inject constructor(
 
 	override fun authenticate(route: Route?, response: Response): Request? {
 		if (response.request.header("Authorization") != null) {
-			return null; // Give up, we've already failed to authenticate.
+			return null// Give up, we've already failed to authenticate.
 		}
-		return preferenceManager.getRefreshToken?.let { refreshToken ->
-			val accessTokenResponse: AccessTokenResponse? = signInApiHolder.signInApi?.refreshToken(
-				GoogleRefreshToken(
-					context.getString(R.string.default_web_client_id),
-					context.getString(R.string.secret), "refresh_token", refreshToken
-				)
-			)?.blockingGet()
-
-			accessTokenResponse?.let {
-				response.request.newBuilder().header(
-					"Authorization",
-					accessTokenResponse.accessToken
-				).build()
+		return preferenceManager.getToken?.let { token ->
+			preferenceManager.getTokenType?.let { tokenType ->
+					response.request.newBuilder().header(
+						"Authorization",
+						"$tokenType $token"
+					).build()
 			}
+//			val accessTokenResponse: AccessTokenResponse? = signInApiHolder.signInApi?.refreshToken(
+//				GoogleRefreshToken(
+//					context.getString(R.string.default_web_client_id),
+//					context.getString(R.string.secret), "refresh_token", refreshToken
+//				)
+//			)?.blockingGet()
+
+
 		}
 	}
 }
