@@ -52,19 +52,31 @@
 			<ImageButton
 				android:id="@+id/imageView"
 				hasSubTask="@{model.list}"
+				isSubTaskVisible="@{model.subTaskVisibility}"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginEnd="8dp"
 				android:background="?selectableItemBackgroundBorderless"
 				android:clickable="true"
+				android:contentDescription="@string/string_expand_button"
 				android:focusable="true"
-				isSubTaskVisible="@{model.subTaskVisibility}"
 				android:onClick="@{() -> model.onExpand()}"
 				android:src="@drawable/ic_baseline_expand_more_24"
 				app:layout_constraintBottom_toBottomOf="@+id/textView"
 				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toTopOf="parent"
-				android:contentDescription="@string/string_expand_button" />
+				app:layout_constraintTop_toTopOf="parent" />
+
+
+			<com.google.android.material.chip.Chip
+				android:id="@+id/chip4"
+				isDue="@{model.dueDate}"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginHorizontal="8sp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/materialCheckBox"
+				tools:text="due today" />
+
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:layout_width="0sp"
@@ -74,7 +86,7 @@
 				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 				app:layout_constraintEnd_toStartOf="@+id/imageView"
 				app:layout_constraintStart_toEndOf="@+id/materialCheckBox"
-				app:layout_constraintTop_toBottomOf="@+id/textView"
+				app:layout_constraintTop_toBottomOf="@+id/chip4"
 				tools:itemCount="3"
 				tools:listitem="@layout/layout_sub_task" />
 		</androidx.constraintlayout.widget.ConstraintLayout>

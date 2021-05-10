@@ -3,7 +3,6 @@ package com.example.tasklist.api.model.response
 import androidx.annotation.StringDef
 import androidx.room.*
 
-
 @Entity
 data class Task(
 	@ColumnInfo(name = "kind") val kind: String? = null,

@@ -11,7 +11,9 @@ class TaskItemModel(
 	val parentId: String,
 	val title: String,
 	var status: String,
-	val onTaskClickListener: OnTaskClickListener?,
+	val dueDate: String? = null,
+	val dueLocal: String? = null,
+	private val onTaskClickListener: OnTaskClickListener?,
 	val list: List<TaskItemModel>? = null,
 	var subTaskVisibility: Int = View.GONE
 ) : BaseItemModel() {
@@ -40,6 +42,8 @@ class TaskItemModel(
 		result = 31 * result + parentId.hashCode()
 		result = 31 * result + title.hashCode()
 		result = 31 * result + status.hashCode()
+		result = 31 * result + dueDate.hashCode()
+		result = 31 * result + dueLocal.hashCode()
 		result = 31 * result + subTaskVisibility
 		result = 31 * result + (list?.hashCode() ?: 0)
 		return result
@@ -55,6 +59,8 @@ class TaskItemModel(
 		if (parentId != other.parentId) return false
 		if (title != other.title) return false
 		if (status != other.status) return false
+		if (dueDate != other.dueDate) return false
+		if (dueLocal != other.dueLocal) return false
 		if (subTaskVisibility != other.subTaskVisibility) return false
 		if (list != other.list) return false
 
@@ -72,15 +78,19 @@ class TaskItemModel(
 		parentId: String? = null,
 		title: String? = null,
 		status: String? = null,
-		subTaskVisibility: Int? = null,
 		onTaskClickListener: OnTaskClickListener? = null,
-		list: List<TaskItemModel>? = null
+		dueDate: String? = null,
+		dueLocal: String? = null,
+		list: List<TaskItemModel>? = null,
+		subTaskVisibility: Int? = null
 	): TaskItemModel {
 		return TaskItemModel(
 			id ?: this.id,
 			parentId ?: this.parentId,
 			title ?: this.title,
 			status ?: this.status,
+			dueDate ?: this.dueDate,
+			dueLocal ?: this.dueLocal,
 			onTaskClickListener ?: this.onTaskClickListener,
 			list ?: this.list,
 			subTaskVisibility ?: this.subTaskVisibility
