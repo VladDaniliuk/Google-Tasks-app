@@ -11,11 +11,17 @@ interface TaskListDao {
 	@Delete
 	fun delete(taskList: TaskList): Completable
 
+	@Query("DELETE FROM TaskList")
+	fun deleteAllSync()
+
 	@Query("SELECT * FROM TaskList WHERE id IN(:id)")
 	fun getTaskList(id: String): Single<TaskList>
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun insertAllTaskLists(list: List<TaskList>): Completable
+
+	@Insert
+	fun insertAllTaskListsSync(list: List<TaskList>)
 
 	@Insert
 	fun insertTaskList(taskList: TaskList): Completable
@@ -28,4 +34,10 @@ interface TaskListDao {
 
 	@Update
 	fun updateTaskList(taskList: TaskList): Completable
+
+	@Transaction
+	fun updateAllTaskLists(list: List<TaskList>) {
+		deleteAllSync()
+		insertAllTaskListsSync(list)
+	}
 }

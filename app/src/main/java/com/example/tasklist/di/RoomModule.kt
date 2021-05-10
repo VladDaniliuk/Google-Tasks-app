@@ -29,9 +29,9 @@ class RoomModule {
 		return database.taskListDao()
 	}
 
-	/*@Provides
+	@Provides
 	@Singleton
 	fun provideTaskDao(database: AppDatabase): TaskDao {
 		return database.taskDao()
-	}*/
+	}
 }

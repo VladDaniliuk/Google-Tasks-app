@@ -1,9 +1,6 @@
 package com.example.tasklist.di
 
-import com.example.tasklist.domain.LogInRepository
-import com.example.tasklist.domain.LogInRepositoryImpl
-import com.example.tasklist.domain.TaskListRepository
-import com.example.tasklist.domain.TaskListRepositoryImpl
+import com.example.tasklist.domain.*
 import com.example.tasklist.model.PreferenceManager
 import com.example.tasklist.model.PreferenceManagerImpl
 import dagger.Binds
@@ -26,4 +23,7 @@ abstract class ApplicationModule {
 	@Binds
 	abstract fun bindTaskListRepository(taskListRepositoryImpl: TaskListRepositoryImpl):
 			TaskListRepository
+
+	@Binds
+	abstract fun bindTaskRepository(taskRepositoryImpl: TaskRepositoryImpl): TaskRepository
 }
