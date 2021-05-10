@@ -4,7 +4,7 @@ import com.example.tasklist.api.model.response.Task
 import retrofit2.Call
 import retrofit2.http.*
 
-interface TasksApi {
+interface 	TasksApi {
 
 	@DELETE("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun deleteTask(
