@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.TaskListListViewModel
@@ -43,6 +44,10 @@ class TaskListListFragment : Fragment() {
 
 		viewModel.onTaskListClick.observe(viewLifecycleOwner) {
 			navigateToTaskList(it)
+		}
+
+		viewModel.onCreateTaskListClick.observe(viewLifecycleOwner) {
+			findNavController().navigate(R.id.action_taskListListFragment_to_createTaskListFragment)
 		}
 	}
 

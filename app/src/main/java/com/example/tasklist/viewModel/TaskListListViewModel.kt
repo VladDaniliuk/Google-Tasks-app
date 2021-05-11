@@ -25,7 +25,7 @@ class TaskListListViewModel @Inject constructor(
 	private val _list = MutableLiveData<List<TaskListItemModel>>()
 	val list: LiveData<List<TaskListItemModel>> = _list
 
-	private val onCreateTaskListClick = SingleLiveEvent<Unit>()
+	val onCreateTaskListClick = SingleLiveEvent<Unit>()
 	val onTaskListClick = SingleLiveEvent<String>()
 
 	val createTaskListClickListener = View.OnClickListener {

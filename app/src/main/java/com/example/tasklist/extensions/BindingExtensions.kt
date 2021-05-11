@@ -66,6 +66,7 @@ fun ImageButton.bindingHasSubTask(list: List<TaskItemModel>) {
 fun ImageButton.bindingIsSubtaskVisible(isSubTaskVisible: Int) {
 	this.rotation = if (isSubTaskVisible == View.VISIBLE) 180F else 0F
 }
+
 @SuppressLint("SimpleDateFormat")
 @BindingAdapter("isDue")
 fun Chip.bindingIsDue(due: String?) {
