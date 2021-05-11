@@ -20,7 +20,7 @@ jobs:
       - name: decript key
         run: base64 -d Key.b64 > Key
       - name: get properties
-        run: echo "${{secrets.KEY_STORE_PROPERTIES"}} > keystore.b64
+        run: echo "${{secrets.KEY_STORE_PROPERTIES}}" > keystore.b64
       - name: decript properties
         run: base64 -d keystore.b64 > keystore.properties
       - name: Make gradlew executable
