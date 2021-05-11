@@ -18,11 +18,11 @@ jobs:
       - name: get key
       - run: echo "${{secrets.KEY}}" > Key.b64
       - name: decript key
-      - run: base64 -d Key.b64 > app/Key
+      - run: base64 -d Key.b64 > Key
       - name: get properties
       - run: echo "${{secrets.KEY_STORE_PROPERTIES"}} > keystore.b64
       - name: decript properties
-      - run: base64 -d keystore.b64 > app/keystore.properties
+      - run: base64 -d keystore.b64 > keystore.properties
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: build debug
