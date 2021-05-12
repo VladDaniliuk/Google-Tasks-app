@@ -10,7 +10,7 @@ import com.example.tasklist.databinding.LayoutTaskBinding
 import com.example.tasklist.dev.SimpleTaskClickListener
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.domain.TaskRepository
-import com.example.tasklist.view.BaseItemAdapter
+import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
+import com.example.tasklist.view.adapter.SwipeController
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.TaskListListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +35,10 @@ class TaskListListFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		val swipeController = SwipeController()
+		val itemTouchHelper = ItemTouchHelper(swipeController)
+		itemTouchHelper.attachToRecyclerView(binding.listView)
 
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchTaskLists()

@@ -8,15 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.viewModels
 import com.example.tasklist.databinding.FragmentCreateTaskListBinding
-import com.example.tasklist.viewModel.CreateTaskListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-
 
 class CreateTaskListFragment : BottomSheetDialogFragment() {
 
-	private val viewModel: CreateTaskListViewModel by viewModels()
 	private lateinit var binding: FragmentCreateTaskListBinding
 
 	override fun onCreateView(
@@ -26,7 +22,6 @@ class CreateTaskListFragment : BottomSheetDialogFragment() {
 	): View {
 		binding = FragmentCreateTaskListBinding.inflate(inflater, container, false)
 
-		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
 
 		binding.textInputEditText.requestFocus()//not good
