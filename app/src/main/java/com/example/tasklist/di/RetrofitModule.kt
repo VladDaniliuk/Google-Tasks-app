@@ -1,9 +1,5 @@
 package com.example.tasklist.di
 
-import android.content.Context
-import com.example.tasklist.R
-import com.example.tasklist.api.model.body.GoogleRefreshToken
-import com.example.tasklist.api.model.response.AccessTokenResponse
 import com.example.tasklist.api.service.SignInApi
 import com.example.tasklist.api.service.SignInApiHolder
 import com.example.tasklist.api.service.TaskListsApi
@@ -12,12 +8,9 @@ import com.example.tasklist.model.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.*
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
@@ -31,7 +24,7 @@ class RetrofitModule {
 	@Provides
 	fun provideSignInApiHolder(): SignInApiHolder = SignInApiHolder()
 
-	private fun provideInterceptor(
+	/*private fun provideInterceptor(
 		preferenceManager: PreferenceManager,
 		chain: Interceptor.Chain
 	): Response {
@@ -47,20 +40,19 @@ class RetrofitModule {
 		} ?: run {
 			chain.proceed(chain.request())
 		}
-	}
+	}*/
 
 	@Provides
 	@Singleton
 	fun provideRetrofit(
-		preferenceManager: PreferenceManager,
 		tokenAuthenticator: TokenAuthenticator
 	): Retrofit {
 		return Retrofit.Builder().baseUrl(URL).client(
-			OkHttpClient.Builder().addInterceptor(
+			OkHttpClient.Builder()/*.addInterceptor(
 				HttpLoggingInterceptor().setLevel(
 					HttpLoggingInterceptor.Level.BODY
 				)
-			)
+			)*/
 				.authenticator(tokenAuthenticator)
 				.build()
 		).addCallAdapterFactory(RxJava3CallAdapterFactory.create())
@@ -95,11 +87,10 @@ class RetrofitModule {
 }
 
 class TokenAuthenticator @Inject constructor(
-	private val preferenceManager: PreferenceManager,
+	private val preferenceManager: PreferenceManager/*,
 	private val signInApiHolder: SignInApiHolder,
-	@ApplicationContext private val context: Context
+	@ApplicationContext private val context: Context*/
 ) : Authenticator {
-
 
 
 	override fun authenticate(route: Route?, response: Response): Request? {
@@ -108,10 +99,10 @@ class TokenAuthenticator @Inject constructor(
 		}
 		return preferenceManager.getToken?.let { token ->
 			preferenceManager.getTokenType?.let { tokenType ->
-					response.request.newBuilder().header(
-						"Authorization",
-						"$tokenType $token"
-					).build()
+				response.request.newBuilder().header(
+					"Authorization",
+					"$tokenType $token"
+				).build()
 			}
 //			val accessTokenResponse: AccessTokenResponse? = signInApiHolder.signInApi?.refreshToken(
 //				GoogleRefreshToken(
