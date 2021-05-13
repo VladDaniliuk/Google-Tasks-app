@@ -1,13 +1,10 @@
 package com.example.tasklist.view.adapter
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.util.DisplayMetrics
-import android.util.TypedValue
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper.Callback
 import androidx.recyclerview.widget.ItemTouchHelper.LEFT
@@ -70,14 +67,14 @@ open class SwipeController(val context: Context) : Callback() {
 					drawableDelete.intrinsicHeight
 		)
 
-		canvas.drawRoundRect(background, dpToPx(8F), dpToPx(8F), paint)
+		canvas.drawRoundRect(background, dpToPx(), dpToPx(), paint)
 
 		drawableDelete.draw(canvas)
 
-		super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+		super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 	}
 
-	private fun dpToPx(dp:Float): Float {
-		return dp * context.resources.displayMetrics.density
+	private fun dpToPx(): Float {
+		return 8.4F * context.resources.displayMetrics.density
 	}
 }

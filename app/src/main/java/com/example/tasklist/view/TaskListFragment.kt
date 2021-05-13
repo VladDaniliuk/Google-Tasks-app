@@ -1,5 +1,6 @@
 package com.example.tasklist.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.databinding.FragmentTaskListBinding
-import com.example.tasklist.view.adapter.SwipeController
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.TaskListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -42,15 +40,6 @@ class TaskListFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val simpleItemTouchCallback = object : SwipeController(requireContext()) {
-			override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-				showDeletingSnackBar()
-			}
-		}
-
-		val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-		itemTouchHelper.attachToRecyclerView(binding.listView)
-
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchTasks(args.parentId)
 		}
@@ -62,12 +51,17 @@ class TaskListFragment : Fragment() {
 		viewModel.list.observe(viewLifecycleOwner) {
 			onList(it)
 		}
+
+		viewModel.onItemAdapter.observe(viewLifecycleOwner) {
+			showDeletingSnackBar()
+		}
 	}
 
 	private fun onList(it: List<TaskItemModel>) {
 		viewModel.adapter.submitList(it)
 	}
 
+	@SuppressLint("ShowToast")
 	private fun showDeletingSnackBar() {
 		val snackBar =
 			Snackbar.make(requireView(), "Deleting list of tasks...", Snackbar.LENGTH_LONG)

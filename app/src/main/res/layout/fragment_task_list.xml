@@ -22,6 +22,7 @@
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/list_view"
+				itemTouchHelper="@{viewModel.onItemAdapter}"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				app:adapter="@{viewModel.adapter}"
@@ -36,6 +37,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="bottom|end"
 			android:layout_margin="16dp"
+			android:onClick="@{viewModel.createTaskClickListener}"
 			android:elevation="6dp"
 			android:text="@string/add_task"
 			android:textAllCaps="false"
