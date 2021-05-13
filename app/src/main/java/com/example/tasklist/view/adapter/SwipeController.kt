@@ -1,16 +1,15 @@
 package com.example.tasklist.view.adapter
 
-import androidx.recyclerview.widget.ItemTouchHelper.*
+import androidx.recyclerview.widget.ItemTouchHelper.Callback
+import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.RecyclerView
 
-class SwipeController : Callback() {
-	var swipeBack = false
-
+open class SwipeController : Callback() {
 	override fun getMovementFlags(
 		recyclerView: RecyclerView,
 		viewHolder: RecyclerView.ViewHolder
 	): Int {
-		return makeMovementFlags(0, LEFT or RIGHT)
+		return makeMovementFlags(0, LEFT)
 	}
 
 	override fun onMove(
@@ -21,14 +20,5 @@ class SwipeController : Callback() {
 		return false
 	}
 
-	override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-	}
-
-	override fun convertToAbsoluteDirection(flags: Int, layoutDirection: Int): Int {
-		if (swipeBack) {
-			swipeBack = false
-			return 0
-		}
-		return super.convertToAbsoluteDirection(flags, layoutDirection)
-	}
+	override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {}
 }
