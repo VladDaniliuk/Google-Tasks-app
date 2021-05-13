@@ -39,7 +39,7 @@ class TaskListListFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val simpleItemTouchCallback = object : SwipeController() {
+		val simpleItemTouchCallback = object : SwipeController(requireContext()) {
 			override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
 				showDeletingSnackBar()
 			}
