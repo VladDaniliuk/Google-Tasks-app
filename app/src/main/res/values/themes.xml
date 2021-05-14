@@ -14,6 +14,8 @@
 		<item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 		<!-- Customize your theme here. -->
 		<item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
+
+		<item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Primary.Color</item>
 	</style>
 
 	<style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
@@ -35,5 +37,14 @@
 		<item name="cornerSizeTopLeft">16dp</item>
 		<item name="cornerSizeBottomRight">0dp</item>
 		<item name="cornerSizeBottomLeft">0dp</item>
+	</style>
+
+	<style name="TextAppearance.AppCompat.Headline.LikeHeadline2" parent="TextAppearance.AppCompat.Headline">
+		<item name="android:textSize">60sp</item>
+		<item name="fontWeight">900</item>
+	</style>
+
+	<style name="Widget.MaterialComponents.AppBarLayout.Primary.Color" parent="Widget.MaterialComponents.AppBarLayout.Primary">
+		<item name="android:background">@color/white</item>
 	</style>
 </resources>
