@@ -6,25 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.tasklist.databinding.FragmentCreateTaskListBinding
+import com.example.tasklist.databinding.FragmentChangeTaskListBinding
 import com.example.tasklist.dev.hideKeyboard
-import com.example.tasklist.viewModel.CreateTaskListViewModel
+import com.example.tasklist.viewModel.ChangeTaskListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateTaskListFragment : BottomSheetDialogFragment() {
+class ChangeTaskListFragment : BottomSheetDialogFragment() {
 
-	private val viewModel: CreateTaskListViewModel by viewModels()
-	private lateinit var binding: FragmentCreateTaskListBinding
+	private val viewModel: ChangeTaskListViewModel by viewModels()
+	private lateinit var binding: FragmentChangeTaskListBinding
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		binding = FragmentCreateTaskListBinding.inflate(inflater, container, false)
+		binding = FragmentChangeTaskListBinding.inflate(inflater, container, false)
 
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
@@ -35,14 +34,6 @@ class CreateTaskListFragment : BottomSheetDialogFragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		viewModel.onCreateTaskListClick.observe(viewLifecycleOwner) {
-			viewModel.createTaskClick()
-		}
-
-		viewModel.onCreateTaskListFinish.observe(viewLifecycleOwner) {
-			findNavController().popBackStack()
-		}
-
 	}
 
 	override fun onDismiss(dialog: DialogInterface) {

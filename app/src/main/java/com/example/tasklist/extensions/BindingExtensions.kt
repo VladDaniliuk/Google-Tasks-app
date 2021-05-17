@@ -20,11 +20,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @BindingAdapter("isVisible")
-fun setVisibility(view: View, isVisible: Boolean) {
+fun View.setVisibility(isVisible: Boolean) {
 	if (isVisible) {
-		view.visibility = View.VISIBLE
+		this.visibility = View.VISIBLE
 	} else {
-		view.visibility = View.GONE
+		this.visibility = View.INVISIBLE
 	}
 }
 

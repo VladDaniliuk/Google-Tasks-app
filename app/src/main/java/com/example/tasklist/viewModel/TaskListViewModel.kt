@@ -9,6 +9,7 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskBinding
 import com.example.tasklist.dev.SimpleTaskClickListener
 import com.example.tasklist.dev.SingleLiveEvent
+import com.example.tasklist.domain.TaskListRepository
 import com.example.tasklist.domain.TaskRepository
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskItemModel
@@ -19,13 +20,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskListViewModel @Inject constructor(
-	private val taskRepository: TaskRepository
+	private val taskRepository: TaskRepository,
+	private val taskListRepository: TaskListRepository
 ) : ViewModel() {
 
 	val fetchInProgress = MutableLiveData(false)
 
 	private val _list = MutableLiveData<List<TaskItemModel>>()
 	val list: LiveData<List<TaskItemModel>> = _list
+	val listName = MutableLiveData<String>()
 
 	private val onCreateTaskClick = SingleLiveEvent<Unit>()
 	val onItemAdapter = SingleLiveEvent<Unit>()
@@ -46,6 +49,11 @@ class TaskListViewModel @Inject constructor(
 			field?.let {
 				getTask(it)
 				fetchTasks(it)
+				listName.postValue(parentId?.let { id ->
+					taskListRepository.getTaskList(id).map { taskList ->
+						taskList.title
+					}.blockingFirst()
+				})
 			}
 		}
 

@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 data class TaskList(
 	@PrimaryKey val id: String,
 	@ColumnInfo(name = "title") val title: String,
-	@ColumnInfo(name = "kind") val kind: String?,
-	@ColumnInfo(name = "etag") val etag: String?,
-	@ColumnInfo(name = "updated") val updated: String?,
-	@ColumnInfo(name = "self_link") val selfLink: String?
+	@ColumnInfo(name = "kind") val kind: String? = null,
+	@ColumnInfo(name = "etag") val etag: String? = null,
+	@ColumnInfo(name = "updated") val updated: String? = null,
+	@ColumnInfo(name = "self_link") val selfLink: String? = null
 )

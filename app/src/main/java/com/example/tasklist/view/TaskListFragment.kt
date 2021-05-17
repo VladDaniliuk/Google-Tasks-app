@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.TaskListViewModel
@@ -34,6 +36,17 @@ class TaskListFragment : Fragment() {
 
 		viewModel.parentId = args.parentId
 
+		binding.mainToolbar.inflateMenu(R.menu.menu_task_list)
+		binding.mainToolbar.setOnMenuItemClickListener {
+			if (it.itemId == R.id.delete) {
+				showDeletingSnackBar("task list")
+				return@setOnMenuItemClickListener true
+			} else {
+				findNavController().navigate(R.id.action_taskListFragment_to_changeTaskListFragment)
+				return@setOnMenuItemClickListener true
+			}
+		}
+
 		return binding.root
 	}
 
@@ -53,7 +66,7 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.onItemAdapter.observe(viewLifecycleOwner) {
-			showDeletingSnackBar()
+			showDeletingSnackBar("task")
 		}
 	}
 
@@ -62,9 +75,9 @@ class TaskListFragment : Fragment() {
 	}
 
 	@SuppressLint("ShowToast")
-	private fun showDeletingSnackBar() {
+	private fun showDeletingSnackBar(item: String) {
 		val snackBar =
-			Snackbar.make(requireView(), "Deleting list of tasks...", Snackbar.LENGTH_LONG)
+			Snackbar.make(requireView(), "Deleting $item...", Snackbar.LENGTH_LONG)
 				.setAction("Cancel") {
 					Toast.makeText(requireContext(), "Deleted canceled", Toast.LENGTH_LONG)
 						.show()

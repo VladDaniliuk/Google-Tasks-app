@@ -4,7 +4,6 @@ import androidx.room.*
 import com.example.tasklist.api.model.response.TaskList
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface TaskListDao {
@@ -15,7 +14,7 @@ interface TaskListDao {
 	fun deleteAllSync()
 
 	@Query("SELECT * FROM TaskList WHERE id IN(:id)")
-	fun getTaskList(id: String): Single<TaskList>
+	fun getTaskList(id: String): Flowable<TaskList>
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun insertAllTaskLists(list: List<TaskList>): Completable

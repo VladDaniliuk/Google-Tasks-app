@@ -20,7 +20,7 @@
 		android:id="@+id/taskListListFragment"
 		android:name="com.example.tasklist.view.TaskListListFragment"
 		android:label="task_list_list_fragment"
-		tools:layout="@layout/fragment_task_list_list" >
+		tools:layout="@layout/fragment_task_list_list">
 		<action
 			android:id="@+id/action_taskListListFragment_to_taskListFragment"
 			app:destination="@id/taskListFragment" />
@@ -37,12 +37,20 @@
 		<argument
 			android:name="parentId"
 			app:argType="string" />
+		<action
+			android:id="@+id/action_taskListFragment_to_changeTaskListFragment"
+			app:destination="@id/changeTaskListFragment" />
 	</fragment>
 
 	<dialog
 		android:id="@+id/createTaskListFragment"
 		android:name="com.example.tasklist.view.CreateTaskListFragment"
 		android:label="create_task_list_fragment"
-		tools:layout="@layout/fragment_create_task_list"/>
+		tools:layout="@layout/fragment_create_task_list" />
 
+	<dialog
+		android:id="@+id/changeTaskListFragment"
+		android:name="com.example.tasklist.view.ChangeTaskListFragment"
+		android:label="change_task_list_fragment"
+		tools:layout="@layout/fragment_change_task_list" />
 </navigation>
