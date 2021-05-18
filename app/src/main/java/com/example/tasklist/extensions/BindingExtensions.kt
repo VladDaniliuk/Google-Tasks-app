@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.tasklist.dev.SingleLiveEvent
+import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.adapter.SwipeController
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.google.android.material.chip.Chip
@@ -81,10 +82,12 @@ fun Chip.bindingIsDue(due: String?) {
 }
 
 @BindingAdapter("itemTouchHelper")
-fun RecyclerView.bindingItemTouchHelper(onItemAdapter: SingleLiveEvent<Unit>) {
+fun RecyclerView.bindingItemTouchHelper(onItemAdapter: SingleLiveEvent<String>) {
 	val simpleItemTouchCallback = object : SwipeController(this.context) {
 		override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-			onItemAdapter.call()
+			onItemAdapter.postValue(
+				(adapter as BaseItemAdapter<*, *>).currentList[viewHolder.adapterPosition].id
+			)
 		}
 	}
 

@@ -34,6 +34,9 @@ class ChangeTaskListFragment : BottomSheetDialogFragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		viewModel.onChangeTaskListClick.observe(viewLifecycleOwner) {
+			viewModel.changeTaskListClick()
+		}
 	}
 
 	override fun onDismiss(dialog: DialogInterface) {

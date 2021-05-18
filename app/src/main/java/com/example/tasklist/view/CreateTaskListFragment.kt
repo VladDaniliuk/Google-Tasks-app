@@ -36,7 +36,7 @@ class CreateTaskListFragment : BottomSheetDialogFragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		viewModel.onCreateTaskListClick.observe(viewLifecycleOwner) {
-			viewModel.createTaskClick()
+			viewModel.createTaskListClick()
 		}
 
 		viewModel.onCreateTaskListFinish.observe(viewLifecycleOwner) {

@@ -3,17 +3,16 @@ package com.example.tasklist.api.service
 import com.example.tasklist.api.model.response.BaseListResponse
 import com.example.tasklist.api.model.response.BaseResponse
 import com.example.tasklist.api.model.response.TaskList
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface TaskListsApi {
 
-	/*@DELETE("/tasks/v1/users/@me/lists/{taskListId}")
-	fun deleteTaskList(@Path("taskListId") taskListId: String): Call<Void>
+	@DELETE("/tasks/v1/users/@me/lists/{taskListId}")
+	fun deleteTaskList(@Path("taskListId") taskListId: String): Completable
 
-	@GET("/tasks/v1/users/@me/lists/{taskListId}")
+	/*@GET("/tasks/v1/users/@me/lists/{taskListId}")
 	fun getTaskList(@Path("taskListId") taskListId: String): Call<TaskList>*/
 
 	@POST("/tasks/v1/users/@me/lists")

@@ -21,6 +21,10 @@
 		android:name="com.example.tasklist.view.TaskListListFragment"
 		android:label="task_list_list_fragment"
 		tools:layout="@layout/fragment_task_list_list">
+		<argument
+			android:name="id"
+			app:argType="string"
+			app:nullable="true" />
 		<action
 			android:id="@+id/action_taskListListFragment_to_taskListFragment"
 			app:destination="@id/taskListFragment" />
@@ -40,6 +44,9 @@
 		<action
 			android:id="@+id/action_taskListFragment_to_changeTaskListFragment"
 			app:destination="@id/changeTaskListFragment" />
+		<action
+			android:id="@+id/action_taskListFragment_to_taskListListFragment"
+			app:destination="@id/taskListListFragment" />
 	</fragment>
 
 	<dialog

@@ -3,6 +3,7 @@ package com.example.tasklist.view.itemModel
 data class TaskListItemModel(
 	override val id: String,
 	val title: String,
+	var clickable: Boolean = true,
 	val taskListListViewModel: (id: String) -> Unit
 ) : BaseItemModel() {
 	fun click() {

@@ -11,6 +11,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
@@ -48,11 +49,11 @@ class RetrofitModule {
 		tokenAuthenticator: TokenAuthenticator
 	): Retrofit {
 		return Retrofit.Builder().baseUrl(URL).client(
-			OkHttpClient.Builder()/*.addInterceptor(
+			OkHttpClient.Builder().addInterceptor(
 				HttpLoggingInterceptor().setLevel(
 					HttpLoggingInterceptor.Level.BODY
 				)
-			)*/
+			)
 				.authenticator(tokenAuthenticator)
 				.build()
 		).addCallAdapterFactory(RxJava3CallAdapterFactory.create())

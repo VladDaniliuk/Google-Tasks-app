@@ -1,17 +1,25 @@
 package com.example.tasklist.viewModel
 
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tasklist.dev.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ChangeTaskListViewModel @Inject constructor(
-	/*private val taskListRepository: TaskListRepository*/
+	private val taskListRepository: TaskListRepository
 ) : ViewModel() {
 
 	val isClicked = MutableLiveData(false)
 	val taskName = MutableLiveData("")
+
+	val onChangeTaskListClick = SingleLiveEvent<Unit>()
+
+	val changeTaskListClickListener = View.OnClickListener {
+		onChangeTaskListClick.call()
+	}
 
 	/*private val onChangeTaskListClick = SingleLiveEvent<Unit>()
 	val onChangeTaskListFinish = SingleLiveEvent<Unit>()*/
@@ -24,4 +32,8 @@ class ChangeTaskListViewModel @Inject constructor(
 		isClicked.postValue(true)
 		taskListRepository
 	}*/
+
+	fun changeTaskListClick() {
+		taskListRepository
+	}
 }

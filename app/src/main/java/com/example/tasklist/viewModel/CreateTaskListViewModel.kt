@@ -26,7 +26,7 @@ class CreateTaskListViewModel @Inject constructor(
 		onCreateTaskListClick.call()
 	}
 
-	fun createTaskClick() {
+	fun createTaskListClick() {
 		isClicked.postValue(true)
 		taskListRepository.createTaskList(taskName.value.orEmpty())
 			.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())

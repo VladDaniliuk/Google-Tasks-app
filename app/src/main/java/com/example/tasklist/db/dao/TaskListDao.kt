@@ -7,8 +7,8 @@ import io.reactivex.rxjava3.core.Flowable
 
 @Dao
 interface TaskListDao {
-	@Delete
-	fun delete(taskList: TaskList): Completable
+	@Query("DELETE FROM TaskList Where id IN(:id)")
+	fun delete(id: String)
 
 	@Query("DELETE FROM TaskList")
 	fun deleteAllSync()
