@@ -89,9 +89,9 @@ class TaskListListFragment : Fragment() {
 					it.id == id
 				}?.toList()?.get(0)?.title)
 			}" + if (completed) {
-				"completed"
+				" completed"
 			} else {
-				"failed"
+				" failed"
 			}, Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTaskList).show()
 	}
