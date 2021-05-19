@@ -21,11 +21,11 @@ interface TaskListsApi {
 	@GET("/tasks/v1/users/@me/lists")
 	fun getAllTaskLists(): Single<BaseListResponse<TaskList>>
 
-	/*@PATCH("/tasks/v1/users/@me/lists/{taskList}")
+	@PATCH("/tasks/v1/users/@me/lists/{taskList}")
 	fun patchTaskList(@Path("taskList") taskListId: String, @Body taskList: TaskList):
-			Call<TaskList>
+			Single<BaseResponse<TaskList>>
 
-	@PUT("/tasks/v1/users/@me/lists/{taskList}")
+	/*@PUT("/tasks/v1/users/@me/lists/{taskList}")
 	fun updateTaskList(@Path("taskList") taskListId: String, @Body taskList: TaskList):
 			Call<TaskList>
 

@@ -59,5 +59,9 @@
 		android:id="@+id/changeTaskListFragment"
 		android:name="com.example.tasklist.view.ChangeTaskListFragment"
 		android:label="change_task_list_fragment"
-		tools:layout="@layout/fragment_change_task_list" />
+		tools:layout="@layout/fragment_change_task_list">
+		<argument
+			android:name="taskListId"
+			app:argType="string" />
+	</dialog>
 </navigation>

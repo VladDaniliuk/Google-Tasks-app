@@ -28,8 +28,7 @@ class TaskListListViewModel @Inject constructor(
 	val onCreateTaskListClick = SingleLiveEvent<Unit>()
 	val onDeleteTaskListClick = SingleLiveEvent<String>()
 	val onTaskListClick = SingleLiveEvent<String>()
-	val onDeleteTaskListError = SingleLiveEvent<String>()
-	val onDeleteTaskListComplete = SingleLiveEvent<String>()
+	val onDeleteTaskListResult = SingleLiveEvent<Pair<String,Boolean>>()
 
 	val createTaskListClickListener = View.OnClickListener {
 		onCreateTaskListClick.call()
@@ -69,11 +68,17 @@ class TaskListListViewModel @Inject constructor(
 	}
 
 	fun deleteTaskList(id: String) {
+		list.value?.filter {
+			it.id == id
+		}?.toList()?.get(0)?.clickable = false
 		taskListRepository.deleteTaskList(id).subscribeOn(Schedulers.io())
 			.subscribe({
-				onDeleteTaskListComplete.postValue(id)
+				onDeleteTaskListResult.postValue(Pair(id,true))
 			}, {
-				onDeleteTaskListError.postValue(id)
+				list.value?.filter {
+					it.id == id
+				}?.toList()?.get(0)?.clickable = true
+				onDeleteTaskListResult.postValue(Pair(id,false))
 			})
 	}
 }

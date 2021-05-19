@@ -47,16 +47,17 @@ class TaskListViewModel @Inject constructor(
 		set(value) {
 			field = value
 			field?.let {
+				getTaskList(it)
 				getTask(it)
 				fetchTasks(it)
-				listName.postValue(parentId?.let { id ->
-					taskListRepository.getTaskList(id).map { taskList ->
-						taskList.title
-					}.blockingFirst()
-				})
 			}
 		}
 
+	private fun getTaskList(parentId: String) {
+		taskListRepository.getTaskList(parentId).subscribeOn(Schedulers.io()).subscribe {
+			listName.postValue(it.title)
+		}
+	}
 
 	private fun getTask(parentId: String) {
 		taskRepository.getTask(parentId)

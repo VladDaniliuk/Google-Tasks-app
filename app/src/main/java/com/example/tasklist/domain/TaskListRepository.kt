@@ -5,7 +5,6 @@ import com.example.tasklist.api.service.TaskListsApi
 import com.example.tasklist.db.dao.TaskListDao
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 interface TaskListRepository {
@@ -48,6 +47,8 @@ class TaskListRepositoryImpl @Inject constructor(
 	}
 
 	override fun changeTaskList(id: String, newName: String): Completable {
-		TODO("Not yet implemented")
+		return taskListsApi.patchTaskList(id, TaskList(id, newName)).flatMapCompletable {
+			fetchTaskLists()
+		}
 	}
 }

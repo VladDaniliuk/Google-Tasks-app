@@ -1,5 +1,6 @@
 package com.example.tasklist.view
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.example.tasklist.databinding.FragmentCreateTaskListBinding
 import com.example.tasklist.dev.hideKeyboard
 import com.example.tasklist.viewModel.CreateTaskListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,10 +45,22 @@ class CreateTaskListFragment : BottomSheetDialogFragment() {
 			findNavController().popBackStack()
 		}
 
+		viewModel.onCreateTaskListError.observe(viewLifecycleOwner) {
+			showErrorSnackBar()
+		}
 	}
 
 	override fun onDismiss(dialog: DialogInterface) {
 		super.onDismiss(dialog)
 		binding.root.hideKeyboard()
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showErrorSnackBar() {
+		Snackbar.make(
+			requireView(),
+			"Connection error",
+			Snackbar.LENGTH_SHORT
+		).setAnchorView(binding.root).show()
 	}
 }

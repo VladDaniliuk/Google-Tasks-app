@@ -42,7 +42,11 @@ class TaskListFragment : Fragment() {
 				findNavController().popBackStack()
 				return@setOnMenuItemClickListener true
 			} else {
-				findNavController().navigate(R.id.action_taskListFragment_to_changeTaskListFragment)
+				findNavController().navigate(
+					TaskListFragmentDirections.actionTaskListFragmentToChangeTaskListFragment(
+						viewModel.parentId!!
+					)
+				)
 				return@setOnMenuItemClickListener true
 			}
 		}

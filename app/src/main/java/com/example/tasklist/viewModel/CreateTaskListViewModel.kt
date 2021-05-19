@@ -8,7 +8,6 @@ import com.example.tasklist.domain.TaskListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,11 +15,12 @@ class CreateTaskListViewModel @Inject constructor(
 	private val taskListRepository: TaskListRepository
 ) : ViewModel() {
 
-	val taskName = MutableLiveData("")
+	val taskName = MutableLiveData<String>()
 	val isClicked = MutableLiveData(false)
 
 	val onCreateTaskListClick = SingleLiveEvent<Unit>()
 	val onCreateTaskListFinish = SingleLiveEvent<Unit>()
+	val onCreateTaskListError = SingleLiveEvent<Unit>()
 
 	val createTaskListClickListener = View.OnClickListener {
 		onCreateTaskListClick.call()
@@ -33,7 +33,8 @@ class CreateTaskListViewModel @Inject constructor(
 			.subscribe({
 				onCreateTaskListFinish.call()
 			}, {
-				Timber.d(it)
+				isClicked.postValue(false)
+				onCreateTaskListError.call()
 			})
 	}
 

@@ -39,9 +39,6 @@ class TaskListListFragment : Fragment() {
 
 		setFragmentResultListener("requestKey") { _, bundle ->
 			bundle.getString("id")?.let { id ->
-				viewModel.list.value?.filter {
-					it.id == id
-				}?.toList()?.get(0)?.clickable = false
 				viewModel.deleteTaskList(id)
 			}
 		}
@@ -66,13 +63,9 @@ class TaskListListFragment : Fragment() {
 			findNavController().navigate(R.id.action_taskListListFragment_to_createTaskListFragment)
 		}
 
-		viewModel.onDeleteTaskListError.observe(viewLifecycleOwner) {
-			showErrorSnackBar(it)
-			viewModel.adapter.notifyDataSetChanged()
-		}
-
-		viewModel.onDeleteTaskListComplete.observe(viewLifecycleOwner) {
-			showCompleteSnackBar(it)
+		viewModel.onDeleteTaskListResult.observe(viewLifecycleOwner) {
+			showSnackBarResult(it.first, it.second)
+			if (!it.second) viewModel.adapter.notifyDataSetChanged()
 		}
 	}
 
@@ -89,28 +82,17 @@ class TaskListListFragment : Fragment() {
 	}
 
 	@SuppressLint("ShowToast")
-	private fun showErrorSnackBar(position: String) {
+	private fun showSnackBarResult(id: String, completed: Boolean) {
 		Snackbar.make(
-			requireView(),
-			"Deleting ${
+			requireView(), "Deleting ${
 				(viewModel.list.value?.filter {
-					it.id == position
+					it.id == id
 				}?.toList()?.get(0)?.title)
-			} failed",
-			Snackbar.LENGTH_SHORT
-		).setAnchorView(binding.insertTaskList).show()
-	}
-
-	@SuppressLint("ShowToast")
-	private fun showCompleteSnackBar(position: String) {
-		Snackbar.make(
-			requireView(),
-			"Deleting ${
-				(viewModel.list.value?.filter {
-					it.id == position
-				}?.toList()?.get(0)?.title)
-			} completed",
-			Snackbar.LENGTH_SHORT
+			}" + if (completed) {
+				"completed"
+			} else {
+				"failed"
+			}, Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTaskList).show()
 	}
 }
