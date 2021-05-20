@@ -14,6 +14,7 @@ class TaskItemModel(
 	val dueDate: String? = null,
 	private val onTaskClickListener: OnTaskClickListener?,
 	val list: List<TaskItemModel>? = null,
+	override var clickable: Boolean = true,
 	var subTaskVisibility: Int = View.GONE
 ) : BaseItemModel() {
 
@@ -44,6 +45,7 @@ class TaskItemModel(
 		result = 31 * result + dueDate?.hashCode()!!
 		result = 31 * result + subTaskVisibility
 		result = 31 * result + (list?.hashCode() ?: 0)
+		result = 31 * result + clickable.hashCode()
 		return result
 	}
 
@@ -60,6 +62,7 @@ class TaskItemModel(
 		if (dueDate != other.dueDate) return false
 		if (subTaskVisibility != other.subTaskVisibility) return false
 		if (list != other.list) return false
+		if (clickable != other.clickable) return false
 
 		return true
 	}
@@ -78,6 +81,7 @@ class TaskItemModel(
 		onTaskClickListener: OnTaskClickListener? = null,
 		dueDate: String? = null,
 		list: List<TaskItemModel>? = null,
+		clickable: Boolean? = null,
 		subTaskVisibility: Int? = null
 	): TaskItemModel {
 		return TaskItemModel(
@@ -88,6 +92,7 @@ class TaskItemModel(
 			dueDate ?: this.dueDate,
 			onTaskClickListener ?: this.onTaskClickListener,
 			list ?: this.list,
+			clickable ?: this.clickable,
 			subTaskVisibility ?: this.subTaskVisibility
 		)
 	}

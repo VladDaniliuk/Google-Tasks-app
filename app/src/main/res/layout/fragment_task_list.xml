@@ -46,7 +46,7 @@
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/list_view"
-				itemTouchHelper="@{viewModel.onItemAdapter}"
+				itemTouchHelper="@{viewModel.onDeleteTaskClick}"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				app:adapter="@{viewModel.adapter}"

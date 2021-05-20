@@ -1,18 +1,20 @@
 package com.example.tasklist.viewModel
 
-import com.example.tasklist.domain.TaskListRepository
+import com.example.tasklist.domain.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateTaskListViewModel @Inject constructor(
-	private val taskListRepository: TaskListRepository
+class CreateTaskViewModel @Inject constructor(
+	private val taskRepository: TaskRepository
 ) : CreateBaseViewModel() {
+	var taskListId: String? = null
+
 	override fun onCreateBaseClick() {
 		isClicked.postValue(true)
-		taskListRepository.createTaskList(baseName.value.orEmpty())
+		taskRepository.createTask(taskListId!!, baseName.value.orEmpty())
 			.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 			.subscribe({
 				onCreateBaseFinish.call()
@@ -21,5 +23,4 @@ class CreateTaskListViewModel @Inject constructor(
 				onCreateBaseError.call()
 			})
 	}
-
 }

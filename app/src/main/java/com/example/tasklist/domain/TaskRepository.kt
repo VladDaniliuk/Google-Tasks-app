@@ -16,6 +16,8 @@ interface TaskRepository {
 	fun fetchTasks(taskListId: String): Completable
 	fun getTask(parentId: String): Flowable<List<TaskWithSubTasks>>
 	fun completeTask(task: TaskItemModel): Completable
+	fun createTask(parentId: String, title: String): Completable
+	fun deleteTask(taskListId: String, taskId: String): Completable
 }
 
 class TaskRepositoryImpl @Inject constructor(
@@ -57,5 +59,18 @@ class TaskRepositoryImpl @Inject constructor(
 		).doOnSuccess {
 			fetchTasks(task.parentId).subscribeOn(Schedulers.io()).onErrorComplete().subscribe()
 		}.ignoreElement()
+	}
+
+	override fun createTask(parentId: String, title: String): Completable {
+		return tasksApi.insertTask(parentId, Task("", title)).flatMapCompletable {
+			fetchTasks(parentId)
+		}
+	}
+
+	override fun deleteTask(taskListId: String, taskId: String): Completable {
+		return tasksApi.patchTask(taskListId, taskId, Task(id = taskId, deleted = true))
+			.flatMapCompletable {
+				fetchTasks(taskListId)
+			}
 	}
 }

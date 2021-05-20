@@ -30,9 +30,11 @@ class TaskListViewModel @Inject constructor(
 	val list: LiveData<List<TaskItemModel>> = _list
 	val listName = MutableLiveData<String>()
 
-	private val onCreateTaskClick = SingleLiveEvent<Unit>()
-	val onItemAdapter = SingleLiveEvent<String>()
+	val onCreateTaskClick = SingleLiveEvent<Unit>()
+	val onExecuteTaskResult = SingleLiveEvent<String>()
+	val onDeleteTaskClick = SingleLiveEvent<String>()
 	val onTaskClick = SingleLiveEvent<String>()
+	val onDeleteTaskResult = SingleLiveEvent<Pair<String, Boolean>>()
 
 	val createTaskClickListener = View.OnClickListener {
 		onCreateTaskClick.call()
@@ -67,8 +69,8 @@ class TaskListViewModel @Inject constructor(
 					TaskItemModel(
 						task.task.id,
 						task.task.parentId!!,
-						task.task.title,
-						task.task.status,
+						task.task.title!!,
+						task.task.status!!,
 						task.task.due,
 						object : SimpleTaskClickListener() {
 							override fun onExpandItemClick(model: TaskItemModel) {
@@ -91,15 +93,15 @@ class TaskListViewModel @Inject constructor(
 							override fun onTaskExecuteClick(model: TaskItemModel) {
 								taskRepository.completeTask(model)
 									.subscribeOn(Schedulers.computation())
-									.subscribe()
+									.subscribe({}, { onExecuteTaskResult.postValue(model.title) })
 							}
 						},
 						task.subTasks.map {
 							TaskItemModel(
 								it.id,
 								it.parentId!!,
-								it.title,
-								it.status,
+								it.title!!,
+								it.status!!,
 								it.due,
 								object : SimpleTaskClickListener() {
 									override fun onTaskExecuteClick(model: TaskItemModel) {
@@ -125,5 +127,19 @@ class TaskListViewModel @Inject constructor(
 			.doFinally {
 				fetchInProgress.postValue(false)
 			}.subscribe()
+	}
+
+	fun deleteTask(taskId: String) {
+		list.value?.filter {
+			it.id == taskId
+		}?.toList()?.get(0)?.clickable = false
+		taskRepository.deleteTask(parentId!!, taskId).subscribeOn(Schedulers.io()).subscribe({
+			onDeleteTaskResult.postValue(Pair(taskId, true))
+		}, {
+			list.value?.filter {
+				it.id == taskId
+			}?.toList()?.get(0)?.clickable = true
+			onDeleteTaskResult.postValue(Pair(taskId, false))
+		})
 	}
 }

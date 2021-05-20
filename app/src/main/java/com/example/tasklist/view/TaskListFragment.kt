@@ -1,5 +1,6 @@
 package com.example.tasklist.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.TaskListViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -69,11 +71,34 @@ class TaskListFragment : Fragment() {
 			onList(it)
 		}
 
-		viewModel.onItemAdapter.observe(viewLifecycleOwner) {
+		viewModel.onExecuteTaskResult.observe(viewLifecycleOwner) {
+			showSnackBarResult(it)
+			viewModel.adapter.notifyDataSetChanged()
+		}
+
+		viewModel.onCreateTaskClick.observe(viewLifecycleOwner) {
+			findNavController().navigate(
+				TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment(
+					viewModel.parentId!!
+				)
+			)
+		}
+
+		viewModel.onDeleteTaskClick.observe(viewLifecycleOwner) {
+			viewModel.deleteTask(it)
 		}
 	}
 
 	private fun onList(it: List<TaskItemModel>) {
 		viewModel.adapter.submitList(it)
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarResult(id: String) {
+		Snackbar.make(
+			requireView(),
+			"Completing $id failed",
+			Snackbar.LENGTH_SHORT
+		).setAnchorView(binding.insertTaskList).show()
 	}
 }

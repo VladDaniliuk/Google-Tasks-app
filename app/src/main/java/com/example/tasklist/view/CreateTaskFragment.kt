@@ -8,27 +8,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.tasklist.databinding.FragmentCreateTaskListBinding
+import androidx.navigation.fragment.navArgs
+import com.example.tasklist.databinding.FragmentCreateTaskBinding
 import com.example.tasklist.dev.hideKeyboard
-import com.example.tasklist.viewModel.CreateTaskListViewModel
+import com.example.tasklist.viewModel.CreateTaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateTaskListFragment : BottomSheetDialogFragment() {
-	private val viewModel: CreateTaskListViewModel by viewModels()
-	private lateinit var binding: FragmentCreateTaskListBinding
+class CreateTaskFragment : BottomSheetDialogFragment() {
+	private val viewModel: CreateTaskViewModel by viewModels()
+	private val args: CreateTaskFragmentArgs by navArgs()
+	private lateinit var binding: FragmentCreateTaskBinding
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		binding = FragmentCreateTaskListBinding.inflate(inflater, container, false)
+		binding = FragmentCreateTaskBinding.inflate(inflater,container,false)
 
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
+
+		viewModel.taskListId = args.taskListId
 
 		binding.textInputEditText.requestFocus()
 
