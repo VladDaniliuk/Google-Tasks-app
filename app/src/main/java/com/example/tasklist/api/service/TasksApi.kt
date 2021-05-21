@@ -6,7 +6,7 @@ import com.example.tasklist.api.model.response.Task
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.*
 
-interface 	TasksApi {
+interface TasksApi {
 
 	/*@DELETE("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun deleteTask(
@@ -19,7 +19,10 @@ interface 	TasksApi {
 	): Call<Task>*/
 
 	@POST("/tasks/v1/lists/{taskList}/tasks")
-	fun insertTask(@Path("taskList") taskListId: String, @Body task: Task): Single<BaseResponse<Task>>
+	fun insertTask(
+		@Path("taskList") taskListId: String,
+		@Body task: Task
+	): Single<BaseResponse<Task>>
 
 	@GET("/tasks/v1/lists/{taskList}/tasks")
 	fun getAllTasks(

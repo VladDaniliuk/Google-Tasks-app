@@ -3,7 +3,6 @@ package com.example.tasklist.viewModel
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskBinding
@@ -22,23 +21,12 @@ import javax.inject.Inject
 class TaskListViewModel @Inject constructor(
 	private val taskRepository: TaskRepository,
 	private val taskListRepository: TaskListRepository
-) : ViewModel() {
-
-	val fetchInProgress = MutableLiveData(false)
-
+) : BaseViewModel() {
 	private val _list = MutableLiveData<List<TaskItemModel>>()
 	val list: LiveData<List<TaskItemModel>> = _list
 	val listName = MutableLiveData<String>()
 
-	val onCreateTaskClick = SingleLiveEvent<Unit>()
 	val onExecuteTaskResult = SingleLiveEvent<String>()
-	val onDeleteTaskClick = SingleLiveEvent<String>()
-	val onTaskClick = SingleLiveEvent<String>()
-	val onDeleteTaskResult = SingleLiveEvent<Pair<String, Boolean>>()
-
-	val createTaskClickListener = View.OnClickListener {
-		onCreateTaskClick.call()
-	}
 
 	val adapter = BaseItemAdapter<TaskItemModel, LayoutTaskBinding>(
 		BR.model,
@@ -50,8 +38,8 @@ class TaskListViewModel @Inject constructor(
 			field = value
 			field?.let {
 				getTaskList(it)
-				getTask(it)
-				fetchTasks(it)
+				getTasks(it)
+				fetchBase()
 			}
 		}
 
@@ -61,8 +49,8 @@ class TaskListViewModel @Inject constructor(
 		}
 	}
 
-	private fun getTask(parentId: String) {
-		taskRepository.getTask(parentId)
+	private fun getTasks(parentId: String) {
+		taskRepository.getTasks(parentId)
 			.observeOn(AndroidSchedulers.mainThread())
 			.map { list ->
 				list.map { task ->
@@ -121,25 +109,33 @@ class TaskListViewModel @Inject constructor(
 			}
 	}
 
-	fun fetchTasks(parentId: String) {
+	override fun fetchBase() {
 		fetchInProgress.postValue(true)
-		taskRepository.fetchTasks(parentId).subscribeOn(Schedulers.io()).onErrorComplete()
-			.doFinally {
-				fetchInProgress.postValue(false)
-			}.subscribe()
+		parentId?.let {
+			taskRepository.fetchTasks(it)
+				.subscribeOn(Schedulers.io())
+				.onErrorComplete()
+				.doFinally {
+					fetchInProgress.postValue(false)
+				}.subscribe()
+		}
 	}
 
-	fun deleteTask(taskId: String) {
-		list.value?.filter {
-			it.id == taskId
-		}?.toList()?.get(0)?.clickable = false
-		taskRepository.deleteTask(parentId!!, taskId).subscribeOn(Schedulers.io()).subscribe({
-			onDeleteTaskResult.postValue(Pair(taskId, true))
-		}, {
+	override fun deleteBase(id: String, forDelete: Boolean) {
+		if (forDelete) {
 			list.value?.filter {
-				it.id == taskId
-			}?.toList()?.get(0)?.clickable = true
-			onDeleteTaskResult.postValue(Pair(taskId, false))
-		})
+				it.id == id
+			}?.toList()?.get(0)?.clickable = false
+		}
+		taskRepository.onDeleteTask(parentId!!, id, forDelete)
+			.subscribeOn(Schedulers.io())
+			.subscribe({
+				onDeleteBaseResult.postValue(Triple(id, forDelete, true))
+			}, {
+				list.value?.filter {
+					it.id == id
+				}?.toList()?.get(0)?.clickable = true
+				onDeleteBaseResult.postValue(Triple(id, forDelete, false))
+			})
 	}
 }

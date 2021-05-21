@@ -13,8 +13,10 @@ import com.example.tasklist.databinding.FragmentCreateTaskBinding
 import com.example.tasklist.dev.hideKeyboard
 import com.example.tasklist.viewModel.CreateTaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
 
 @AndroidEntryPoint
 class CreateTaskFragment : BottomSheetDialogFragment() {
@@ -27,7 +29,7 @@ class CreateTaskFragment : BottomSheetDialogFragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		binding = FragmentCreateTaskBinding.inflate(inflater,container,false)
+		binding = FragmentCreateTaskBinding.inflate(inflater, container, false)
 
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
@@ -51,6 +53,18 @@ class CreateTaskFragment : BottomSheetDialogFragment() {
 		viewModel.onCreateBaseError.observe(viewLifecycleOwner) {
 			showErrorSnackBar()
 		}
+
+		viewModel.setDateClick.observe(viewLifecycleOwner) {
+			showDatePicker()
+		}
+
+		binding.chip.setOnCloseIconClickListener {
+			viewModel.dueDate.postValue(null)
+		}
+
+		binding.chip.setOnClickListener {
+			showDatePicker()
+		}
 	}
 
 	override fun onDismiss(dialog: DialogInterface) {
@@ -62,8 +76,27 @@ class CreateTaskFragment : BottomSheetDialogFragment() {
 	private fun showErrorSnackBar() {
 		Snackbar.make(
 			requireView(),
-			"Connection error",
+			connectionError,
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.root).show()
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	fun showDatePicker() {
+		val picker = MaterialDatePicker.Builder.datePicker()
+			.setTitleText(selectDate)
+			.build()
+
+		picker.show(childFragmentManager, null)
+		picker.addOnPositiveButtonClickListener {
+			val inputFormat = SimpleDateFormat(dateFormat)
+			viewModel.dueDate.postValue(inputFormat.format(picker.selection).toString())
+		}
+	}
+
+	companion object Strings {
+		const val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+		const val selectDate = "Select date"
+		const val connectionError = "Connection error"
 	}
 }

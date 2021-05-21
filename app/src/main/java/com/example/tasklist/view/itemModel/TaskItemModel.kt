@@ -9,12 +9,11 @@ import com.example.tasklist.view.adapter.BaseItemAdapter
 class TaskItemModel(
 	override val id: String,
 	val parentId: String,
-	val title: String,
+	override val title: String,
 	var status: String,
 	val dueDate: String? = null,
 	private val onTaskClickListener: OnTaskClickListener?,
 	val list: List<TaskItemModel>? = null,
-	override var clickable: Boolean = true,
 	var subTaskVisibility: Int = View.GONE
 ) : BaseItemModel() {
 
@@ -81,7 +80,6 @@ class TaskItemModel(
 		onTaskClickListener: OnTaskClickListener? = null,
 		dueDate: String? = null,
 		list: List<TaskItemModel>? = null,
-		clickable: Boolean? = null,
 		subTaskVisibility: Int? = null
 	): TaskItemModel {
 		return TaskItemModel(
@@ -92,7 +90,6 @@ class TaskItemModel(
 			dueDate ?: this.dueDate,
 			onTaskClickListener ?: this.onTaskClickListener,
 			list ?: this.list,
-			clickable ?: this.clickable,
 			subTaskVisibility ?: this.subTaskVisibility
 		)
 	}

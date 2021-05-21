@@ -60,10 +60,10 @@ class TaskListFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		binding.swipeRefresh.setOnRefreshListener {
-			viewModel.fetchTasks(args.parentId)
+			viewModel.fetchBase()
 		}
 
-		viewModel.onTaskClick.observe(viewLifecycleOwner) {
+		viewModel.onBaseClick.observe(viewLifecycleOwner) {
 			viewModel
 		}
 
@@ -76,7 +76,13 @@ class TaskListFragment : Fragment() {
 			viewModel.adapter.notifyDataSetChanged()
 		}
 
-		viewModel.onCreateTaskClick.observe(viewLifecycleOwner) {
+		viewModel.onDeleteBaseResult.observe(viewLifecycleOwner) {
+			if (it.second) showSnackBarDelete(it.first, it.third)
+			else showSnackBarRestore(it.third)
+			if (!it.third) viewModel.adapter.notifyDataSetChanged()
+		}
+
+		viewModel.onCreateBaseClick.observe(viewLifecycleOwner) {
 			findNavController().navigate(
 				TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment(
 					viewModel.parentId!!
@@ -84,8 +90,8 @@ class TaskListFragment : Fragment() {
 			)
 		}
 
-		viewModel.onDeleteTaskClick.observe(viewLifecycleOwner) {
-			viewModel.deleteTask(it)
+		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
+			viewModel.deleteBase(it, true)
 		}
 	}
 
@@ -99,6 +105,27 @@ class TaskListFragment : Fragment() {
 			requireView(),
 			"Completing $id failed",
 			Snackbar.LENGTH_SHORT
-		).setAnchorView(binding.insertTaskList).show()
+		).setAnchorView(binding.insertTask).show()
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarDelete(id: String, completed: Boolean) {
+		Snackbar.make(
+			requireView(),
+			"Deleting ${if (completed) "completed" else "failed"}",
+			Snackbar.LENGTH_SHORT
+		).setAction("Cancel") {
+			viewModel.deleteBase(id, false)
+		}
+			.setAnchorView(binding.insertTask).show()
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarRestore(completed: Boolean) {
+		Snackbar.make(
+			requireView(),
+			"Restore ${if (completed) "completed" else "failed"}",
+			Snackbar.LENGTH_SHORT
+		).setAnchorView(binding.insertTask).show()
 	}
 }

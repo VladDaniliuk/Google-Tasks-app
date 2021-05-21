@@ -13,4 +13,5 @@
 	<string name="new_task_list_name">New Task list name</string>
 	<string name="change">Change</string>
 	<string name="new_task">New Task</string>
+	<string name="set_date">Set date</string>
 </resources>

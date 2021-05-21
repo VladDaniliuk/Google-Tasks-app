@@ -39,31 +39,31 @@ class TaskListListFragment : Fragment() {
 
 		setFragmentResultListener("requestKey") { _, bundle ->
 			bundle.getString("id")?.let { id ->
-				viewModel.deleteTaskList(id)
+				viewModel.deleteBase(id)
 			}
 		}
 
 		binding.swipeRefresh.setOnRefreshListener {
-			viewModel.fetchTaskLists()
+			viewModel.fetchBase()
 		}
 
 		viewModel.list.observe(viewLifecycleOwner) {
 			onList(it)
 		}
 
-		viewModel.onTaskListClick.observe(viewLifecycleOwner) {
+		viewModel.onBaseClick.observe(viewLifecycleOwner) {
 			navigateToTaskList(it)
 		}
 
-		viewModel.onDeleteTaskListClick.observe(viewLifecycleOwner) {
-			viewModel.deleteTaskList(it)
+		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
+			viewModel.deleteBase(it)
 		}
 
-		viewModel.onCreateTaskListClick.observe(viewLifecycleOwner) {
+		viewModel.onCreateBaseClick.observe(viewLifecycleOwner) {
 			findNavController().navigate(R.id.action_taskListListFragment_to_createTaskListFragment)
 		}
 
-		viewModel.onDeleteTaskListResult.observe(viewLifecycleOwner) {
+		viewModel.onDeleteBaseResult.observe(viewLifecycleOwner) {
 			showSnackBarResult(it.first, it.second)
 			if (!it.second) viewModel.adapter.notifyDataSetChanged()
 		}
