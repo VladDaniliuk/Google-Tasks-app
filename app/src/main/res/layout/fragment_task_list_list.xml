@@ -7,7 +7,7 @@
 
 		<variable
 			name="viewModel"
-			type="com.example.tasklist.viewModel.TaskListListViewModel" />
+			type="com.example.tasklist.viewModel.taskListList.TaskListListViewModel" />
 	</data>
 
 	<androidx.coordinatorlayout.widget.CoordinatorLayout

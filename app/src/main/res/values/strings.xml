@@ -14,4 +14,5 @@
 	<string name="change">Change</string>
 	<string name="new_task">New Task</string>
 	<string name="set_date">Set date</string>
+	<string name="complete_task">Complete task</string>
 </resources>

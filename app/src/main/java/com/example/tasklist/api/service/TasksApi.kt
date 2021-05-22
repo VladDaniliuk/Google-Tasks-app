@@ -11,12 +11,12 @@ interface TasksApi {
 	/*@DELETE("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun deleteTask(
 		@Path("taskList") taskListId: String, @Path("task") taskId: String
-	)
+	)*/
 
 	@GET("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun getTask(
 		@Path("taskList") taskListId: String, @Path("task") taskId: String
-	): Call<Task>*/
+	): Single<Task>
 
 	@POST("/tasks/v1/lists/{taskList}/tasks")
 	fun insertTask(

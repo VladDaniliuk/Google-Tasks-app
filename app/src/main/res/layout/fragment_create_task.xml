@@ -6,7 +6,7 @@
 
 		<variable
 			name="viewModel"
-			type="com.example.tasklist.viewModel.CreateTaskViewModel" />
+			type="com.example.tasklist.viewModel.taskList.CreateTaskViewModel" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout

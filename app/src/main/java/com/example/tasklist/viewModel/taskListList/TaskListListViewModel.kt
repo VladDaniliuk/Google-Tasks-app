@@ -1,4 +1,4 @@
-package com.example.tasklist.viewModel
+package com.example.tasklist.viewModel.taskListList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +8,7 @@ import com.example.tasklist.databinding.LayoutTaskListBinding
 import com.example.tasklist.domain.TaskListRepository
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskListItemModel
+import com.example.tasklist.viewModel.baseViewModel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject

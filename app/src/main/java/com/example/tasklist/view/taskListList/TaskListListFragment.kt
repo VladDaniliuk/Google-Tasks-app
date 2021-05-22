@@ -1,4 +1,4 @@
-package com.example.tasklist.view
+package com.example.tasklist.view.taskListList
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
 import com.example.tasklist.view.itemModel.TaskListItemModel
-import com.example.tasklist.viewModel.TaskListListViewModel
+import com.example.tasklist.viewModel.taskListList.TaskListListViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 

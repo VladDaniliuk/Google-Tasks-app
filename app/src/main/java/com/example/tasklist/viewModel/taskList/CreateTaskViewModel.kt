@@ -1,9 +1,10 @@
-package com.example.tasklist.viewModel
+package com.example.tasklist.viewModel.taskList
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.domain.TaskRepository
+import com.example.tasklist.viewModel.baseViewModel.CreateBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers

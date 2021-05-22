@@ -1,4 +1,4 @@
-package com.example.tasklist.view
+package com.example.tasklist.view.taskList
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -14,7 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
-import com.example.tasklist.viewModel.TaskListViewModel
+import com.example.tasklist.viewModel.taskList.TaskListViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,7 +64,12 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.onBaseClick.observe(viewLifecycleOwner) {
-			viewModel
+			findNavController().navigate(
+				TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(
+					viewModel.parentId!!,
+					it
+				)
+			)
 		}
 
 		viewModel.list.observe(viewLifecycleOwner) {

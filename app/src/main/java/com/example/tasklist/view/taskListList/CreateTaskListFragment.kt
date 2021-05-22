@@ -1,4 +1,4 @@
-package com.example.tasklist.view
+package com.example.tasklist.view.taskListList
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
@@ -8,32 +8,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.example.tasklist.databinding.FragmentChangeTaskListBinding
+import com.example.tasklist.databinding.FragmentCreateTaskListBinding
 import com.example.tasklist.dev.hideKeyboard
-import com.example.tasklist.viewModel.ChangeTaskListViewModel
+import com.example.tasklist.viewModel.taskListList.CreateTaskListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChangeTaskListFragment : BottomSheetDialogFragment() {
-
-	private val viewModel: ChangeTaskListViewModel by viewModels()
-	private val args: ChangeTaskListFragmentArgs by navArgs()
-	private lateinit var binding: FragmentChangeTaskListBinding
+class CreateTaskListFragment : BottomSheetDialogFragment() {
+	private val viewModel: CreateTaskListViewModel by viewModels()
+	private lateinit var binding: FragmentCreateTaskListBinding
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		binding = FragmentChangeTaskListBinding.inflate(inflater, container, false)
+		binding = FragmentCreateTaskListBinding.inflate(inflater, container, false)
 
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
-
-		viewModel.taskListId = args.taskListId
 
 		binding.textInputEditText.requestFocus()
 
@@ -41,15 +36,16 @@ class ChangeTaskListFragment : BottomSheetDialogFragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		viewModel.onChangeTaskListClick.observe(viewLifecycleOwner) {
-			viewModel.changeTaskListClick()
+		viewModel.onCreateBaseClick.observe(viewLifecycleOwner) {
+			viewModel.onCreateBaseClick()
 		}
 
-		viewModel.onChangeTaskListFinish.observe(viewLifecycleOwner) {
-			if (it)
-				findNavController().popBackStack()
-			else
-				showErrorSnackBar()
+		viewModel.onCreateBaseFinish.observe(viewLifecycleOwner) {
+			findNavController().popBackStack()
+		}
+
+		viewModel.onCreateBaseError.observe(viewLifecycleOwner) {
+			showErrorSnackBar()
 		}
 	}
 

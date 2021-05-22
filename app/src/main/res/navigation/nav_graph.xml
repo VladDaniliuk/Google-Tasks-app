@@ -18,7 +18,7 @@
 
 	<fragment
 		android:id="@+id/taskListListFragment"
-		android:name="com.example.tasklist.view.TaskListListFragment"
+		android:name="com.example.tasklist.view.taskListList.TaskListListFragment"
 		android:label="task_list_list_fragment"
 		tools:layout="@layout/fragment_task_list_list">
 		<argument
@@ -35,7 +35,7 @@
 
 	<fragment
 		android:id="@+id/taskListFragment"
-		android:name="com.example.tasklist.view.TaskListFragment"
+		android:name="com.example.tasklist.view.taskList.TaskListFragment"
 		android:label="task_list_fragment"
 		tools:layout="@layout/fragment_task_list">
 		<argument
@@ -50,17 +50,33 @@
 		<action
 			android:id="@+id/action_taskListFragment_to_createTaskFragment"
 			app:destination="@id/createTaskFragment" />
+		<action
+			android:id="@+id/action_taskListFragment_to_taskFragment"
+			app:destination="@id/taskFragment" />
+	</fragment>
+
+	<fragment
+		android:id="@+id/taskFragment"
+		android:name="com.example.tasklist.view.task.TaskFragment"
+		android:label="task_fragment"
+		tools:layout="@layout/fragment_task">
+		<argument
+			android:name="taskListId"
+			app:argType="string"/>
+		<argument
+			android:name="taskId"
+			app:argType="string"/>
 	</fragment>
 
 	<dialog
 		android:id="@+id/createTaskListFragment"
-		android:name="com.example.tasklist.view.CreateTaskListFragment"
+		android:name="com.example.tasklist.view.taskListList.CreateTaskListFragment"
 		android:label="create_task_list_fragment"
 		tools:layout="@layout/fragment_create_task_list" />
 
 	<dialog
 		android:id="@+id/changeTaskListFragment"
-		android:name="com.example.tasklist.view.ChangeTaskListFragment"
+		android:name="com.example.tasklist.view.taskList.ChangeTaskListFragment"
 		android:label="change_task_list_fragment"
 		tools:layout="@layout/fragment_change_task_list">
 		<argument
@@ -70,7 +86,7 @@
 
 	<dialog
 		android:id="@+id/createTaskFragment"
-		android:name="com.example.tasklist.view.CreateTaskFragment"
+		android:name="com.example.tasklist.view.taskList.CreateTaskFragment"
 		android:label="create_task_fragment"
 		tools:layout="@layout/fragment_create_task">
 		<argument

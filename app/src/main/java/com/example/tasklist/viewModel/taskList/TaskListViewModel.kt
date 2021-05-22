@@ -1,4 +1,4 @@
-package com.example.tasklist.viewModel
+package com.example.tasklist.viewModel.taskList
 
 import android.view.View
 import androidx.lifecycle.LiveData
@@ -12,6 +12,7 @@ import com.example.tasklist.domain.TaskListRepository
 import com.example.tasklist.domain.TaskRepository
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskItemModel
+import com.example.tasklist.viewModel.baseViewModel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -61,6 +62,10 @@ class TaskListViewModel @Inject constructor(
 						task.task.status!!,
 						task.task.due,
 						object : SimpleTaskClickListener() {
+							override fun onTaskItemClick(model: TaskItemModel) {
+								onBaseClick.postValue(model.id)
+							}
+
 							override fun onExpandItemClick(model: TaskItemModel) {
 								_list.value?.let { currentList ->
 									_list.postValue(currentList.map { taskItemModel ->
