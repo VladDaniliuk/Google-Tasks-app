@@ -53,7 +53,7 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.onTaskListDelete.observe(viewLifecycleOwner) {
-			setFragmentResult("requestKey", bundleOf("id" to viewModel.parentId))
+			setFragmentResult(requestKey, bundleOf(requestValue to viewModel.parentId))
 			findNavController().popBackStack()
 		}
 
@@ -68,5 +68,10 @@ class TaskListFragment : Fragment() {
 
 	private fun onList(it: List<TaskItemModel>) {
 		viewModel.adapter.submitList(it)
+	}
+
+	companion object {
+		const val requestKey = "requestKey"
+		const val requestValue = "id"
 	}
 }
