@@ -9,24 +9,23 @@ import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.tasklist.dev.SingleLiveEvent
+import com.example.tasklist.view.adapter.BaseItemAdapter
+import com.example.tasklist.view.adapter.SwipeController
 import com.example.tasklist.view.itemModel.TaskItemModel
-import com.google.android.gms.common.SignInButton
 import com.google.android.material.chip.Chip
 import java.text.SimpleDateFormat
 import java.util.*
 
-@BindingAdapter("onClick")
-fun SignInButton.bindingOnClick(onClick: View.OnClickListener) {
-	this.setOnClickListener(onClick)
-}
-
 @BindingAdapter("isVisible")
-fun setVisibility(view: View, isVisible: Boolean) {
+fun View.setVisibility(isVisible: Boolean) {
 	if (isVisible) {
-		view.visibility = View.VISIBLE
+		this.visibility = View.VISIBLE
 	} else {
-		view.visibility = View.GONE
+		this.visibility = View.INVISIBLE
 	}
 }
 
@@ -66,6 +65,7 @@ fun ImageButton.bindingHasSubTask(list: List<TaskItemModel>) {
 fun ImageButton.bindingIsSubtaskVisible(isSubTaskVisible: Int) {
 	this.rotation = if (isSubTaskVisible == View.VISIBLE) 180F else 0F
 }
+
 @SuppressLint("SimpleDateFormat")
 @BindingAdapter("isDue")
 fun Chip.bindingIsDue(due: String?) {
@@ -79,4 +79,18 @@ fun Chip.bindingIsDue(due: String?) {
 		this.visibility = View.VISIBLE
 		this.text = outputFormat.format(date)
 	}
+}
+
+@BindingAdapter("itemTouchHelper")
+fun RecyclerView.bindingItemTouchHelper(onItemAdapter: SingleLiveEvent<String>) {
+	val simpleItemTouchCallback = object : SwipeController(this.context) {
+		override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+			onItemAdapter.postValue(
+				(adapter as BaseItemAdapter<*, *>).currentList[viewHolder.adapterPosition].id
+			)
+		}
+	}
+
+	val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+	itemTouchHelper.attachToRecyclerView(this)
 }

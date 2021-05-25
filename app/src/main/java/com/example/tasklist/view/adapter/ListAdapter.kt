@@ -1,4 +1,4 @@
-package com.example.tasklist.view
+package com.example.tasklist.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -40,5 +40,4 @@ class UserItemDiffCallback<V : BaseItemModel> : DiffUtil.ItemCallback<V>() {
 
 	override fun areContentsTheSame(oldItem: V, newItem: V): Boolean =
 		oldItem == newItem
-
 }

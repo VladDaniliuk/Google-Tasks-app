@@ -9,7 +9,11 @@ import javax.inject.Inject
 
 interface TaskListRepository {
 	fun fetchTaskLists(): Completable
-	fun getTaskList(): Flowable<List<TaskList>>
+	fun getTaskLists(): Flowable<List<TaskList>>
+	fun createTaskList(title: String): Completable
+	fun getTaskList(id: String): Flowable<TaskList>
+	fun deleteTaskList(id: String): Completable
+	fun changeTaskList(id: String, newName: String): Completable
 }
 
 class TaskListRepositoryImpl @Inject constructor(
@@ -22,7 +26,29 @@ class TaskListRepositoryImpl @Inject constructor(
 		}
 	}
 
-	override fun getTaskList(): Flowable<List<TaskList>> {
+	override fun getTaskLists(): Flowable<List<TaskList>> {
 		return taskListDao.getAll()
+	}
+
+	override fun createTaskList(title: String): Completable {
+		return taskListsApi.insertTaskList(TaskList("", title)).flatMapCompletable {
+			fetchTaskLists()
+		}
+	}
+
+	override fun getTaskList(id: String): Flowable<TaskList> {
+		return taskListDao.getTaskList(id)
+	}
+
+	override fun deleteTaskList(id: String): Completable {
+		return taskListsApi.deleteTaskList(id).doOnComplete {
+			taskListDao.delete(id)
+		}
+	}
+
+	override fun changeTaskList(id: String, newName: String): Completable {
+		return taskListsApi.patchTaskList(id, TaskList(id, newName)).flatMapCompletable {
+			fetchTaskLists()
+		}
 	}
 }

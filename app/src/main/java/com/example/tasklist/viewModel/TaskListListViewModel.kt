@@ -9,7 +9,7 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskListBinding
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.domain.TaskListRepository
-import com.example.tasklist.view.BaseItemAdapter
+import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -25,8 +25,10 @@ class TaskListListViewModel @Inject constructor(
 	private val _list = MutableLiveData<List<TaskListItemModel>>()
 	val list: LiveData<List<TaskListItemModel>> = _list
 
-	private val onCreateTaskListClick = SingleLiveEvent<Unit>()
+	val onCreateTaskListClick = SingleLiveEvent<Unit>()
+	val onDeleteTaskListClick = SingleLiveEvent<String>()
 	val onTaskListClick = SingleLiveEvent<String>()
+	val onDeleteTaskListResult = SingleLiveEvent<Pair<String, Boolean>>()
 
 	val createTaskListClickListener = View.OnClickListener {
 		onCreateTaskListClick.call()
@@ -38,7 +40,7 @@ class TaskListListViewModel @Inject constructor(
 	)
 
 	init {
-		taskListRepository.getTaskList()
+		taskListRepository.getTaskLists()
 			.subscribeOn(Schedulers.computation())
 			.map { m ->
 				m.map { taskList ->
@@ -63,5 +65,27 @@ class TaskListListViewModel @Inject constructor(
 				fetchInProgress.postValue(false)
 			}
 			.subscribe()
+	}
+
+	fun deleteTaskList(id: String) {
+		setTaskListClickable(id, false)
+		taskListRepository.deleteTaskList(id).subscribeOn(Schedulers.io())
+			.subscribe({
+				onDeleteTaskListResult.postValue(Pair(id, true))
+			}, {
+				setTaskListClickable(id, true)
+				onDeleteTaskListResult.postValue(Pair(id, false))
+			})
+	}
+
+	/*
+	* Filter all taskLists by id, convert to list and get first element
+	* In this situation we always have only one element in filtered list
+	* So get first element of list(0) and make it clickable/unclickable
+	*/
+	private fun setTaskListClickable(id: String, clickable: Boolean) {
+		list.value?.filter {
+			it.id == id
+		}?.toList()?.get(0)?.clickable = clickable
 	}
 }

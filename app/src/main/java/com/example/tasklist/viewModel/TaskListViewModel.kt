@@ -1,6 +1,8 @@
 package com.example.tasklist.viewModel
 
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,8 +11,9 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskBinding
 import com.example.tasklist.dev.SimpleTaskClickListener
 import com.example.tasklist.dev.SingleLiveEvent
+import com.example.tasklist.domain.TaskListRepository
 import com.example.tasklist.domain.TaskRepository
-import com.example.tasklist.view.BaseItemAdapter
+import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -19,16 +22,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskListViewModel @Inject constructor(
-	private val taskRepository: TaskRepository
+	private val taskRepository: TaskRepository,
+	private val taskListRepository: TaskListRepository
 ) : ViewModel() {
 
 	val fetchInProgress = MutableLiveData(false)
 
 	private val _list = MutableLiveData<List<TaskItemModel>>()
 	val list: LiveData<List<TaskItemModel>> = _list
+	val listName = MutableLiveData<String>()
 
 	private val onCreateTaskClick = SingleLiveEvent<Unit>()
 	val onTaskClick = SingleLiveEvent<String>()
+	val onTaskListDelete = SingleLiveEvent<Unit>()
+	val onTaskListEdit = SingleLiveEvent<Unit>()
+
+	val onMenuItemClickListener = Toolbar.OnMenuItemClickListener {
+		onItemClicked(it)
+		return@OnMenuItemClickListener true
+	}
 
 	val createTaskClickListener = View.OnClickListener {
 		onCreateTaskClick.call()
@@ -43,11 +55,17 @@ class TaskListViewModel @Inject constructor(
 		set(value) {
 			field = value
 			field?.let {
+				getTaskList(it)
 				getTask(it)
 				fetchTasks(it)
 			}
 		}
 
+	private fun getTaskList(parentId: String) {
+		taskListRepository.getTaskList(parentId).subscribeOn(Schedulers.io()).subscribe {
+			listName.postValue(it.title)
+		}
+	}
 
 	private fun getTask(parentId: String) {
 		taskRepository.getTask(parentId)
@@ -115,5 +133,13 @@ class TaskListViewModel @Inject constructor(
 			.doFinally {
 				fetchInProgress.postValue(false)
 			}.subscribe()
+	}
+
+	fun onItemClicked(menuItem: MenuItem) {
+		if (menuItem.itemId == R.id.delete) {
+			onTaskListDelete.call()
+		} else if (menuItem.itemId == R.id.edit) {
+			onTaskListEdit.call()
+		}
 	}
 }

@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
@@ -48,11 +51,27 @@ class TaskListFragment : Fragment() {
 		viewModel.list.observe(viewLifecycleOwner) {
 			onList(it)
 		}
+
+		viewModel.onTaskListDelete.observe(viewLifecycleOwner) {
+			setFragmentResult(requestKey, bundleOf(requestValue to viewModel.parentId))
+			findNavController().popBackStack()
+		}
+
+		viewModel.onTaskListEdit.observe(viewLifecycleOwner) {
+			findNavController().navigate(
+				TaskListFragmentDirections.actionTaskListFragmentToChangeTaskListFragment(
+					viewModel.parentId!!
+				)
+			)
+		}
 	}
 
 	private fun onList(it: List<TaskItemModel>) {
 		viewModel.adapter.submitList(it)
 	}
 
-
+	companion object {
+		const val requestKey = "requestKey"
+		const val requestValue = "id"
+	}
 }

@@ -4,7 +4,7 @@ import android.view.View
 import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskBinding
-import com.example.tasklist.view.BaseItemAdapter
+import com.example.tasklist.view.adapter.BaseItemAdapter
 
 class TaskItemModel(
 	override val id: String,

@@ -6,4 +6,10 @@
 	<string name="create_task_list">Create Task list</string>
 	<string name="add_task">Add Task</string>
 	<string name="string_expand_button">Expand Button</string>
+	<string name="new_task_list">New Task list</string>
+	<string name="create">Create</string>
+	<string name="delete_task_list">Delete task list</string>
+	<string name="edit_task_list">Edit task list</string>
+	<string name="new_task_list_name">New Task list name</string>
+	<string name="change">Change</string>
 </resources>
