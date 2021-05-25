@@ -47,4 +47,5 @@
 <!--	<style name="Widget.MaterialComponents.AppBarLayout.Primary.Color" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
 <!--		<item name="android:background">@color/black</item>-->
 <!--	</style>-->
+	<color name="background">@color/white</color>
 </resources>

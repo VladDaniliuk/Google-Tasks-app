@@ -9,7 +9,7 @@ import com.example.tasklist.view.adapter.BaseItemAdapter
 class TaskItemModel(
 	override val id: String,
 	val parentId: String,
-	val title: String,
+	override val title: String,
 	var status: String,
 	val dueDate: String? = null,
 	private val onTaskClickListener: OnTaskClickListener?,
@@ -44,6 +44,7 @@ class TaskItemModel(
 		result = 31 * result + dueDate?.hashCode()!!
 		result = 31 * result + subTaskVisibility
 		result = 31 * result + (list?.hashCode() ?: 0)
+		result = 31 * result + clickable.hashCode()
 		return result
 	}
 
@@ -60,6 +61,7 @@ class TaskItemModel(
 		if (dueDate != other.dueDate) return false
 		if (subTaskVisibility != other.subTaskVisibility) return false
 		if (list != other.list) return false
+		if (clickable != other.clickable) return false
 
 		return true
 	}

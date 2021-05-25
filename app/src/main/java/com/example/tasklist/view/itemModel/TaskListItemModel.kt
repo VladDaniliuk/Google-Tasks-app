@@ -2,8 +2,7 @@ package com.example.tasklist.view.itemModel
 
 data class TaskListItemModel(
 	override val id: String,
-	val title: String,
-	var clickable: Boolean = true,
+	override val title: String,
 	val taskListListViewModel: (id: String) -> Unit
 ) : BaseItemModel() {
 	fun click() {
@@ -18,6 +17,7 @@ data class TaskListItemModel(
 
 		if (id != other.id) return false
 		if (title != other.title) return false
+		if (clickable != other.clickable) return false
 
 		return true
 	}
@@ -25,6 +25,7 @@ data class TaskListItemModel(
 	override fun hashCode(): Int {
 		var result = id.hashCode()
 		result = 31 * result + title.hashCode()
+		result = 31 * result + clickable.hashCode()
 		result = 31 * result + taskListListViewModel.hashCode()
 		return result
 	}

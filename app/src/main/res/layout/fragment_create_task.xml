@@ -6,7 +6,7 @@
 
 		<variable
 			name="viewModel"
-			type="com.example.tasklist.viewModel.CreateTaskListViewModel" />
+			type="com.example.tasklist.viewModel.CreateTaskViewModel" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
@@ -18,11 +18,12 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_margin="8sp"
-			android:hint="@string/new_task_list"
+			android:hint="@string/new_task"
 			android:text="@={viewModel.baseName}"
 			app:layout_constraintTop_toTopOf="parent" />
 
 		<com.google.android.material.button.MaterialButton
+			android:id="@+id/materialButton"
 			isVisible="@{!viewModel.isLoading}"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -35,10 +36,37 @@
 			app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
 
 		<com.google.android.material.progressindicator.LinearProgressIndicator
+			android:id="@+id/linearProgressIndicator"
 			isVisible="@{viewModel.isLoading}"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:indeterminate="true"
 			app:layout_constraintBottom_toBottomOf="parent" />
+
+		<ImageButton
+			android:id="@+id/picker"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="8sp"
+			android:background="?selectableItemBackgroundBorderless"
+			android:contentDescription="@string/set_date"
+			android:clickable="@{!viewModel.isLoading}"
+			android:onClick="@{viewModel.setDateClickListener}"
+			android:src="@drawable/ic_baseline_today_24"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
+
+		<com.google.android.material.chip.Chip
+			android:id="@+id/chip"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="8sp"
+			app:closeIconEnabled="@{!viewModel.isLoading}"
+			isDue="@{viewModel.dueDate}"
+			android:clickable="@{!viewModel.isLoading}"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/picker"
+			app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

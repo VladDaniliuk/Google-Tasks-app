@@ -8,27 +8,33 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.tasklist.databinding.FragmentCreateTaskListBinding
+import androidx.navigation.fragment.navArgs
+import com.example.tasklist.databinding.FragmentCreateTaskBinding
 import com.example.tasklist.dev.hideKeyboard
-import com.example.tasklist.viewModel.CreateTaskListViewModel
+import com.example.tasklist.viewModel.CreateTaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
 
 @AndroidEntryPoint
-class CreateTaskListFragment : BottomSheetDialogFragment() {
-	private val viewModel: CreateTaskListViewModel by viewModels()
-	private lateinit var binding: FragmentCreateTaskListBinding
+class CreateTaskFragment : BottomSheetDialogFragment() {
+	private val viewModel: CreateTaskViewModel by viewModels()
+	private val args: CreateTaskFragmentArgs by navArgs()
+	private lateinit var binding: FragmentCreateTaskBinding
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		binding = FragmentCreateTaskListBinding.inflate(inflater, container, false)
+		binding = FragmentCreateTaskBinding.inflate(inflater, container, false)
 
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
+
+		viewModel.taskListId = args.taskListId
 
 		binding.textInputEditText.requestFocus()
 
@@ -47,6 +53,18 @@ class CreateTaskListFragment : BottomSheetDialogFragment() {
 		viewModel.onCreateBaseError.observe(viewLifecycleOwner) {
 			showErrorSnackBar()
 		}
+
+		viewModel.setDateClick.observe(viewLifecycleOwner) {
+			showDatePicker()
+		}
+
+		binding.chip.setOnCloseIconClickListener {
+			viewModel.dueDate.postValue(null)
+		}
+
+		binding.chip.setOnClickListener {
+			showDatePicker()
+		}
 	}
 
 	override fun onDismiss(dialog: DialogInterface) {
@@ -58,8 +76,27 @@ class CreateTaskListFragment : BottomSheetDialogFragment() {
 	private fun showErrorSnackBar() {
 		Snackbar.make(
 			requireView(),
-			"Connection error",
+			connectionError,
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.root).show()
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	fun showDatePicker() {
+		val picker = MaterialDatePicker.Builder.datePicker()
+			.setTitleText(selectDate)
+			.build()
+
+		picker.show(childFragmentManager, null)
+		picker.addOnPositiveButtonClickListener {
+			val inputFormat = SimpleDateFormat(dateFormat)
+			viewModel.dueDate.postValue(inputFormat.format(picker.selection).toString())
+		}
+	}
+
+	companion object Strings {
+		const val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+		const val selectDate = "Select date"
+		const val connectionError = "Connection error"
 	}
 }
