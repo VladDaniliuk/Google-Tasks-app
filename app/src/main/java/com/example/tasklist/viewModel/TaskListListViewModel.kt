@@ -28,7 +28,7 @@ class TaskListListViewModel @Inject constructor(
 	val onCreateTaskListClick = SingleLiveEvent<Unit>()
 	val onDeleteTaskListClick = SingleLiveEvent<String>()
 	val onTaskListClick = SingleLiveEvent<String>()
-	val onDeleteTaskListResult = SingleLiveEvent<Pair<String,Boolean>>()
+	val onDeleteTaskListResult = SingleLiveEvent<Pair<String, Boolean>>()
 
 	val createTaskListClickListener = View.OnClickListener {
 		onCreateTaskListClick.call()
@@ -68,17 +68,24 @@ class TaskListListViewModel @Inject constructor(
 	}
 
 	fun deleteTaskList(id: String) {
-		list.value?.filter {
-			it.id == id
-		}?.toList()?.get(0)?.clickable = false
+		onClickableTaskList(id, false)
 		taskListRepository.deleteTaskList(id).subscribeOn(Schedulers.io())
 			.subscribe({
-				onDeleteTaskListResult.postValue(Pair(id,true))
+				onDeleteTaskListResult.postValue(Pair(id, true))
 			}, {
-				list.value?.filter {
-					it.id == id
-				}?.toList()?.get(0)?.clickable = true
-				onDeleteTaskListResult.postValue(Pair(id,false))
+				onClickableTaskList(id, true)
+				onDeleteTaskListResult.postValue(Pair(id, false))
 			})
+	}
+
+	/*
+	* Filter all taskLists by id, convert to list and get first element
+	* In this situation we always have only one element in filtered list
+	* So get first element of list(0) and make it clickable/unclickable
+	*/
+	private fun onClickableTaskList(id: String, clickable: Boolean) {
+		list.value?.filter {
+			it.id == id
+		}?.toList()?.get(0)?.clickable = clickable
 	}
 }

@@ -16,7 +16,7 @@ class CreateTaskListViewModel @Inject constructor(
 ) : ViewModel() {
 
 	val taskName = MutableLiveData<String>()
-	val isClicked = MutableLiveData(false)
+	val isLoading = MutableLiveData(false)
 
 	val onCreateTaskListClick = SingleLiveEvent<Unit>()
 	val onCreateTaskListFinish = SingleLiveEvent<Unit>()
@@ -27,13 +27,13 @@ class CreateTaskListViewModel @Inject constructor(
 	}
 
 	fun createTaskListClick() {
-		isClicked.postValue(true)
+		isLoading.postValue(true)
 		taskListRepository.createTaskList(taskName.value.orEmpty())
 			.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 			.subscribe({
 				onCreateTaskListFinish.call()
 			}, {
-				isClicked.postValue(false)
+				isLoading.postValue(false)
 				onCreateTaskListError.call()
 			})
 	}

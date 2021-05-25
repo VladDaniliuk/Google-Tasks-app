@@ -1,6 +1,8 @@
 package com.example.tasklist.viewModel
 
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,8 +33,14 @@ class TaskListViewModel @Inject constructor(
 	val listName = MutableLiveData<String>()
 
 	private val onCreateTaskClick = SingleLiveEvent<Unit>()
-	val onItemAdapter = SingleLiveEvent<String>()
 	val onTaskClick = SingleLiveEvent<String>()
+	val onTaskListDelete = SingleLiveEvent<Unit>()
+	val onTaskListEdit = SingleLiveEvent<Unit>()
+
+	val onMenuItemClickListener = Toolbar.OnMenuItemClickListener {
+		onItemClicked(it)
+		return@OnMenuItemClickListener true
+	}
 
 	val createTaskClickListener = View.OnClickListener {
 		onCreateTaskClick.call()
@@ -125,5 +133,13 @@ class TaskListViewModel @Inject constructor(
 			.doFinally {
 				fetchInProgress.postValue(false)
 			}.subscribe()
+	}
+
+	fun onItemClicked(menuItem: MenuItem) {
+		if (menuItem.itemId == R.id.delete) {
+			onTaskListDelete.call()
+		} else if (menuItem.itemId == R.id.edit) {
+			onTaskListEdit.call()
+		}
 	}
 }
