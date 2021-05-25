@@ -49,4 +49,8 @@
 	</style>
 
 	<color name="background">@color/black</color>
+
+	<style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+		<item name="boxStrokeColor">#00FFFFFF</item>
+	</style>
 </resources>

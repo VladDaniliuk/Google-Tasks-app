@@ -15,4 +15,9 @@
 	<string name="new_task">New Task</string>
 	<string name="set_date">Set date</string>
 	<string name="complete_task">Complete task</string>
+	<string name="delete_task">Delete task</string>
+	<string name="edit_task">Edit task</string>
+	<string name="new_task_name">New Task name</string>
+	<string name="add_additional_info">Add additional info</string>
+	<string name="add_due_date">Add due date</string>
 </resources>

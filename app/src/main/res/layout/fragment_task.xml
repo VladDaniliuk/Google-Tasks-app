@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 
@@ -8,15 +10,15 @@
 			type="com.example.tasklist.viewModel.task.TaskViewModel" />
 	</data>
 
-	<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
+	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
 		<com.google.android.material.appbar.AppBarLayout
 			android:id="@+id/main.appbar"
 			android:layout_width="match_parent"
-			android:layout_height="250dp">
+			android:layout_height="250dp"
+			app:layout_constraintTop_toTopOf="parent">
 
 			<com.google.android.material.appbar.CollapsingToolbarLayout
 				android:id="@+id/main.collapsing"
@@ -24,17 +26,89 @@
 				android:layout_height="match_parent"
 				app:expandedTitleGravity="center"
 				app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline.LikeHeadline2"
-				app:title="@{viewModel.taskName}"
-				app:layout_scrollFlags="scroll|exitUntilCollapsed">
+				app:layout_scrollFlags="scroll|exitUntilCollapsed"
+				app:title="@{viewModel.taskName}">
 
-				<com.google.android.material.appbar.MaterialToolbar
+				<androidx.appcompat.widget.Toolbar
 					android:id="@+id/main.toolbar"
 					android:layout_width="match_parent"
 					android:layout_height="?attr/actionBarSize"
 					app:expandedTitleTextAppearance="?textAppearanceHeadline6"
-					app:layout_collapseMode="pin" />
+					app:layout_collapseMode="pin"
+					app:menu="@menu/menu_task" />
 			</com.google.android.material.appbar.CollapsingToolbarLayout>
 		</com.google.android.material.appbar.AppBarLayout>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/constraintLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+			<com.google.android.material.chip.Chip
+				android:id="@+id/chip4"
+				android:layout_width="0sp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8sp"
+				tools:text="due today"
+				app:closeIconEnabled="true"
+				app:layout_constraintStart_toEndOf="@+id/picker"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<ImageView
+				android:id="@+id/picker"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8sp"
+				android:contentDescription="@string/set_date"
+				android:src="@drawable/ic_baseline_today_24"
+				app:layout_constraintBottom_toBottomOf="@+id/chip4"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="@+id/chip4" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8sp"
+				android:text="@string/add_due_date"
+				app:layout_constraintBottom_toBottomOf="@+id/chip4"
+				app:layout_constraintStart_toEndOf="@+id/picker"
+				app:layout_constraintTop_toTopOf="@+id/chip4" />
+
+			<ImageView
+				android:id="@+id/imageButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8sp"
+				android:contentDescription="@string/set_date"
+				android:src="@drawable/ic_baseline_subject_24"
+				app:layout_constraintBottom_toBottomOf="@+id/textInputEditText2"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="@+id/textInputEditText2" />
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/textInputEditText2"
+				android:layout_width="0sp"
+				android:layout_height="wrap_content"
+				android:layout_marginHorizontal="8sp"
+				android:hint="@string/add_additional_info"
+				android:paddingStart="0sp"
+				android:theme="@style/TextInputLayoutStyle"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@+id/imageButton"
+				app:layout_constraintTop_toBottomOf="@+id/chip4"
+				tools:ignore="RtlSymmetry" />
+
+			<!--<androidx.recyclerview.widget.RecyclerView
+				android:layout_width="0sp"
+				android:layout_height="wrap_content"
+				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="@+id/textInputEditText2"
+				app:layout_constraintTop_toBottomOf="@+id/textInputEditText2"
+				tools:itemCount="10"
+				tools:listitem="@layout/layout_sub_task" />-->
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
 		<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 			android:id="@+id/completeTask"
@@ -45,7 +119,6 @@
 			android:elevation="6dp"
 			android:text="@string/complete_task"
 			android:textAllCaps="false"
-			app:icon="@drawable/ic_baseline_done_24"
-			app:layout_behavior=".extensions.Behavior" />
+			app:icon="@drawable/ic_baseline_done_24" />
 	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

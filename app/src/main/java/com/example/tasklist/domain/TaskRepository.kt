@@ -17,7 +17,7 @@ interface TaskRepository {
 	fun completeTask(task: TaskItemModel): Completable
 	fun createTask(parentId: String, title: String, dueDate: String): Completable
 	fun fetchTasks(taskListId: String): Completable
-	fun getTask(parentId: String,taskId: String): Single<Task>
+	fun getTask(parentId: String,taskId: String): Single<TaskWithSubTasks>
 	fun getTasks(parentId: String): Flowable<List<TaskWithSubTasks>>
 	fun onDeleteTask(taskListId: String, taskId: String, onDelete: Boolean): Completable
 }
@@ -35,8 +35,8 @@ class TaskRepositoryImpl @Inject constructor(
 		}
 	}
 
-	override fun getTask(parentId: String, taskId: String): Single<Task> {
-		return tasksApi.getTask(parentId,taskId)
+	override fun getTask(parentId: String, taskId: String): Single<TaskWithSubTasks> {
+		return taskDao.getTask(parentId, taskId)
 	}
 
 	override fun getTasks(parentId: String): Flowable<List<TaskWithSubTasks>> {

@@ -5,6 +5,7 @@ import com.example.tasklist.api.model.response.Task
 import com.example.tasklist.api.model.response.TaskWithSubTasks
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface TaskDao {
@@ -24,6 +25,9 @@ interface TaskDao {
 
 	@Insert
 	fun insertAllTasksSync(list: List<Task>)
+
+	@Query("SELECT * FROM Task WHERE (parent_id = :parentId AND id = :taskId)")
+	fun getTask(parentId: String, taskId: String): Single<TaskWithSubTasks>
 
 	/*@Delete
 	fun deleteTask(task: Task): Completable

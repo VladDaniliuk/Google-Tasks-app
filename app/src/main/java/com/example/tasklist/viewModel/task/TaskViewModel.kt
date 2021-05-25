@@ -25,7 +25,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 
 	private fun getTask(parentId: String, taskId: String) {
 		taskRepository.getTask(parentId, taskId).subscribeOn(Schedulers.io()).subscribe({
-			taskName.postValue(it.title!!)
+			taskName.postValue(it.task.title!!)
 		}, {})
 	}
 
