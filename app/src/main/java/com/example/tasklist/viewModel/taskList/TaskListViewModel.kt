@@ -61,6 +61,7 @@ class TaskListViewModel @Inject constructor(
 						task.task.title!!,
 						task.task.status!!,
 						task.task.due,
+						task.task.notes,
 						object : SimpleTaskClickListener() {
 							override fun onTaskItemClick(model: TaskItemModel) {
 								onBaseClick.postValue(model.id)
@@ -96,6 +97,7 @@ class TaskListViewModel @Inject constructor(
 								it.title!!,
 								it.status!!,
 								it.due,
+								task.task.notes,
 								object : SimpleTaskClickListener() {
 									override fun onTaskExecuteClick(model: TaskItemModel) {
 										taskRepository.completeTask(model)

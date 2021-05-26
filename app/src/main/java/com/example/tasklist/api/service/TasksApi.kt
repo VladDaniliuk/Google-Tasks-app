@@ -16,7 +16,7 @@ interface TasksApi {
 	@GET("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun getTask(
 		@Path("taskList") taskListId: String, @Path("task") taskId: String
-	): Single<Task>
+	): Single<BaseResponse<Task>>
 
 	@POST("/tasks/v1/lists/{taskList}/tasks")
 	fun insertTask(

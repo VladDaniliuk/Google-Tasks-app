@@ -12,11 +12,13 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.tasklist.R
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.adapter.SwipeController
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.google.android.material.chip.Chip
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,6 +58,17 @@ fun CheckBox.bindingSetChecked(isCompleted: String) {
 	this.isChecked = isCompleted == "completed"
 }
 
+@SuppressLint("SetTextI18n")
+@BindingAdapter("isCompletedButton")
+fun ExtendedFloatingActionButton.bindingSetChecked(isCompleted: String?) {
+	this.setIconResource(
+		if (isCompleted == "completed") R.drawable.ic_baseline_close_24
+		else R.drawable.ic_baseline_done_24
+	)
+	this.text = (if (isCompleted == "completed") "Incomplete" else "Complete") + " task"
+	this.extend()
+}
+
 @BindingAdapter("hasSubTask")
 fun ImageButton.bindingHasSubTask(list: List<TaskItemModel>) {
 	this.visibility = if (list.isEmpty()) View.GONE else View.VISIBLE
@@ -78,6 +91,15 @@ fun Chip.bindingIsDue(due: String?) {
 
 		this.visibility = View.VISIBLE
 		this.text = outputFormat.format(date)
+	}
+}
+
+@BindingAdapter("isDue")
+fun TextView.bindingIsDue(due: String?) {
+	if (due == null) {
+		this.visibility = View.VISIBLE
+	} else {
+		this.visibility = View.GONE
 	}
 }
 

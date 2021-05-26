@@ -17,11 +17,17 @@ interface TaskDao {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun insertTask(task: Task): Completable
 
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun insertTaskSync(task: Task)
+
 	@Query("SELECT * FROM Task WHERE (parent_id = :parentId)")
 	fun getAll(parentId: String): Flowable<List<TaskWithSubTasks>>
 
 	@Query("DELETE FROM Task")
 	fun deleteAllSync()
+
+	@Query("DELETE FROM Task WHERE (parent_id = :parentId AND id = :taskId)")
+	fun deleteTaskSync(parentId: String, taskId: String)
 
 	@Insert
 	fun insertAllTasksSync(list: List<Task>)
@@ -49,6 +55,12 @@ interface TaskDao {
 
 	@Update
 	fun patchTask(task: Task): Completable*/
+
+	@Transaction
+	fun updateTask(task: Task) {
+		deleteTaskSync(task.parentId!!,task.id)
+		insertTaskSync(task)
+	}
 
 	@Transaction
 	fun updateAllTaskLists(list: List<Task>) {

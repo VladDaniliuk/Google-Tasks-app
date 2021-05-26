@@ -1,46 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
 
-	<!--<data>
-
-		<variable
-			name="viewModel"
-			type="com.example.tasklist.viewModel.taskList.ChangeTaskListViewModel" />
-	</data>-->
-
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<com.google.android.material.textfield.TextInputEditText
+		android:id="@+id/textInputEditText"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:layout_margin="8sp"
+		android:hint="@string/new_task_name"
+		app:layout_constraintTop_toBottomOf="@+id/menu" />
+	<!--android:text="@={viewModel.taskName}"-->
 
-		<com.google.android.material.textfield.TextInputEditText
-			android:id="@+id/textInputEditText"
+	<com.google.android.material.button.MaterialButton
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_margin="8sp"
+		android:text="@string/change"
+		android:textAllCaps="false"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
+	<!--isVisible="@{!viewModel.isClicked}"-->
+	<!--android:onClick="@{viewModel.changeTaskListClickListener}"-->
+
+	<com.google.android.material.progressindicator.LinearProgressIndicator
+
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:indeterminate="true"
+		app:layout_constraintBottom_toBottomOf="parent" />
+	<!--isVisible="@{viewModel.isClicked}"-->
+
+	<com.google.android.material.textfield.TextInputLayout
+		android:id="@+id/menu"
+		style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="8sp"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<AutoCompleteTextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_margin="8sp"
-			android:hint="@string/new_task_name"
-			app:layout_constraintTop_toTopOf="parent" />
-		<!--android:text="@={viewModel.taskName}"-->
-
-		<com.google.android.material.button.MaterialButton
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_margin="8sp"
-
-			android:text="@string/change"
-			android:textAllCaps="false"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
-		<!--isVisible="@{!viewModel.isClicked}"-->
-		<!--android:onClick="@{viewModel.changeTaskListClickListener}"-->
-
-		<com.google.android.material.progressindicator.LinearProgressIndicator
-
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:indeterminate="true"
-			app:layout_constraintBottom_toBottomOf="parent" />
-		<!--isVisible="@{viewModel.isClicked}"-->
-	</androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+			android:hint="@string/task_list"
+			android:inputType="none" />
+	</com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

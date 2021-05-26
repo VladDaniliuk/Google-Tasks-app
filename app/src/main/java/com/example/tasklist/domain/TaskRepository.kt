@@ -16,8 +16,9 @@ import javax.inject.Inject
 interface TaskRepository {
 	fun completeTask(task: TaskItemModel): Completable
 	fun createTask(parentId: String, title: String, dueDate: String): Completable
+	fun fetchTask(parentId: String, taskId: String): Completable
 	fun fetchTasks(taskListId: String): Completable
-	fun getTask(parentId: String,taskId: String): Single<TaskWithSubTasks>
+	fun getTask(parentId: String, taskId: String): Single<TaskWithSubTasks>
 	fun getTasks(parentId: String): Flowable<List<TaskWithSubTasks>>
 	fun onDeleteTask(taskListId: String, taskId: String, onDelete: Boolean): Completable
 }
@@ -32,6 +33,12 @@ class TaskRepositoryImpl @Inject constructor(
 				it.parentId = taskListId
 			}
 			Completable.fromCallable { taskDao.updateAllTaskLists(baseListResponse.items) }
+		}
+	}
+
+	override fun fetchTask(parentId: String, taskId: String): Completable {
+		return tasksApi.getTask(parentId, taskId).flatMapCompletable {
+			Completable.fromCallable { taskDao.updateTask(it.resourse) }
 		}
 	}
 

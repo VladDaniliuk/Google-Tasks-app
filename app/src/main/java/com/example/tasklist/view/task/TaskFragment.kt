@@ -29,7 +29,7 @@ class TaskFragment : Fragment() {
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
 
-		viewModel.id = Pair(args.taskListId,args.taskId)
+		viewModel.id = Pair(args.taskListId, args.taskId)
 
 		return binding.root
 	}
@@ -43,6 +43,10 @@ class TaskFragment : Fragment() {
 
 		viewModel.onCompleteTaskError.observe(viewLifecycleOwner) {
 			showSnackBarResult(it)
+		}
+
+		viewModel.subTasks.observe(viewLifecycleOwner) {
+			viewModel.taskAdapter.submitList(it)
 		}
 	}
 

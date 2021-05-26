@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+
+		<variable
+			name="model"
+			type="com.example.tasklist.view.itemModel.TaskItemModel" />
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<ImageView
+			android:id="@+id/imageButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="@dimen/default_margin_start"
+			android:layout_marginTop="@dimen/default_margin_top"
+			android:contentDescription="@string/additional_info"
+			android:src="@drawable/ic_baseline_subject_24"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/textInputEditText2" />
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/textInputEditText2"
+			android:layout_width="0sp"
+			android:layout_height="wrap_content"
+			android:layout_marginHorizontal="@dimen/default_margin_start"
+			android:hint="@string/add_additional_info"
+			android:paddingStart="0sp"
+			android:text="@{model.notes}"
+			android:theme="@style/TextInputLayoutStyle"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/imageButton"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:ignore="RtlSymmetry" />
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
