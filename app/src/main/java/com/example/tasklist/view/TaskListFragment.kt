@@ -1,5 +1,6 @@
 package com.example.tasklist.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.TaskListViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,10 +43,10 @@ class TaskListFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		binding.swipeRefresh.setOnRefreshListener {
-			viewModel.fetchTasks(args.parentId)
+			viewModel.fetchBase()
 		}
 
-		viewModel.onTaskClick.observe(viewLifecycleOwner) {
+		viewModel.onBaseClick.observe(viewLifecycleOwner) {
 			viewModel
 		}
 
@@ -64,10 +66,65 @@ class TaskListFragment : Fragment() {
 				)
 			)
 		}
+
+		viewModel.onExecuteTaskResult.observe(viewLifecycleOwner) {
+			showSnackBarResult(it)
+			viewModel.adapter.notifyDataSetChanged()
+		}
+
+		viewModel.onDeleteBaseResult.observe(viewLifecycleOwner) {
+			if (it.second) showSnackBarDelete(it.first, it.third)
+			else showSnackBarRestore(it.third)
+			if (!it.third) viewModel.adapter.notifyDataSetChanged()
+		}
+
+		viewModel.onCreateBaseClick.observe(viewLifecycleOwner) {
+			findNavController().navigate(
+				TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment(
+					viewModel.parentId!!
+				)
+			)
+		}
+
+		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
+			viewModel.deleteBase(it, true)
+		}
 	}
+
 
 	private fun onList(it: List<TaskItemModel>) {
 		viewModel.adapter.submitList(it)
+	}
+
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarResult(id: String) {
+		Snackbar.make(
+			requireView(),
+			"Completing $id failed",
+			Snackbar.LENGTH_SHORT
+		).setAnchorView(binding.insertTask).show()
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarDelete(id: String, completed: Boolean) {
+		Snackbar.make(
+			requireView(),
+			"Deleting ${if (completed) "completed" else "failed"}",
+			Snackbar.LENGTH_SHORT
+		).setAction("Cancel") {
+			viewModel.deleteBase(id, false)
+		}
+			.setAnchorView(binding.insertTask).show()
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarRestore(completed: Boolean) {
+		Snackbar.make(
+			requireView(),
+			"Restore ${if (completed) "completed" else "failed"}",
+			Snackbar.LENGTH_SHORT
+		).setAnchorView(binding.insertTask).show()
 	}
 
 	companion object {

@@ -14,8 +14,10 @@ import javax.inject.Inject
 
 interface TaskRepository {
 	fun fetchTasks(taskListId: String): Completable
-	fun getTask(parentId: String): Flowable<List<TaskWithSubTasks>>
+	fun getTasks(parentId: String): Flowable<List<TaskWithSubTasks>>
 	fun completeTask(task: TaskItemModel): Completable
+	fun createTask(parentId: String, title: String, dueDate: String): Completable
+	fun onDeleteTask(taskListId: String, taskId: String, onDelete: Boolean): Completable
 }
 
 class TaskRepositoryImpl @Inject constructor(
@@ -31,7 +33,7 @@ class TaskRepositoryImpl @Inject constructor(
 		}
 	}
 
-	override fun getTask(parentId: String): Flowable<List<TaskWithSubTasks>> {
+	override fun getTasks(parentId: String): Flowable<List<TaskWithSubTasks>> {
 		return taskDao.getAll(parentId).flatMap { list ->
 			Flowable.fromIterable(list).filter { task ->
 				task.task.parent == null && task.task.deleted == null
@@ -57,5 +59,19 @@ class TaskRepositoryImpl @Inject constructor(
 		).doOnSuccess {
 			fetchTasks(task.parentId).subscribeOn(Schedulers.io()).onErrorComplete().subscribe()
 		}.ignoreElement()
+	}
+
+	override fun createTask(parentId: String, title: String, dueDate: String): Completable {
+		return tasksApi.insertTask(parentId, Task("", title, due = dueDate))
+			.flatMapCompletable {
+				fetchTasks(parentId)
+			}
+	}
+
+	override fun onDeleteTask(taskListId: String, taskId: String, onDelete: Boolean): Completable {
+		return tasksApi.patchTask(taskListId, taskId, Task(id = taskId, deleted = onDelete))
+			.flatMapCompletable {
+				fetchTasks(taskListId)
+			}
 	}
 }

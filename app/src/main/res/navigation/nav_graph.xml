@@ -47,6 +47,9 @@
 		<action
 			android:id="@+id/action_taskListFragment_to_taskListListFragment"
 			app:destination="@id/taskListListFragment" />
+		<action
+			android:id="@+id/action_taskListFragment_to_createTaskFragment"
+			app:destination="@id/createTaskFragment" />
 	</fragment>
 
 	<dialog
@@ -63,5 +66,15 @@
 		<argument
 			android:name="taskListId"
 			app:argType="string" />
+	</dialog>
+
+	<dialog
+		android:id="@+id/createTaskFragment"
+		android:name="com.example.tasklist.view.CreateTaskFragment"
+		android:label="create_task_fragment"
+		tools:layout="@layout/fragment_create_task">
+		<argument
+			android:name="taskListId"
+			app:argType="string"/>
 	</dialog>
 </navigation>

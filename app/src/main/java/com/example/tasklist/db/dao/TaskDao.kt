@@ -2,7 +2,6 @@ package com.example.tasklist.db.dao
 
 import androidx.room.*
 import com.example.tasklist.api.model.response.Task
-import com.example.tasklist.api.model.response.TaskList
 import com.example.tasklist.api.model.response.TaskWithSubTasks
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable

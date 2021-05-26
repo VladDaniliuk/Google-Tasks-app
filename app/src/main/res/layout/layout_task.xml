@@ -44,13 +44,13 @@
 				android:layout_margin="8dp"
 				android:gravity="center_vertical"
 				android:textAppearance="?textAppearanceHeadline5"
-				app:layout_constraintEnd_toStartOf="@+id/imageView"
+				app:layout_constraintEnd_toStartOf="@+id/picker"
 				app:layout_constraintStart_toEndOf="@+id/materialCheckBox"
 				app:layout_constraintTop_toTopOf="parent"
 				tools:text="Test" />
 
 			<ImageButton
-				android:id="@+id/imageView"
+				android:id="@+id/picker"
 				hasSubTask="@{model.list}"
 				isSubTaskVisible="@{model.subTaskVisibility}"
 				android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
 				android:visibility="@{model.subTaskVisibility}"
 				app:adapter="@{model.adapter}"
 				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-				app:layout_constraintEnd_toStartOf="@+id/imageView"
+				app:layout_constraintEnd_toStartOf="@+id/picker"
 				app:layout_constraintStart_toEndOf="@+id/materialCheckBox"
 				app:layout_constraintTop_toBottomOf="@+id/chip4"
 				tools:itemCount="3"
