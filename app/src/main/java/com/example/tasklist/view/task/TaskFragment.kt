@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.databinding.FragmentTaskBinding
 import com.example.tasklist.viewModel.task.TaskViewModel
@@ -35,10 +38,8 @@ class TaskFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-
 		viewModel.onCompleteTaskClick.observe(viewLifecycleOwner) {
-			viewModel.completeTask()
+			viewModel.onCompleteTaskClick()
 		}
 
 		viewModel.onCompleteTaskError.observe(viewLifecycleOwner) {
@@ -48,14 +49,39 @@ class TaskFragment : Fragment() {
 		viewModel.subTasks.observe(viewLifecycleOwner) {
 			viewModel.taskAdapter.submitList(it)
 		}
+
+		viewModel.onTaskDelete.observe(viewLifecycleOwner) {
+			setFragmentResult(requestKey, bundleOf(requestValue to viewModel.id?.second))
+			findNavController().popBackStack()
+		}
+
+		viewModel.onTaskEdit.observe(viewLifecycleOwner) {
+			findNavController().navigate(
+				TaskFragmentDirections.actionTaskFragmentToChangeTaskFragment(
+					viewModel.id!!.first,
+					viewModel.id!!.first
+				)
+			)
+		}
+
+		binding.swipeRefresh.setOnRefreshListener {
+			viewModel.fetchTask()
+		}
 	}
 
 	@SuppressLint("ShowToast")
 	private fun showSnackBarResult(id: String) {
 		Snackbar.make(
 			requireView(),
-			"Completing $id failed",
+			completing + id + failed,
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.completeTask).show()
+	}
+
+	companion object {
+		const val requestKey = "requestKey"
+		const val requestValue = "id"
+		const val completing = "Completing "
+		const val failed = " failed"
 	}
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -59,6 +60,12 @@ class TaskListFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		setFragmentResultListener(requestKey) { _, bundle ->
+			bundle.getString(requestValue)?.let { id ->
+				viewModel.deleteBase(id, true)
+			}
+		}
+
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchBase()
 		}
@@ -108,18 +115,18 @@ class TaskListFragment : Fragment() {
 	private fun showSnackBarResult(id: String) {
 		Snackbar.make(
 			requireView(),
-			"Completing $id failed",
+			completing + id + failed,
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTask).show()
 	}
 
 	@SuppressLint("ShowToast")
-	private fun showSnackBarDelete(id: String, completed: Boolean) {
+	private fun showSnackBarDelete(id: String, isCompleted: Boolean) {
 		Snackbar.make(
 			requireView(),
-			"Deleting ${if (completed) "completed" else "failed"}",
+			deleting + if (isCompleted) completed else failed,
 			Snackbar.LENGTH_SHORT
-		).setAction("Cancel") {
+		).setAction(cancel) {
 			viewModel.deleteBase(id, false)
 		}
 			.setAnchorView(binding.insertTask).show()
@@ -129,8 +136,19 @@ class TaskListFragment : Fragment() {
 	private fun showSnackBarRestore(completed: Boolean) {
 		Snackbar.make(
 			requireView(),
-			"Restore ${if (completed) "completed" else "failed"}",
+			restore + if (completed) completed else failed,
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTask).show()
+	}
+
+	companion object {
+		const val requestKey = "requestKey"
+		const val requestValue = "id"
+		const val completing = "Completing "
+		const val failed = " failed"
+		const val deleting = "Deleting "
+		const val completed = " completed"
+		const val cancel = "Cancel"
+		const val restore = "Restore"
 	}
 }

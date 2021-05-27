@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 
@@ -34,16 +35,32 @@
 					android:layout_height="?attr/actionBarSize"
 					app:expandedTitleTextAppearance="?textAppearanceHeadline6"
 					app:layout_collapseMode="pin"
-					app:menu="@menu/menu_task" />
+					app:menu="@menu/menu_task"
+					app:onMenuItemClickListener="@{viewModel.onMenuItemClickListener}" />
 			</com.google.android.material.appbar.CollapsingToolbarLayout>
 		</com.google.android.material.appbar.AppBarLayout>
 
-		<include
-			layout="@layout/layout_task_info"
+		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+			android:id="@+id/swipe_refresh"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			app:layout_behavior="@string/appbar_scrolling_view_behavior"
-			app:viewModel="@{viewModel}" />
+			app:isRefreshing="@{viewModel.fetchInProgress}"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/recyclerView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:nestedScrollingEnabled="true"
+				android:overScrollMode="never"
+				app:adapter="@{viewModel.adapter}"
+				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				tools:itemCount="10"
+				tools:listitem="@layout/layout_additional_info" />
+		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 		<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 			android:id="@+id/completeTask"

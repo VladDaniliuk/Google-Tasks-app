@@ -38,6 +38,7 @@ class TaskRepositoryImpl @Inject constructor(
 
 	override fun fetchTask(parentId: String, taskId: String): Completable {
 		return tasksApi.getTask(parentId, taskId).flatMapCompletable {
+			it.resourse.parentId = parentId
 			Completable.fromCallable { taskDao.updateTask(it.resourse) }
 		}
 	}
