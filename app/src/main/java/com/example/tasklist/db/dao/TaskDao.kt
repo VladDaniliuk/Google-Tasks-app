@@ -5,7 +5,6 @@ import com.example.tasklist.api.model.response.Task
 import com.example.tasklist.api.model.response.TaskWithSubTasks
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface TaskDao {
@@ -33,7 +32,7 @@ interface TaskDao {
 	fun insertAllTasksSync(list: List<Task>)
 
 	@Query("SELECT * FROM Task WHERE (parent_id = :parentId AND id = :taskId)")
-	fun getTask(parentId: String, taskId: String): Single<TaskWithSubTasks>
+	fun getTask(parentId: String, taskId: String): Flowable<TaskWithSubTasks>
 
 	/*@Delete
 	fun deleteTask(task: Task): Completable
@@ -58,7 +57,7 @@ interface TaskDao {
 
 	@Transaction
 	fun updateTask(task: Task) {
-		deleteTaskSync(task.parentId!!,task.id)
+		deleteTaskSync(task.parentId!!, task.id)
 		insertTaskSync(task)
 	}
 

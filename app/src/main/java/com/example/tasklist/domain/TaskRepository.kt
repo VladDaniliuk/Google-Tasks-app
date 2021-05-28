@@ -9,7 +9,6 @@ import com.example.tasklist.db.dao.TaskDao
 import com.example.tasklist.view.itemModel.TaskItemModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -18,7 +17,7 @@ interface TaskRepository {
 	fun createTask(parentId: String, title: String, dueDate: String): Completable
 	fun fetchTask(parentId: String, taskId: String): Completable
 	fun fetchTasks(taskListId: String): Completable
-	fun getTask(parentId: String, taskId: String): Single<TaskWithSubTasks>
+	fun getTask(parentId: String, taskId: String): Flowable<TaskWithSubTasks>
 	fun getTasks(parentId: String): Flowable<List<TaskWithSubTasks>>
 	fun onDeleteTask(taskListId: String, taskId: String, onDelete: Boolean): Completable
 }
@@ -43,7 +42,7 @@ class TaskRepositoryImpl @Inject constructor(
 		}
 	}
 
-	override fun getTask(parentId: String, taskId: String): Single<TaskWithSubTasks> {
+	override fun getTask(parentId: String, taskId: String): Flowable<TaskWithSubTasks> {
 		return taskDao.getTask(parentId, taskId)
 	}
 
@@ -72,7 +71,9 @@ class TaskRepositoryImpl @Inject constructor(
 			)
 		).doOnSuccess {
 			fetchTasks(task.parentId).subscribeOn(Schedulers.io()).onErrorComplete().subscribe()
-		}.ignoreElement()
+		}.flatMapCompletable {
+			Completable.complete()
+		}
 	}
 
 	override fun createTask(parentId: String, title: String, dueDate: String): Completable {

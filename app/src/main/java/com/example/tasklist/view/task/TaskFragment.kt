@@ -46,8 +46,8 @@ class TaskFragment : Fragment() {
 			showSnackBarResult(it)
 		}
 
-		viewModel.subTasks.observe(viewLifecycleOwner) {
-			viewModel.taskAdapter.submitList(it)
+		viewModel.task.observe(viewLifecycleOwner) {
+			viewModel.taskAdapter.submitList(it.list)
 		}
 
 		viewModel.onTaskDelete.observe(viewLifecycleOwner) {
