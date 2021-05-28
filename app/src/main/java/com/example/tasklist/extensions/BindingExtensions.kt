@@ -9,6 +9,7 @@ import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -108,7 +109,13 @@ fun RecyclerView.bindingItemTouchHelper(onItemAdapter: SingleLiveEvent<String>) 
 	val simpleItemTouchCallback = object : SwipeController(this.context) {
 		override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
 			onItemAdapter.postValue(
-				(adapter as BaseItemAdapter<*, *>).currentList[viewHolder.adapterPosition].id
+				if (adapter is ConcatAdapter) {
+					((adapter as ConcatAdapter).adapters[1] as BaseItemAdapter<*, *>)
+						.currentList[viewHolder.bindingAdapterPosition].id
+				} else {
+					(adapter as BaseItemAdapter<*, *>)
+						.currentList[viewHolder.bindingAdapterPosition].id
+				}
 			)
 		}
 	}

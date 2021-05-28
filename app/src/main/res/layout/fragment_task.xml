@@ -51,6 +51,7 @@
 				android:id="@+id/recyclerView"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				itemTouchHelper="@{viewModel.onDeleteBaseClick}"
 				android:nestedScrollingEnabled="true"
 				android:overScrollMode="never"
 				app:adapter="@{viewModel.adapter}"

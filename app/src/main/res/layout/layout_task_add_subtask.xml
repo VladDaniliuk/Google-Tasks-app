@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
+	<data>
+		<variable
+			name="viewModel"
+			type="com.example.tasklist.viewModel.task.TaskViewModel" />
+	</data>
+
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
@@ -10,6 +16,7 @@
 			android:id="@+id/button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:onClick="@{viewModel.addSubTaskClickListener}"
 			android:layout_margin="@dimen/default_margin_start"
 			android:text="@string/add_subtask"
 			android:textAllCaps="false"

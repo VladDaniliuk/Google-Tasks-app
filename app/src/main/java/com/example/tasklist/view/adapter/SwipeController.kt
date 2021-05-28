@@ -16,6 +16,9 @@ open class SwipeController(val context: Context) : Callback() {
 		recyclerView: RecyclerView,
 		viewHolder: RecyclerView.ViewHolder
 	): Int {
+		if(viewHolder is TaskAdapter.ViewHolder || viewHolder is AddSubTaskAdapter.ViewHolder) {
+			return makeMovementFlags(0, 0)
+		}
 		return makeMovementFlags(0, LEFT)
 	}
 

@@ -13,19 +13,38 @@ import com.example.tasklist.view.itemModel.BaseItemModel
 class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 	private val variableId: Int,
 	@LayoutRes
-	private val layoutRes: Int
+	private val layoutRes: Int/*,
+	private var lifecycleOwner: LifecycleOwner*/
 ) : ListAdapter<T, BaseItemAdapter<T, B>.ViewHolder>(UserItemDiffCallback()) {
-	inner class ViewHolder(private var binding: ViewDataBinding) :
-		RecyclerView.ViewHolder(binding.root) {
+	inner class ViewHolder(private var binding: ViewDataBinding/*, lifecycleOwner: LifecycleOwner*/) :
+		RecyclerView.ViewHolder(binding.root)/*,LifecycleOwner*/ {
+		/*private val lifecycleRegistry = LifecycleRegistry(this)
+
+	init {
+		lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+	}
+
+	fun lifecycleCreate() {
+		lifecycleRegistry.currentState = Lifecycle.State.CREATED
+	}*/
+
 		fun bind(item: T, variableId: Int) {
 			binding.setVariable(variableId, item)
 			binding.executePendingBindings()
 		}
+
+		/*override fun getLifecycle(): Lifecycle {
+			return lifecycleRegistry
+		}*/
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val inflater = LayoutInflater.from(parent.context)
 		val binding = DataBindingUtil.inflate<B>(inflater, layoutRes, parent, false)
+		/*val holder= ViewHolder(binding, lifecycleOwner)
+		binding.lifecycleOwner = holder
+		holder.lifecycleCreate()
+		return holder*/
 		return ViewHolder(binding)
 	}
 

@@ -132,7 +132,7 @@ class TaskListViewModel @Inject constructor(
 		if (forDelete) {
 			list.value?.filter {
 				it.id == id
-			}?.toList()?.get(0)?.clickable = false
+			}?.toList()?.get(0)?.clickable?.postValue(false)
 		}
 		taskRepository.onDeleteTask(parentId!!, id, forDelete)
 			.subscribeOn(Schedulers.io())
@@ -141,7 +141,7 @@ class TaskListViewModel @Inject constructor(
 			}, {
 				list.value?.filter {
 					it.id == id
-				}?.toList()?.get(0)?.clickable = true
+				}?.toList()?.get(0)?.clickable?.postValue(true)
 				onDeleteBaseResult.postValue(Triple(id, forDelete, false))
 			})
 	}

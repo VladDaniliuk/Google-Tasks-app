@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.databinding.FragmentTaskBinding
+import com.example.tasklist.view.taskList.TaskListFragment
 import com.example.tasklist.viewModel.task.TaskViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,11 +56,30 @@ class TaskFragment : Fragment() {
 			findNavController().popBackStack()
 		}
 
+		viewModel.onTaskClick.observe(viewLifecycleOwner) {
+			findNavController().navigate(
+				TaskFragmentDirections.actionTaskFragmentSelf(
+					viewModel.id!!.first,
+					it
+				)
+			)
+		}
+
+		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
+			viewModel.deleteSubTask(it, true)
+		}
+
+		viewModel.onDeleteBaseResult.observe(viewLifecycleOwner) {
+			if (it.second) showSnackBarDelete(it.first, it.third)
+			else showSnackBarRestore(it.third)
+			if (!it.third) viewModel.adapter.notifyDataSetChanged()
+		}
+
 		viewModel.onTaskEdit.observe(viewLifecycleOwner) {
 			findNavController().navigate(
 				TaskFragmentDirections.actionTaskFragmentToChangeTaskFragment(
 					viewModel.id!!.first,
-					viewModel.id!!.first
+					viewModel.id!!.second
 				)
 			)
 		}
@@ -74,6 +94,31 @@ class TaskFragment : Fragment() {
 		Snackbar.make(
 			requireView(),
 			completing + id + failed,
+			Snackbar.LENGTH_SHORT
+		).setAnchorView(binding.completeTask).show()
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarDelete(id: String, isCompleted: Boolean) {
+		Snackbar.make(
+			requireView(),
+			TaskListFragment.deleting + if (isCompleted)
+				TaskListFragment.completed
+			else TaskListFragment.failed,
+			Snackbar.LENGTH_SHORT
+		).setAction(TaskListFragment.cancel) {
+			viewModel.deleteSubTask(id, false)
+		}
+			.setAnchorView(binding.completeTask).show()
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarRestore(completed: Boolean) {
+		Snackbar.make(
+			requireView(),
+			TaskListFragment.restore + if (completed)
+				TaskListFragment.completed
+			else TaskListFragment.failed,
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.completeTask).show()
 	}

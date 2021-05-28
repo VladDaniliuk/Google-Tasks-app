@@ -69,6 +69,12 @@
 		<action
 			android:id="@+id/action_taskFragment_to_changeTaskFragment"
 			app:destination="@id/changeTaskFragment" />
+		<action
+			android:id="@+id/action_taskFragment_self"
+			app:destination="@id/taskFragment" />
+		<action
+			android:id="@+id/action_taskFragment_to_createTaskFragment"
+			app:destination="@id/createTaskFragment" />
 	</fragment>
 
 	<dialog

@@ -27,8 +27,12 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 
 	val fetchInProgress = MutableLiveData(false)
 
+	val onAddSubTaskClick = SingleLiveEvent<String>()
 	val onCompleteTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskError = SingleLiveEvent<String>()
+	val onDeleteBaseClick = SingleLiveEvent<String>()
+	val onDeleteBaseResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
+	val onTaskClick = SingleLiveEvent<String>()
 	val onTaskDelete = SingleLiveEvent<Unit>()
 	val onTaskEdit = SingleLiveEvent<Unit>()
 
@@ -44,6 +48,9 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 		this.addAdapter(addSubTaskAdapter)
 	}
 
+	val addSubTaskClickListener = View.OnClickListener {
+		onAddSubTaskClick.postValue(id?.first!!)
+	}
 	val completeTaskClickListener = View.OnClickListener {
 		onCompleteTaskClick.call()
 	}
@@ -97,6 +104,10 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 									taskRepository.completeTask(model)
 										.subscribeOn(Schedulers.computation()).subscribe()
 								}
+
+								override fun onTaskItemClick(model: TaskItemModel) {
+									onTaskClick.postValue(model.id)
+								}
 							}
 						)
 					}
@@ -124,6 +135,24 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 		} else if (menuItem.itemId == R.id.edit) {
 			onTaskEdit.call()
 		}
+	}
+
+	fun deleteSubTask(id: String, forDelete: Boolean) {
+		if (forDelete) {
+			task.value?.list?.filter {
+				it.id == id
+			}?.toList()?.get(0)?.clickable?.postValue(false)
+		}
+		taskRepository.onDeleteTask(task.value?.parentId!!, id, forDelete)
+			.subscribeOn(Schedulers.io())
+			.subscribe({
+				onDeleteBaseResult.postValue(Triple(id, forDelete, true))
+			}, {
+				task.value?.list?.filter {
+					it.id == id
+				}?.toList()?.get(0)?.clickable?.postValue(true)
+				onDeleteBaseResult.postValue(Triple(id, forDelete, false))
+			})
 	}
 
 	companion object Strings {
