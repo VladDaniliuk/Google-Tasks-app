@@ -101,6 +101,10 @@
 		<argument
 			android:name="taskListId"
 			app:argType="string" />
+		<argument
+			android:name="parentId"
+			app:argType="string"
+			app:nullable="true" />
 	</dialog>
 
 	<dialog

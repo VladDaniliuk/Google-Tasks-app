@@ -97,7 +97,7 @@ class TaskListFragment : Fragment() {
 		viewModel.onCreateBaseClick.observe(viewLifecycleOwner) {
 			findNavController().navigate(
 				TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment(
-					viewModel.parentId!!
+					viewModel.parentId!!, null
 				)
 			)
 		}

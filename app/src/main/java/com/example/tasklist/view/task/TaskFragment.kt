@@ -84,6 +84,15 @@ class TaskFragment : Fragment() {
 			)
 		}
 
+		viewModel.onAddSubTaskClick.observe(viewLifecycleOwner) {
+			findNavController().navigate(
+				TaskFragmentDirections.actionTaskFragmentToCreateTaskFragment(
+					viewModel.id!!.first,
+					viewModel.id!!.second
+				)
+			)
+		}
+
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchTask()
 		}

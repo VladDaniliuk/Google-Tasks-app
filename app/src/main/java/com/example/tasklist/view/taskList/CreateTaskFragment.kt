@@ -35,6 +35,7 @@ class CreateTaskFragment : BottomSheetDialogFragment() {
 		binding.lifecycleOwner = viewLifecycleOwner
 
 		viewModel.taskListId = args.taskListId
+		viewModel.taskParentId = args.parentId
 
 		binding.textInputEditText.requestFocus()
 

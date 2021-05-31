@@ -27,7 +27,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 
 	val fetchInProgress = MutableLiveData(false)
 
-	val onAddSubTaskClick = SingleLiveEvent<String>()
+	val onAddSubTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskError = SingleLiveEvent<String>()
 	val onDeleteBaseClick = SingleLiveEvent<String>()
@@ -36,7 +36,9 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	val onTaskDelete = SingleLiveEvent<Unit>()
 	val onTaskEdit = SingleLiveEvent<Unit>()
 
-	private var addSubTaskAdapter = AddSubTaskAdapter()
+	private var addSubTaskAdapter = AddSubTaskAdapter {
+		onAddSubTaskClick.call()
+	}
 	private var taskControlsAdapter = TaskAdapter()
 	val taskAdapter = BaseItemAdapter<TaskItemModel, LayoutSubTaskBinding>(
 		BR.model,
@@ -48,9 +50,6 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 		this.addAdapter(addSubTaskAdapter)
 	}
 
-	val addSubTaskClickListener = View.OnClickListener {
-		onAddSubTaskClick.postValue(id?.first!!)
-	}
 	val completeTaskClickListener = View.OnClickListener {
 		onCompleteTaskClick.call()
 	}

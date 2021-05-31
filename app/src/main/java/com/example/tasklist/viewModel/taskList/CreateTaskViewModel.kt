@@ -15,6 +15,7 @@ class CreateTaskViewModel @Inject constructor(
 	private val taskRepository: TaskRepository
 ) : CreateBaseViewModel() {
 	var taskListId: String? = null
+	var taskParentId: String? = null
 
 	var dueDate = MutableLiveData<String>()
 
@@ -26,8 +27,13 @@ class CreateTaskViewModel @Inject constructor(
 
 	override fun onCreateBaseClick() {
 		isClicked.postValue(true)
-		taskRepository.createTask(taskListId!!, baseName.value.orEmpty(), dueDate.value.orEmpty())
-			.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+		taskRepository.createTask(
+			taskListId!!,
+			taskParentId,
+			baseName.value.orEmpty(),
+			dueDate.value.orEmpty()
+		).subscribeOn(Schedulers.io())
+			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe({
 				onCreateBaseFinish.call()
 			}, {

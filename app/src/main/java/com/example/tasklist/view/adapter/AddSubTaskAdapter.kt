@@ -1,6 +1,7 @@
 package com.example.tasklist.view.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -9,7 +10,8 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskAddSubtaskBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
 
-class AddSubTaskAdapter : RecyclerView.Adapter<AddSubTaskAdapter.ViewHolder>() {
+class AddSubTaskAdapter(private val onClick: View.OnClickListener) :
+	RecyclerView.Adapter<AddSubTaskAdapter.ViewHolder>() {
 	var taskItemModel: TaskItemModel? = null
 		set(value) {
 			field = value
@@ -30,11 +32,8 @@ class AddSubTaskAdapter : RecyclerView.Adapter<AddSubTaskAdapter.ViewHolder>() {
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		(holder.binding as LayoutTaskAddSubtaskBinding).button.setOnClickListener {
-
-		}
+		(holder.binding as LayoutTaskAddSubtaskBinding).onClick = onClick
 	}
 
 	override fun getItemCount(): Int = taskItemModel?.let { 1 } ?: 0
-
 }

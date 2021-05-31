@@ -46,7 +46,7 @@ class TaskItemModel(
 		result = 31 * result + subTaskVisibility
 		result = 31 * result + (list?.hashCode() ?: 0)
 		result = 31 * result + notes?.hashCode()!!
-		result = 31 * result + clickable.hashCode()
+		//result = 31 * result + clickable.hashCode()
 		return result
 	}
 
@@ -64,7 +64,7 @@ class TaskItemModel(
 		if (subTaskVisibility != other.subTaskVisibility) return false
 		if (list != other.list) return false
 		if (notes != other.notes) return false
-		if (clickable != other.clickable) return false
+		//if (clickable != other.clickable) return false
 
 		return true
 	}

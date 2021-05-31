@@ -17,7 +17,7 @@ data class TaskListItemModel(
 
 		if (id != other.id) return false
 		if (title != other.title) return false
-		if (clickable != other.clickable) return false
+		//if (clickable != other.clickable) return false
 
 		return true
 	}

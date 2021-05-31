@@ -21,6 +21,7 @@ interface TasksApi {
 	@POST("/tasks/v1/lists/{taskList}/tasks")
 	fun insertTask(
 		@Path("taskList") taskListId: String,
+		@Query("parent") parentId: String?,
 		@Body task: Task
 	): Single<BaseResponse<Task>>
 

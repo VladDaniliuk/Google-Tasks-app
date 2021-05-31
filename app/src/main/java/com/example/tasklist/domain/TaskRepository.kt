@@ -14,7 +14,13 @@ import javax.inject.Inject
 
 interface TaskRepository {
 	fun completeTask(task: TaskItemModel): Completable
-	fun createTask(parentId: String, title: String, dueDate: String): Completable
+	fun createTask(
+		taskListId: String,
+		parentId: String?,
+		title: String,
+		dueDate: String
+	): Completable
+
 	fun fetchTask(parentId: String, taskId: String): Completable
 	fun fetchTasks(taskListId: String): Completable
 	fun getTask(parentId: String, taskId: String): Flowable<TaskWithSubTasks>
@@ -76,10 +82,15 @@ class TaskRepositoryImpl @Inject constructor(
 		}
 	}
 
-	override fun createTask(parentId: String, title: String, dueDate: String): Completable {
-		return tasksApi.insertTask(parentId, Task("", title, due = dueDate))
+	override fun createTask(
+		taskListId: String,
+		parentId: String?,
+		title: String,
+		dueDate: String
+	): Completable {
+		return tasksApi.insertTask(taskListId, parentId, Task("", title, due = dueDate))
 			.flatMapCompletable {
-				fetchTasks(parentId)
+				fetchTasks(taskListId)
 			}
 	}
 
