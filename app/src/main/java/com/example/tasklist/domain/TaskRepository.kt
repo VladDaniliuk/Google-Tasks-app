@@ -13,12 +13,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 interface TaskRepository {
+	fun changeTask(taskListId: String, taskId: String, newName: String): Completable
 	fun completeTask(task: TaskItemModel): Completable
 	fun createTask(
 		taskListId: String,
 		parentId: String?,
 		title: String,
-		dueDate: String
+		dueDate: String?
 	): Completable
 
 	fun fetchTask(parentId: String, taskId: String): Completable
@@ -32,6 +33,13 @@ class TaskRepositoryImpl @Inject constructor(
 	private val tasksApi: TasksApi,
 	private val taskDao: TaskDao
 ) : TaskRepository {
+	override fun changeTask(taskListId: String, taskId: String, newName: String): Completable {
+		return tasksApi.patchTask(taskListId, taskId, Task(taskId, newName)).flatMapCompletable {
+			fetchTask(taskListId, taskId)
+			Completable.complete()
+		}
+	}
+
 	override fun fetchTasks(taskListId: String): Completable {
 		return tasksApi.getAllTasks(taskListId).flatMapCompletable { baseListResponse ->
 			baseListResponse.items.forEach {
@@ -86,7 +94,7 @@ class TaskRepositoryImpl @Inject constructor(
 		taskListId: String,
 		parentId: String?,
 		title: String,
-		dueDate: String
+		dueDate: String?
 	): Completable {
 		return tasksApi.insertTask(taskListId, parentId, Task("", title, due = dueDate))
 			.flatMapCompletable {

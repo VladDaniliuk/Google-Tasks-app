@@ -29,4 +29,8 @@ data class TaskListItemModel(
 		result = 31 * result + taskListListViewModel.hashCode()
 		return result
 	}
+
+	override fun toString(): String {
+		return this.title
+	}
 }

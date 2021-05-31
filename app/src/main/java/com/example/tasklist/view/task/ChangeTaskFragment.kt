@@ -1,22 +1,26 @@
 package com.example.tasklist.view.task
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.tasklist.databinding.FragmentChangeTaskBinding
 import com.example.tasklist.dev.hideKeyboard
+import com.example.tasklist.view.adapter.TaskListAdapter
 import com.example.tasklist.viewModel.task.ChangeTaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChangeTaskFragment : BottomSheetDialogFragment() {
 	private val viewModel: ChangeTaskViewModel by viewModels()
-
-	//private val args: ChangeTaskFragmentArgs by navArgs()
+	private val args: ChangeTaskFragmentArgs by navArgs()
 	private lateinit var binding: FragmentChangeTaskBinding
 
 	override fun onCreateView(
@@ -29,13 +33,49 @@ class ChangeTaskFragment : BottomSheetDialogFragment() {
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
 
+		viewModel.id = Pair(args.taskListId, args.taskId)
+
 		binding.textInputEditText.requestFocus()
 
 		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		viewModel.taskListList.observe(viewLifecycleOwner) { list ->
+			val adapter = TaskListAdapter(
+				requireContext(),
+				android.R.layout.simple_dropdown_item_1line,
+				list
+			)
+			binding.autoCompleteTextView.setAdapter(adapter)
 
+			val currentTaskList = viewModel.taskListList
+				.value?.filter {
+					it.id == viewModel.id?.first
+				}?.get(0)
+			adapter.setItemSelected(viewModel.taskListList.value?.indexOf(currentTaskList) ?: 0)
+
+			binding.autoCompleteTextView.setText(currentTaskList.toString(), false)
+			binding.autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+				adapter.setItemSelected(position)
+			}
+		}
+
+		viewModel.onChangeTaskClickResult.observe(viewLifecycleOwner) {
+			showSnackBar(it)
+		}
+
+		viewModel.onChangeTaskClick.observe(viewLifecycleOwner) {
+			val taskList = (binding.autoCompleteTextView.adapter as TaskListAdapter).selectedItem
+			taskList?.let {
+				if (viewModel.task.value?.parentId == it.id) {
+					viewModel.changeTask()
+				} else {
+					viewModel.changeTask(it.id)
+				}
+			}
+
+		}
 	}
 
 	override fun onDismiss(dialog: DialogInterface) {
@@ -43,12 +83,14 @@ class ChangeTaskFragment : BottomSheetDialogFragment() {
 		binding.root.hideKeyboard()
 	}
 
-	/*@SuppressLint("ShowToast")
-	private fun showErrorSnackBar() {
+	@SuppressLint("ShowToast")
+	private fun showSnackBar(it: Boolean) {
 		Snackbar.make(
 			requireView(),
-			"Connection error",
+			if (it) "Ok" else "Connection error",
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.root).show()
-	}*/
+
+		if (it) findNavController().popBackStack()
+	}
 }

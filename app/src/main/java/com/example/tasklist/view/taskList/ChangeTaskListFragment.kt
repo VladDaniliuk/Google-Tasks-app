@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChangeTaskListFragment : BottomSheetDialogFragment() {
-
 	private val viewModel: ChangeTaskListViewModel by viewModels()
 	private val args: ChangeTaskListFragmentArgs by navArgs()
 	private lateinit var binding: FragmentChangeTaskListBinding
