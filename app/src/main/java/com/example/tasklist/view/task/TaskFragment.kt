@@ -40,7 +40,7 @@ class TaskFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		setFragmentResultListener(requestKey) { _, bundle ->
+		setFragmentResultListener(changeTaskRequestKey) { _, bundle ->
 			bundle.getString(choice)?.let { choice ->
 				when (choice) {
 					delete -> findNavController().popBackStack()
@@ -62,7 +62,7 @@ class TaskFragment : Fragment() {
 		}
 
 		viewModel.onTaskDelete.observe(viewLifecycleOwner) {
-			setFragmentResult(requestKey, bundleOf(requestValue to viewModel.id?.second))
+			setFragmentResult(deleteTaskRequestKey, bundleOf(requestValue to viewModel.id?.second))
 			findNavController().popBackStack()
 		}
 
@@ -148,7 +148,8 @@ class TaskFragment : Fragment() {
 		const val delete = "Delete"
 		const val failed = " failed"
 		const val rename = "Rename"
-		const val requestKey = "requestKey"
+		const val changeTaskRequestKey = "changeTaskRequestKey"
+		const val deleteTaskRequestKey = "deleteTaskRequestKey"
 		const val requestValue = "id"
 	}
 }

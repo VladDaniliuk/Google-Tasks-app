@@ -58,9 +58,7 @@ class TaskListFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-
-		setFragmentResultListener(requestKey) { _, bundle ->
+		setFragmentResultListener(deleteTaskRequestKey) { _, bundle ->
 			bundle.getString(requestValue)?.let { id ->
 				viewModel.deleteBase(id, true)
 			}
@@ -142,7 +140,7 @@ class TaskListFragment : Fragment() {
 	}
 
 	companion object {
-		const val requestKey = "requestKey"
+		const val deleteTaskRequestKey = "deleteTaskRequestKey"
 		const val requestValue = "id"
 		const val completing = "Completing "
 		const val failed = " failed"
