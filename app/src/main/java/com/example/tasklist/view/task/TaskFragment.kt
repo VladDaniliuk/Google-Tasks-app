@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -39,6 +40,15 @@ class TaskFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		setFragmentResultListener(requestKey) { _, bundle ->
+			bundle.getString(choice)?.let { choice ->
+				when (choice) {
+					delete -> findNavController().popBackStack()
+					rename -> viewModel.fetchTask()
+				}
+			}
+		}
+
 		viewModel.onCompleteTaskClick.observe(viewLifecycleOwner) {
 			viewModel.onCompleteTaskClick()
 		}
@@ -133,9 +143,12 @@ class TaskFragment : Fragment() {
 	}
 
 	companion object {
+		const val choice = "choice"
+		const val completing = "Completing "
+		const val delete = "Delete"
+		const val failed = " failed"
+		const val rename = "Rename"
 		const val requestKey = "requestKey"
 		const val requestValue = "id"
-		const val completing = "Completing "
-		const val failed = " failed"
 	}
 }

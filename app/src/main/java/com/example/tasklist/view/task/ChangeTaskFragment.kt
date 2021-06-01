@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -84,13 +86,26 @@ class ChangeTaskFragment : BottomSheetDialogFragment() {
 	}
 
 	@SuppressLint("ShowToast")
-	private fun showSnackBar(it: Boolean) {
+	private fun showSnackBar(it: Pair<Boolean, Boolean>) {
 		Snackbar.make(
 			requireView(),
-			if (it) "Ok" else "Connection error",
+			if (it.second) ok else connectionError,
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.root).show()
 
-		if (it) findNavController().popBackStack()
+		if (it.second) {
+			if (it.first) setFragmentResult(requestKey, bundleOf(choice to delete))
+			else setFragmentResult(requestKey, bundleOf(choice to rename))
+			findNavController().popBackStack()
+		}
+	}
+
+	companion object {
+		const val choice = "choice"
+		const val connectionError = "Connection error"
+		const val delete = "Delete"
+		const val ok = "Ok"
+		const val rename = "Rename"
+		const val requestKey = "requestKey"
 	}
 }

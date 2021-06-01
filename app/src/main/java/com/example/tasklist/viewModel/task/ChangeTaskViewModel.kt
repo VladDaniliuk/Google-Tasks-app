@@ -24,7 +24,7 @@ class ChangeTaskViewModel @Inject constructor(
 	val isClicked = MutableLiveData(false)
 
 	val onChangeTaskClick = SingleLiveEvent<Unit>()
-	val onChangeTaskClickResult = SingleLiveEvent<Boolean>()
+	val onChangeTaskClickResult = SingleLiveEvent<Pair<Boolean,Boolean>>()
 
 	var id: Pair<String, String>? = null
 		set(value) {
@@ -54,7 +54,12 @@ class ChangeTaskViewModel @Inject constructor(
 				taskListList.postValue(it)
 			}
 	}
-
+/*
+*	Pair(First,Second)
+*	First - Choice in rename/change tasklist
+*	Second - Connection
+* 	First : Rename - false | Change tasklist - true
+*/
 	fun changeTask(newTaskListId: String? = null) {
 		isClicked.postValue(true)
 		if (newTaskListId != null) {
@@ -66,11 +71,11 @@ class ChangeTaskViewModel @Inject constructor(
 						taskRepository.onDeleteTask(id!!.first, id!!.second, true)
 							.subscribeOn(Schedulers.computation()).subscribe {
 								isClicked.postValue(false)
-								onChangeTaskClickResult.postValue(true)
+								onChangeTaskClickResult.postValue(Pair(first = true, second = true))
 							}
 					}, {
 						isClicked.postValue(false)
-						onChangeTaskClickResult.postValue(false)
+						onChangeTaskClickResult.postValue(Pair(first = true, second = false))
 					})
 			}
 		} else {
@@ -78,10 +83,10 @@ class ChangeTaskViewModel @Inject constructor(
 				.subscribeOn(Schedulers.io())
 				.subscribe({
 					isClicked.postValue(false)
-					onChangeTaskClickResult.postValue(true)
+					onChangeTaskClickResult.postValue(Pair(first = false, second = true))
 				}, {
 					isClicked.postValue(false)
-					onChangeTaskClickResult.postValue(false)
+					onChangeTaskClickResult.postValue(Pair(first = false, second = false))
 				})
 		}
 	}
