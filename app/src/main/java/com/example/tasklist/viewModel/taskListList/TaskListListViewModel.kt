@@ -54,17 +54,24 @@ class TaskListListViewModel @Inject constructor(
 	}
 
 	override fun deleteBase(id: String, forDelete: Boolean) {
-		list.value?.filter {
-			it.id == id
-		}?.toList()?.get(0)?.clickable?.postValue(false)
+		setTaskListClickable(id, false)
 		taskListRepository.deleteTaskList(id).subscribeOn(Schedulers.io())
 			.subscribe({
 				onDeleteBaseResult.postValue(Triple(id, true, forDelete))
 			}, {
-				list.value?.filter {
-					it.id == id
-				}?.toList()?.get(0)?.clickable?.postValue(true)
+				setTaskListClickable(id, true)
 				onDeleteBaseResult.postValue(Triple(id, false, forDelete))
 			})
+	}
+
+	/*
+	* Filter all taskLists by id, convert to list and get first element
+	* In this situation we always have only one element in filtered list
+	* So get first element of list(0) and make it clickable/unclickable
+	*/
+	private fun setTaskListClickable(id: String, clickable: Boolean) {
+		list.value?.filter {
+			it.id == id
+		}?.toList()?.get(0)?.clickable?.postValue(clickable)
 	}
 }
