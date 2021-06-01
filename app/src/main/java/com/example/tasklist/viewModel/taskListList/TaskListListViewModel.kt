@@ -54,16 +54,16 @@ class TaskListListViewModel @Inject constructor(
 	}
 
 	override fun deleteBase(id: String, forDelete: Boolean) {
-		list.value?.filter {
+		list.value?.find {
 			it.id == id
-		}?.toList()?.get(0)?.clickable?.postValue(false)
+		}?.clickable?.postValue(false)
 		taskListRepository.deleteTaskList(id).subscribeOn(Schedulers.io())
 			.subscribe({
 				onDeleteBaseResult.postValue(Triple(id, true, forDelete))
 			}, {
-				list.value?.filter {
+				list.value?.find {
 					it.id == id
-				}?.toList()?.get(0)?.clickable?.postValue(true)
+				}?.clickable?.postValue(true)
 				onDeleteBaseResult.postValue(Triple(id, false, forDelete))
 			})
 	}
