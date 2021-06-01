@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -40,15 +37,6 @@ class TaskFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		setFragmentResultListener(changeTaskRequestKey) { _, bundle ->
-			bundle.getString(choice)?.let { choice ->
-				when (choice) {
-					delete -> findNavController().popBackStack()
-					rename -> viewModel.fetchTask()
-				}
-			}
-		}
-
 		viewModel.onCompleteTaskClick.observe(viewLifecycleOwner) {
 			viewModel.onCompleteTaskClick()
 		}
@@ -62,7 +50,7 @@ class TaskFragment : Fragment() {
 		}
 
 		viewModel.onTaskDelete.observe(viewLifecycleOwner) {
-			setFragmentResult(deleteTaskRequestKey, bundleOf(requestValue to viewModel.id?.second))
+			viewModel.deleteTask()
 			findNavController().popBackStack()
 		}
 
@@ -121,9 +109,7 @@ class TaskFragment : Fragment() {
 	private fun showSnackBarDelete(id: String, isCompleted: Boolean) {
 		Snackbar.make(
 			requireView(),
-			TaskListFragment.deleting + if (isCompleted)
-				TaskListFragment.completed
-			else TaskListFragment.failed,
+			deleting + if (isCompleted) completed else failed,
 			Snackbar.LENGTH_SHORT
 		).setAction(TaskListFragment.cancel) {
 			viewModel.deleteSubTask(id, false)
@@ -132,24 +118,21 @@ class TaskFragment : Fragment() {
 	}
 
 	@SuppressLint("ShowToast")
-	private fun showSnackBarRestore(completed: Boolean) {
+	private fun showSnackBarRestore(complete: Boolean) {
 		Snackbar.make(
 			requireView(),
-			TaskListFragment.restore + if (completed)
-				TaskListFragment.completed
-			else TaskListFragment.failed,
+			restore + if (complete) completed else failed,
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.completeTask).show()
 	}
 
 	companion object {
 		const val choice = "choice"
-		const val completing = "Completing "
 		const val delete = "Delete"
+		const val completing = "Completing "
 		const val failed = " failed"
-		const val rename = "Rename"
-		const val changeTaskRequestKey = "changeTaskRequestKey"
-		const val deleteTaskRequestKey = "deleteTaskRequestKey"
-		const val requestValue = "id"
+		const val deleting = "Deleting "
+		const val completed = " completed"
+		const val restore = "Restore"
 	}
 }

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -58,12 +57,6 @@ class TaskListFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		setFragmentResultListener(deleteTaskRequestKey) { _, bundle ->
-			bundle.getString(requestValue)?.let { id ->
-				viewModel.deleteBase(id, true)
-			}
-		}
-
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchBase()
 		}
@@ -140,8 +133,6 @@ class TaskListFragment : Fragment() {
 	}
 
 	companion object {
-		const val deleteTaskRequestKey = "deleteTaskRequestKey"
-		const val requestValue = "id"
 		const val completing = "Completing "
 		const val failed = " failed"
 		const val deleting = "Deleting "
