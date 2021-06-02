@@ -23,7 +23,7 @@
 			app:layout_constraintTop_toTopOf="parent" />
 
 		<com.google.android.material.button.MaterialButton
-			isVisible="@{!viewModel.isClicked}"
+			isVisible="@{!viewModel.isLoading}"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8sp"
@@ -35,7 +35,7 @@
 			app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
 
 		<com.google.android.material.progressindicator.LinearProgressIndicator
-			isVisible="@{viewModel.isClicked}"
+			isVisible="@{viewModel.isLoading}"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:indeterminate="true"

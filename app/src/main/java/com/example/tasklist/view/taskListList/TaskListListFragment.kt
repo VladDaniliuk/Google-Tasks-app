@@ -37,8 +37,8 @@ class TaskListListFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		setFragmentResultListener("requestKey") { _, bundle ->
-			bundle.getString("id")?.let { id ->
+		setFragmentResultListener(requestKey) { _, bundle ->
+			bundle.getString(requestValue)?.let { id ->
 				viewModel.deleteBase(id)
 			}
 		}
@@ -94,5 +94,10 @@ class TaskListListFragment : Fragment() {
 				" failed"
 			}, Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTaskList).show()
+	}
+
+	companion object {
+		const val requestKey = "requestKey"
+		const val requestValue = "id"
 	}
 }

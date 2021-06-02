@@ -11,7 +11,6 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.taskList.TaskListViewModel
@@ -37,22 +36,6 @@ class TaskListFragment : Fragment() {
 
 		viewModel.parentId = args.parentId
 
-		binding.mainToolbar.inflateMenu(R.menu.menu_task_list)
-		binding.mainToolbar.setOnMenuItemClickListener {
-			if (it.itemId == R.id.delete) {
-				setFragmentResult("requestKey", bundleOf("id" to viewModel.parentId))
-				findNavController().popBackStack()
-				return@setOnMenuItemClickListener true
-			} else {
-				findNavController().navigate(
-					TaskListFragmentDirections.actionTaskListFragmentToChangeTaskListFragment(
-						viewModel.parentId!!
-					)
-				)
-				return@setOnMenuItemClickListener true
-			}
-		}
-
 		return binding.root
 	}
 
@@ -72,6 +55,19 @@ class TaskListFragment : Fragment() {
 
 		viewModel.list.observe(viewLifecycleOwner) {
 			onList(it)
+		}
+
+		viewModel.onTaskListDelete.observe(viewLifecycleOwner) {
+			setFragmentResult(requestKey, bundleOf(requestValue to viewModel.parentId))
+			findNavController().popBackStack()
+		}
+
+		viewModel.onTaskListEdit.observe(viewLifecycleOwner) {
+			findNavController().navigate(
+				TaskListFragmentDirections.actionTaskListFragmentToChangeTaskListFragment(
+					viewModel.parentId!!
+				)
+			)
 		}
 
 		viewModel.onExecuteTaskResult.observe(viewLifecycleOwner) {
@@ -98,9 +94,11 @@ class TaskListFragment : Fragment() {
 		}
 	}
 
+
 	private fun onList(it: List<TaskItemModel>) {
 		viewModel.adapter.submitList(it)
 	}
+
 
 	@SuppressLint("ShowToast")
 	private fun showSnackBarResult(id: String) {
