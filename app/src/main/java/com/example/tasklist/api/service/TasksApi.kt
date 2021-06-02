@@ -1,7 +1,6 @@
 package com.example.tasklist.api.service
 
 import com.example.tasklist.api.model.response.BaseListResponse
-import com.example.tasklist.api.model.response.BaseResponse
 import com.example.tasklist.api.model.response.Task
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.*
@@ -14,16 +13,14 @@ interface TasksApi {
 	)*/
 
 	@GET("/tasks/v1/lists/{taskList}/tasks/{task}")
-	fun getTask(
-		@Path("taskList") taskListId: String, @Path("task") taskId: String
-	): Single<BaseResponse<Task>>
+	fun getTask(@Path("taskList") taskListId: String, @Path("task") taskId: String): Single<Task>
 
 	@POST("/tasks/v1/lists/{taskList}/tasks")
 	fun insertTask(
 		@Path("taskList") taskListId: String,
 		@Query("parent") parentId: String?,
 		@Body task: Task
-	): Single<BaseResponse<Task>>
+	): Single<Task>
 
 	@GET("/tasks/v1/lists/{taskList}/tasks")
 	fun getAllTasks(
@@ -45,7 +42,7 @@ interface TasksApi {
 	fun patchTask(
 		@Path("taskList") taskListId: String, @Path("task") taskId: String,
 		@Body task: Task
-	): Single<BaseResponse<Task>>
+	): Single<Task>
 /*
 	@PUT("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun updateTask(

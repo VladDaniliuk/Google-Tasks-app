@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.ConcatAdapter
 import com.example.tasklist.BR
 import com.example.tasklist.R
+import com.example.tasklist.api.model.response.Task
 import com.example.tasklist.databinding.LayoutSubTaskBinding
 import com.example.tasklist.dev.SimpleTaskClickListener
 import com.example.tasklist.dev.SingleLiveEvent
@@ -19,6 +20,7 @@ import com.example.tasklist.view.itemModel.TaskItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,19 +29,27 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 
 	val fetchInProgress = MutableLiveData(false)
 
+	val onAddDueDateClick = SingleLiveEvent<Unit>()
 	val onAddSubTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskError = SingleLiveEvent<String>()
 	val onDeleteBaseClick = SingleLiveEvent<String>()
 	val onDeleteBaseResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
+	val onDeleteDueDateClick = SingleLiveEvent<Unit>()
 	val onTaskClick = SingleLiveEvent<String>()
 	val onTaskDelete = SingleLiveEvent<Unit>()
 	val onTaskEdit = SingleLiveEvent<Unit>()
+	val onNoteEdit = SingleLiveEvent<String>()
+	var dueDate = MutableLiveData<String>()
 
 	private var addSubTaskAdapter = AddSubTaskAdapter {
 		onAddSubTaskClick.call()
 	}
-	private var taskControlsAdapter = TaskAdapter()
+	var taskControlsAdapter = TaskAdapter(
+		{ onAddDueDateClick.call() },
+		{ onDeleteDueDateClick.call() },
+		onNoteEdit
+	)
 	val taskAdapter = BaseItemAdapter<TaskItemModel, LayoutSubTaskBinding>(
 		BR.model,
 		R.layout.layout_sub_task
@@ -162,6 +172,12 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 			}, {
 				onDeleteBaseResult.postValue(Triple(task.value?.id!!, second = true, third = false))
 			})
+	}
+
+	fun changeTask(due: String? = "", notes: String? = task.value?.notes) {
+		taskRepository.changeTask(id!!.first, Task(id!!.second, due = due, notes = notes))
+			.subscribeOn(Schedulers.io())
+			.subscribe({}, {})
 	}
 
 	companion object Strings {

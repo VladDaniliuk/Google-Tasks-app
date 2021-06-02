@@ -1,7 +1,9 @@
 package com.example.tasklist.view.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -9,10 +11,17 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutAdditionalInfoBinding
 import com.example.tasklist.databinding.LayoutDueDateBinding
 import com.example.tasklist.databinding.LayoutSubtasksBinding
+import com.example.tasklist.dev.SingleLiveEvent
+import com.example.tasklist.extensions.DebounceTextWatcher
 import com.example.tasklist.extensions.bindingIsDue
 import com.example.tasklist.view.itemModel.TaskItemModel
 
-class TaskAdapter : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+class TaskAdapter(
+	private val onChipClick: View.OnClickListener,
+	private val onChipClose: View.OnClickListener,
+	private val onItem: SingleLiveEvent<String>
+) :
+	RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 	var taskItemModel: TaskItemModel? = null
 		set(value) {
 			field = value
@@ -59,11 +68,14 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 			0 -> {
 				val binding = holder.binding as LayoutAdditionalInfoBinding
 				binding.textInputEditText2.setText(taskItemModel?.notes)
+				binding.textInputEditText2.addTextChangedListener(DebounceTextWatcher(onItem))
 			}
 			1 -> {
 				val binding = holder.binding as LayoutDueDateBinding
 				binding.chip4.bindingIsDue(taskItemModel?.dueDate)
 				binding.textView.bindingIsDue(taskItemModel?.dueDate)
+				binding.chip4.setOnCloseIconClickListener(onChipClose)
+				binding.onClick = onChipClick
 			}
 			else -> {
 			}
