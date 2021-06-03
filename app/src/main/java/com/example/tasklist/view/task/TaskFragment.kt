@@ -16,7 +16,6 @@ import com.example.tasklist.viewModel.task.TaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.text.SimpleDateFormat
 
 @AndroidEntryPoint
@@ -109,7 +108,7 @@ class TaskFragment : Fragment() {
 		}
 
 		viewModel.onDeleteDueDateClick.observe(viewLifecycleOwner) {
-			viewModel.changeTask()
+			viewModel.changeTask("")
 		}
 
 		binding.swipeRefresh.setOnRefreshListener {

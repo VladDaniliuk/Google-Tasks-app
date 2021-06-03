@@ -3,7 +3,6 @@ package com.example.tasklist.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +10,6 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutAdditionalInfoBinding
 import com.example.tasklist.databinding.LayoutDueDateBinding
 import com.example.tasklist.databinding.LayoutSubtasksBinding
-import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.extensions.DebounceTextWatcher
 import com.example.tasklist.extensions.bindingIsDue
 import com.example.tasklist.view.itemModel.TaskItemModel
@@ -19,13 +17,21 @@ import com.example.tasklist.view.itemModel.TaskItemModel
 class TaskAdapter(
 	private val onChipClick: View.OnClickListener,
 	private val onChipClose: View.OnClickListener,
-	private val onItem: SingleLiveEvent<String>
+	private val callback: (String) -> Unit
 ) :
 	RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+	private val listenerTextChanged = DebounceTextWatcher {
+		callback(it)
+	}
+
 	var taskItemModel: TaskItemModel? = null
 		set(value) {
-			field = value
-			notifyDataSetChanged()
+			if (field != value) {
+				val prev = field
+				field = value
+				if (prev == null || prev.notes == field?.notes)
+					notifyDataSetChanged()
+			}
 		}
 
 	inner class ViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
@@ -67,8 +73,11 @@ class TaskAdapter(
 		when (position) {
 			0 -> {
 				val binding = holder.binding as LayoutAdditionalInfoBinding
+				val cursorPosition = binding.textInputEditText2.selectionEnd
 				binding.textInputEditText2.setText(taskItemModel?.notes)
-				binding.textInputEditText2.addTextChangedListener(DebounceTextWatcher(onItem))
+				binding.textInputEditText2.setSelection(cursorPosition)
+				binding.textInputEditText2.removeTextChangedListener(listenerTextChanged)
+				binding.textInputEditText2.addTextChangedListener(listenerTextChanged)
 			}
 			1 -> {
 				val binding = holder.binding as LayoutDueDateBinding

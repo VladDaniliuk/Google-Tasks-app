@@ -13,7 +13,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 interface TaskRepository {
-	//fun changeTask(taskListId: String, taskId: String, newName: String): Completable
 	fun changeTask(taskListId: String, task: Task): Completable
 	fun completeTask(task: TaskItemModel): Completable
 	fun createTask(

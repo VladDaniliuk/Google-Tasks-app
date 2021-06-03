@@ -19,14 +19,15 @@ import com.example.tasklist.view.adapter.TaskAdapter
 import com.example.tasklist.view.itemModel.TaskItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
-	var task = MutableLiveData<TaskItemModel>()
+	private var editDisposable: Disposable? = null
 
+	var task = MutableLiveData<TaskItemModel>()
 	val fetchInProgress = MutableLiveData(false)
 
 	val onAddDueDateClick = SingleLiveEvent<Unit>()
@@ -47,9 +48,10 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	}
 	var taskControlsAdapter = TaskAdapter(
 		{ onAddDueDateClick.call() },
-		{ onDeleteDueDateClick.call() },
-		onNoteEdit
-	)
+		{ onDeleteDueDateClick.call() }
+	) {
+		onNoteEdit.postValue(it)
+	}
 	val taskAdapter = BaseItemAdapter<TaskItemModel, LayoutSubTaskBinding>(
 		BR.model,
 		R.layout.layout_sub_task
@@ -174,10 +176,18 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 			})
 	}
 
-	fun changeTask(due: String? = "", notes: String? = task.value?.notes) {
-		taskRepository.changeTask(id!!.first, Task(id!!.second, due = due, notes = notes))
-			.subscribeOn(Schedulers.io())
-			.subscribe({}, {})
+	fun changeTask(due: String? = null, notes: String? = task.value?.notes) {
+		editDisposable?.dispose()
+		editDisposable = if (due == null) {
+			taskRepository.changeTask(id!!.first, Task(id!!.second, notes = notes))
+				.subscribeOn(Schedulers.io())
+				.subscribe({}, {})
+		} else {
+			taskRepository.changeTask(id!!.first, Task(id!!.second, due = due, notes = notes))
+				.subscribeOn(Schedulers.io())
+				.subscribe({}, {})
+		}
+
 	}
 
 	companion object Strings {
