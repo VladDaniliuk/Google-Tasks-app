@@ -16,6 +16,7 @@ import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.taskList.TaskListViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +25,15 @@ class TaskListFragment : Fragment() {
 	private val viewModel: TaskListViewModel by viewModels()
 	private val args: TaskListFragmentArgs by navArgs()
 	private lateinit var binding: FragmentTaskListBinding
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
+		sharedElementEnterTransition = MaterialContainerTransform().apply {
+			duration = 3000L
+			isElevationShadowEnabled = true
+		}
+	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,

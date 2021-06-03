@@ -1,5 +1,6 @@
 package com.example.tasklist.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -57,6 +58,7 @@ class UserItemDiffCallback<V : BaseItemModel> : DiffUtil.ItemCallback<V>() {
 	override fun areItemsTheSame(oldItem: V, newItem: V): Boolean =
 		oldItem.id == newItem.id
 
+	@SuppressLint("DiffUtilEquals")
 	override fun areContentsTheSame(oldItem: V, newItem: V): Boolean =
 		oldItem == newItem
 }

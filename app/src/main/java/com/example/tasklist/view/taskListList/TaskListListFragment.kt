@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.taskListList.TaskListListViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -70,11 +73,22 @@ class TaskListListFragment : Fragment() {
 	}
 
 	private fun navigateToTaskList(id: String) {
-		findNavController()
-			.navigate(
-				TaskListListFragmentDirections
-					.actionTaskListListFragmentToTaskListFragment(id)
-			)
+		reenterTransition = MaterialElevationScale(true).apply {
+			duration = 3000.toLong()
+		}
+		val extras = FragmentNavigatorExtras(binding.listView to "id")
+
+/*with(findNavController()) {
+	currentDestination?.getAction(TaskListListFragmentDirections
+		.actionTaskListListFragmentToTaskListFragment(id).actionId)?.let {
+			navigate(TaskListListFragmentDirections
+				.actionTaskListListFragmentToTaskListFragment(id),extras)
+	}
+}*/
+		findNavController().navigate(
+			TaskListListFragmentDirections
+				.actionTaskListListFragmentToTaskListFragment(id), extras
+		)
 	}
 
 	private fun onList(it: List<TaskListItemModel>) {
