@@ -12,7 +12,9 @@
 
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:transitionName="shared_sub_element"
+		android:transitionGroup="true">
 
 		<com.google.android.material.appbar.AppBarLayout
 			android:id="@+id/main.appbar"
@@ -49,9 +51,9 @@
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/recyclerView"
+				itemTouchHelper="@{viewModel.onDeleteBaseClick}"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				itemTouchHelper="@{viewModel.onDeleteBaseClick}"
 				android:nestedScrollingEnabled="true"
 				android:overScrollMode="never"
 				app:adapter="@{viewModel.adapter}"

@@ -99,8 +99,10 @@ class TaskListViewModel @Inject constructor(
 								it.due,
 								task.task.notes,
 								object : SimpleTaskClickListener() {
-
-									override fun onTaskExecuteClick(model: TaskItemModel, view: View) {
+									override fun onTaskExecuteClick(
+										model: TaskItemModel,
+										view: View
+									) {
 										taskRepository.completeTask(model)
 											.subscribeOn(Schedulers.computation())
 											.subscribe()

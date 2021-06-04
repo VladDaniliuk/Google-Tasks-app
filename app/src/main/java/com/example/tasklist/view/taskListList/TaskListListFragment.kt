@@ -22,9 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TaskListListFragment : Fragment() {
-
-	private val viewModel: TaskListListViewModel by viewModels()
 	private lateinit var binding: FragmentTaskListListBinding
+	private val viewModel: TaskListListViewModel by viewModels()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -45,6 +44,9 @@ class TaskListListFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		postponeEnterTransition()
+		view.doOnPreDraw { startPostponedEnterTransition() }
 
 		setFragmentResultListener("requestKey") { _, bundle ->
 			bundle.getString("id")?.let { id ->
@@ -91,9 +93,6 @@ class TaskListListFragment : Fragment() {
 
 	private fun onList(it: List<TaskListItemModel>) {
 		viewModel.adapter.submitList(it)
-		/*(view?.parent as? ViewGroup)?.doOnPreDraw {
-			startPostponedEnterTransition()
-		}*/
 	}
 
 	@SuppressLint("ShowToast")
