@@ -10,7 +10,7 @@ open class BaseViewModel : ViewModel() {
 
 	val onCreateBaseClick = SingleLiveEvent<Unit>()
 	val onDeleteBaseClick = SingleLiveEvent<String>()
-	val onBaseClick = SingleLiveEvent<String>()
+	val onBaseClick = SingleLiveEvent<Pair<String, View>>()
 	val onDeleteBaseResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
 
 	val createBaseClickListener = View.OnClickListener {

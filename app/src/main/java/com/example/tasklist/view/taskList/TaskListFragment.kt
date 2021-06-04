@@ -1,6 +1,7 @@
 package com.example.tasklist.view.taskList
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,10 +29,8 @@ class TaskListFragment : Fragment() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-
 		sharedElementEnterTransition = MaterialContainerTransform().apply {
-			duration = 3000L
-			isElevationShadowEnabled = true
+			scrimColor = Color.TRANSPARENT
 		}
 	}
 
@@ -40,12 +39,14 @@ class TaskListFragment : Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
+		postponeEnterTransition()
 		binding = FragmentTaskListBinding.inflate(inflater, container, false)
 
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
 
 		viewModel.parentId = args.parentId
+		binding.root.transitionName = args.parentId
 
 		binding.mainToolbar.inflateMenu(R.menu.menu_task_list)
 		binding.mainToolbar.setOnMenuItemClickListener {
@@ -67,6 +68,7 @@ class TaskListFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		//postponeEnterTransition()
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchBase()
 		}
@@ -75,13 +77,16 @@ class TaskListFragment : Fragment() {
 			findNavController().navigate(
 				TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(
 					viewModel.parentId!!,
-					it
+					it.first
 				)
 			)
 		}
 
 		viewModel.list.observe(viewLifecycleOwner) {
+			val currentList = viewModel.adapter.currentList
 			onList(it)
+			if(currentList.isEmpty())
+				startPostponedEnterTransition()
 		}
 
 		viewModel.onExecuteTaskResult.observe(viewLifecycleOwner) {

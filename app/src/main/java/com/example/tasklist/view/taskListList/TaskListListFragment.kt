@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -16,7 +16,6 @@ import com.example.tasklist.databinding.FragmentTaskListListBinding
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.taskListList.TaskListListViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,6 +38,7 @@ class TaskListListFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		//postponeEnterTransition()
 
 		setFragmentResultListener("requestKey") { _, bundle ->
 			bundle.getString("id")?.let { id ->
@@ -55,7 +55,7 @@ class TaskListListFragment : Fragment() {
 		}
 
 		viewModel.onBaseClick.observe(viewLifecycleOwner) {
-			navigateToTaskList(it)
+			navigateToTaskList(it.first, it.second)
 		}
 
 		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
@@ -72,27 +72,20 @@ class TaskListListFragment : Fragment() {
 		}
 	}
 
-	private fun navigateToTaskList(id: String) {
-		reenterTransition = MaterialElevationScale(true).apply {
-			duration = 3000.toLong()
-		}
-		val extras = FragmentNavigatorExtras(binding.listView to "id")
-
-/*with(findNavController()) {
-	currentDestination?.getAction(TaskListListFragmentDirections
-		.actionTaskListListFragmentToTaskListFragment(id).actionId)?.let {
-			navigate(TaskListListFragmentDirections
-				.actionTaskListListFragmentToTaskListFragment(id),extras)
-	}
-}*/
+	private fun navigateToTaskList(id: String, view: View) {
+		val extras = FragmentNavigatorExtras(binding.insertTaskList to "shared_element_button", view to id)
 		findNavController().navigate(
-			TaskListListFragmentDirections
-				.actionTaskListListFragmentToTaskListFragment(id), extras
+			TaskListListFragmentDirections.actionTaskListListFragmentToTaskListFragment(
+				id
+			), extras
 		)
 	}
 
 	private fun onList(it: List<TaskListItemModel>) {
 		viewModel.adapter.submitList(it)
+		/*(view?.parent as? ViewGroup)?.doOnPreDraw {
+			startPostponedEnterTransition()
+		}*/
 	}
 
 	@SuppressLint("ShowToast")

@@ -47,7 +47,7 @@ class ChangeTaskViewModel @Inject constructor(
 			.subscribeOn(Schedulers.computation())
 			.map { m ->
 				m.map { taskList ->
-					TaskListItemModel(taskList.id, taskList.title) {}
+					TaskListItemModel(taskList.id, taskList.title)
 				}
 			}
 			.subscribe {

@@ -111,12 +111,12 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 							it.due,
 							it.notes,
 							object : SimpleTaskClickListener() {
-								override fun onTaskExecuteClick(model: TaskItemModel) {
+								override fun onTaskExecuteClick(model: TaskItemModel, view: View) {
 									taskRepository.completeTask(model)
 										.subscribeOn(Schedulers.computation()).subscribe()
 								}
 
-								override fun onTaskItemClick(model: TaskItemModel) {
+								override fun onTaskItemClick(model: TaskItemModel, view: View) {
 									onTaskClick.postValue(model.id)
 								}
 							}

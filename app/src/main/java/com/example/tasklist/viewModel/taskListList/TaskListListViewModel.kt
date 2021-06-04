@@ -30,8 +30,8 @@ class TaskListListViewModel @Inject constructor(
 			.subscribeOn(Schedulers.computation())
 			.map { m ->
 				m.map { taskList ->
-					TaskListItemModel(taskList.id, taskList.title) {
-						onBaseClick.postValue(it)
+					TaskListItemModel(taskList.id, taskList.title) { id, view ->
+						onBaseClick.postValue(id to view)
 					}
 				}
 			}

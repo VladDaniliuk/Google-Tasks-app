@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
@@ -32,6 +33,7 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 		fun bind(item: T, variableId: Int) {
 			binding.setVariable(variableId, item)
 			binding.executePendingBindings()
+			ViewCompat.setTransitionName(binding.root,item.id)
 		}
 
 		/*override fun getLifecycle(): Lifecycle {
