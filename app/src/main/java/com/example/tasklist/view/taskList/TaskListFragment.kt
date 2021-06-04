@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
+import com.example.tasklist.dev.themeColor
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.taskList.TaskListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -31,6 +33,7 @@ class TaskListFragment : Fragment() {
 		super.onCreate(savedInstanceState)
 		sharedElementEnterTransition = MaterialContainerTransform().apply {
 			scrimColor = Color.TRANSPARENT
+			setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
 		}
 	}
 
@@ -39,14 +42,12 @@ class TaskListFragment : Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		postponeEnterTransition()
 		binding = FragmentTaskListBinding.inflate(inflater, container, false)
 
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
 
 		viewModel.parentId = args.parentId
-		binding.root.transitionName = args.parentId
 
 		binding.mainToolbar.inflateMenu(R.menu.menu_task_list)
 		binding.mainToolbar.setOnMenuItemClickListener {
@@ -68,7 +69,6 @@ class TaskListFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		//postponeEnterTransition()
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchBase()
 		}
@@ -83,10 +83,7 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.list.observe(viewLifecycleOwner) {
-			val currentList = viewModel.adapter.currentList
 			onList(it)
-			if(currentList.isEmpty())
-				startPostponedEnterTransition()
 		}
 
 		viewModel.onExecuteTaskResult.observe(viewLifecycleOwner) {

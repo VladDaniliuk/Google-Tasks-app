@@ -16,6 +16,8 @@ import com.example.tasklist.databinding.FragmentTaskListListBinding
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.taskListList.TaskListListViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialElevationScale
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,6 +25,11 @@ class TaskListListFragment : Fragment() {
 
 	private val viewModel: TaskListListViewModel by viewModels()
 	private lateinit var binding: FragmentTaskListListBinding
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		enterTransition = MaterialFadeThrough()
+	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -38,7 +45,6 @@ class TaskListListFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		//postponeEnterTransition()
 
 		setFragmentResultListener("requestKey") { _, bundle ->
 			bundle.getString("id")?.let { id ->
@@ -73,7 +79,9 @@ class TaskListListFragment : Fragment() {
 	}
 
 	private fun navigateToTaskList(id: String, view: View) {
-		val extras = FragmentNavigatorExtras(binding.insertTaskList to "shared_element_button", view to id)
+		exitTransition = MaterialElevationScale(false)
+		reenterTransition = MaterialElevationScale(true)
+		val extras = FragmentNavigatorExtras(view to "shared_element")
 		findNavController().navigate(
 			TaskListListFragmentDirections.actionTaskListListFragmentToTaskListFragment(
 				id
