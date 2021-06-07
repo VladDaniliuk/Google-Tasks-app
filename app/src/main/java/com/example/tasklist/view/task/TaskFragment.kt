@@ -83,7 +83,7 @@ class TaskFragment : Fragment() {
 		viewModel.onTaskClick.observe(viewLifecycleOwner) {
 			exitTransition = MaterialElevationScale(false)
 			reenterTransition = MaterialElevationScale(true)
-			val extras = FragmentNavigatorExtras(view to "shared_sub_element")
+			val extras = FragmentNavigatorExtras(it.second to "shared_sub_element")
 			findNavController().navigate(
 				TaskFragmentDirections.actionTaskFragmentSelf(
 					viewModel.id!!.first,
