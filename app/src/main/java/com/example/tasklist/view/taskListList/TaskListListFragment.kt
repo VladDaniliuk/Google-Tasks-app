@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TaskListListFragment : Fragment() {
-
 	private val viewModel: TaskListListViewModel by viewModels()
 	private lateinit var binding: FragmentTaskListListBinding
 
@@ -37,8 +36,8 @@ class TaskListListFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		setFragmentResultListener("requestKey") { _, bundle ->
-			bundle.getString("id")?.let { id ->
+		setFragmentResultListener(getString(R.string.request_key)) { _, bundle ->
+			bundle.getString(getString(R.string.request_value))?.let { id ->
 				viewModel.deleteBase(id)
 			}
 		}

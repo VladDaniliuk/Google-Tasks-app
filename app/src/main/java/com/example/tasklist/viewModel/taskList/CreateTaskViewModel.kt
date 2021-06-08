@@ -26,7 +26,7 @@ class CreateTaskViewModel @Inject constructor(
 	}
 
 	override fun onCreateBaseClick() {
-		isClicked.postValue(true)
+		isLoading.postValue(true)
 		taskRepository.createTask(
 			taskListId!!,
 			taskParentId,
@@ -37,7 +37,7 @@ class CreateTaskViewModel @Inject constructor(
 			.subscribe({
 				onCreateBaseFinish.call()
 			}, {
-				isClicked.postValue(false)
+				isLoading.postValue(false)
 				onCreateBaseError.call()
 			})
 	}

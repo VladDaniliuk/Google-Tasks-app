@@ -31,4 +31,6 @@
 	<string name="failed">failed</string>
 	<string name="completing_info">Completing %1$s %2$s</string>
 	<string name="cancel" tools:ignore="ButtonCase">cancel</string>
+	<string name="request_key">requestKey</string>
+	<string name="request_value">id</string>
 </resources>

@@ -20,7 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TaskListFragment : Fragment() {
-
 	private val viewModel: TaskListViewModel by viewModels()
 	private val args: TaskListFragmentArgs by navArgs()
 	private lateinit var binding: FragmentTaskListBinding
@@ -36,22 +35,6 @@ class TaskListFragment : Fragment() {
 		binding.lifecycleOwner = viewLifecycleOwner
 
 		viewModel.parentId = args.parentId
-
-		binding.mainToolbar.inflateMenu(R.menu.menu_task_list)
-		binding.mainToolbar.setOnMenuItemClickListener {
-			if (it.itemId == R.id.delete) {
-				setFragmentResult("requestKey", bundleOf("id" to viewModel.parentId))
-				findNavController().popBackStack()
-				return@setOnMenuItemClickListener true
-			} else {
-				findNavController().navigate(
-					TaskListFragmentDirections.actionTaskListFragmentToChangeTaskListFragment(
-						viewModel.parentId!!
-					)
-				)
-				return@setOnMenuItemClickListener true
-			}
-		}
 
 		return binding.root
 	}
@@ -72,6 +55,22 @@ class TaskListFragment : Fragment() {
 
 		viewModel.list.observe(viewLifecycleOwner) {
 			onList(it)
+		}
+
+		viewModel.onTaskListDelete.observe(viewLifecycleOwner) {
+			setFragmentResult(
+				getString(R.string.request_key),
+				bundleOf(getString(R.string.request_value) to viewModel.parentId)
+			)
+			findNavController().popBackStack()
+		}
+
+		viewModel.onTaskListEdit.observe(viewLifecycleOwner) {
+			findNavController().navigate(
+				TaskListFragmentDirections.actionTaskListFragmentToChangeTaskListFragment(
+					viewModel.parentId!!
+				)
+			)
 		}
 
 		viewModel.onExecuteTaskResult.observe(viewLifecycleOwner) {
