@@ -106,7 +106,7 @@ class TaskListFragment : Fragment() {
 	private fun showSnackBarResult(id: String) {
 		Snackbar.make(
 			requireView(),
-			completing + id + failed,
+			getString(R.string.completing_info, id, getString(R.string.failed)),
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTask).show()
 	}
@@ -115,9 +115,12 @@ class TaskListFragment : Fragment() {
 	private fun showSnackBarDelete(id: String, isCompleted: Boolean) {
 		Snackbar.make(
 			requireView(),
-			deleting + if (isCompleted) completed else failed,
+			getString(
+				R.string.deleting_info,
+				if (isCompleted) getString(R.string.completed) else getString(R.string.failed)
+			),
 			Snackbar.LENGTH_SHORT
-		).setAction(cancel) {
+		).setAction(getString(R.string.cancel)) {
 			viewModel.deleteBase(id, false)
 		}
 			.setAnchorView(binding.insertTask).show()
@@ -127,17 +130,11 @@ class TaskListFragment : Fragment() {
 	private fun showSnackBarRestore(completed: Boolean) {
 		Snackbar.make(
 			requireView(),
-			restore + if (completed) completed else failed,
+			getString(
+				R.string.restoring_info,
+				if (completed) getString(R.string.completed) else getString(R.string.failed)
+			),
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTask).show()
-	}
-
-	companion object {
-		const val completing = "Completing "
-		const val failed = " failed"
-		const val deleting = "Deleting "
-		const val completed = " completed"
-		const val cancel = "Cancel"
-		const val restore = "Restore"
 	}
 }

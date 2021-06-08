@@ -84,15 +84,16 @@ class TaskListListFragment : Fragment() {
 	@SuppressLint("ShowToast")
 	private fun showSnackBarResult(id: String, completed: Boolean) {
 		Snackbar.make(
-			requireView(), "Deleting ${
-				(viewModel.list.value?.filter {
-					it.id == id
-				}?.toList()?.get(0)?.title)
-			}" + if (completed) {
-				" completed"
-			} else {
-				" failed"
-			}, Snackbar.LENGTH_SHORT
+			requireView(),
+			getString(
+				R.string.deleting_list_info,
+				(viewModel.list.value?.find { it.id == id }?.title),
+				if (completed) {
+					getString(R.string.completed)
+				} else {
+					getString(R.string.failed)
+				}
+			), Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTaskList).show()
 	}
 }
