@@ -7,7 +7,7 @@ import com.example.tasklist.dev.SingleLiveEvent
 
 open class CreateBaseViewModel : ViewModel() {
 	val baseName = MutableLiveData<String>()
-	var isClicked = MutableLiveData(false)
+	var isLoading = MutableLiveData(false)
 
 	val onCreateBaseClick = SingleLiveEvent<Unit>()
 	val onCreateBaseFinish = SingleLiveEvent<Unit>()

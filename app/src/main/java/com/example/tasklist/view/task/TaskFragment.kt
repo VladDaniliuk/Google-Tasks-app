@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskBinding
 import com.example.tasklist.view.taskList.CreateTaskFragment
 import com.example.tasklist.view.taskList.TaskListFragment
@@ -124,7 +125,7 @@ class TaskFragment : Fragment() {
 	private fun showSnackBarResult(id: String) {
 		Snackbar.make(
 			requireView(),
-			completing + id + failed,
+			getString(R.string.completing_info, id, getString(R.string.failed)),
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.completeTask).show()
 	}
@@ -133,9 +134,12 @@ class TaskFragment : Fragment() {
 	private fun showSnackBarDelete(id: String, isCompleted: Boolean) {
 		Snackbar.make(
 			requireView(),
-			deleting + if (isCompleted) completed else failed,
+			getString(
+				R.string.deleting_info,
+				if (isCompleted) getString(R.string.completed) else getString(R.string.failed)
+			),
 			Snackbar.LENGTH_SHORT
-		).setAction(TaskListFragment.cancel) {
+		).setAction(getString(R.string.cancel)) {
 			viewModel.deleteSubTask(id, false)
 		}
 			.setAnchorView(binding.completeTask).show()
@@ -145,18 +149,11 @@ class TaskFragment : Fragment() {
 	private fun showSnackBarRestore(complete: Boolean) {
 		Snackbar.make(
 			requireView(),
-			restore + if (complete) completed else failed,
+			getString(
+				R.string.restoring_info,
+				if (complete) getString(R.string.completed) else getString(R.string.failed)
+			),
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.completeTask).show()
-	}
-
-	companion object {
-		const val choice = "choice"
-		const val delete = "Delete"
-		const val completing = "Completing "
-		const val failed = " failed"
-		const val deleting = "Deleting "
-		const val completed = " completed"
-		const val restore = "Restore"
 	}
 }
