@@ -139,9 +139,9 @@ class TaskListViewModel @Inject constructor(
 
 	override fun deleteBase(id: String, forDelete: Boolean) {
 		if (forDelete) {
-			list.value?.filter {
+			list.value?.find {
 				it.id == id
-			}?.toList()?.get(0)?.clickable?.postValue(false)
+			}?.clickable?.postValue(false)
 		}
 		taskRepository.onDeleteTask(parentId!!, id, forDelete)
 			.subscribeOn(Schedulers.io())

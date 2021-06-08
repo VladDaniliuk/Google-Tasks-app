@@ -94,8 +94,10 @@ class ChangeTaskFragment : BottomSheetDialogFragment() {
 		).setAnchorView(binding.root).show()
 
 		if (it.second) {
-			if (it.first) setFragmentResult(requestKey, bundleOf(choice to delete))
-			else setFragmentResult(requestKey, bundleOf(choice to rename))
+			if (it.first)
+				setFragmentResult(changeTaskRequestKey, bundleOf(choice to delete))
+			else
+				setFragmentResult(changeTaskRequestKey, bundleOf(choice to rename))
 			findNavController().popBackStack()
 		}
 	}
@@ -106,6 +108,6 @@ class ChangeTaskFragment : BottomSheetDialogFragment() {
 		const val delete = "Delete"
 		const val ok = "Ok"
 		const val rename = "Rename"
-		const val requestKey = "requestKey"
+		const val changeTaskRequestKey = "changeTaskRequestKey"
 	}
 }

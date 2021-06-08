@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 	<string name="secret">5GR5Wg2iMzQmvSGaEI66DBoX</string>
 	<string name="app_name">Task List</string>
 	<string name="sign_in_with_google">Sign In with Google</string>
@@ -24,4 +24,13 @@
 	<string name="add_subtask">Add subtask</string>
 	<string name="subtask">Subtasks</string>
 	<string name="additional_info">Additional info</string>
+	<string name="deleting_list_info">Deleting %1$s %2$s</string>
+	<string name="deleting_info">Deleting %1$s</string>
+	<string name="restoring_info">Restoring %1$s</string>
+	<string name="completed">completed</string>
+	<string name="failed">failed</string>
+	<string name="completing_info">Completing %1$s %2$s</string>
+	<string name="cancel" tools:ignore="ButtonCase">cancel</string>
+	<string name="request_key">requestKey</string>
+	<string name="request_value">id</string>
 </resources>

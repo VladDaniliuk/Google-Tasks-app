@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.taskList.TaskListViewModel
@@ -20,7 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TaskListFragment : Fragment() {
-
 	private val viewModel: TaskListViewModel by viewModels()
 	private val args: TaskListFragmentArgs by navArgs()
 	private lateinit var binding: FragmentTaskListBinding
@@ -41,14 +40,6 @@ class TaskListFragment : Fragment() {
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-
-		setFragmentResultListener(requestKey) { _, bundle ->
-			bundle.getString(requestValue)?.let { id ->
-				viewModel.deleteBase(id, true)
-			}
-		}
-
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchBase()
 		}
@@ -67,7 +58,10 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.onTaskListDelete.observe(viewLifecycleOwner) {
-			setFragmentResult(requestKey, bundleOf(requestValue to viewModel.parentId))
+			setFragmentResult(
+				getString(R.string.request_key),
+				bundleOf(getString(R.string.request_value) to viewModel.parentId)
+			)
 			findNavController().popBackStack()
 		}
 
@@ -103,17 +97,15 @@ class TaskListFragment : Fragment() {
 		}
 	}
 
-
 	private fun onList(it: List<TaskItemModel>) {
 		viewModel.adapter.submitList(it)
 	}
-
 
 	@SuppressLint("ShowToast")
 	private fun showSnackBarResult(id: String) {
 		Snackbar.make(
 			requireView(),
-			completing + id + failed,
+			getString(R.string.completing_info, id, getString(R.string.failed)),
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTask).show()
 	}
@@ -122,9 +114,12 @@ class TaskListFragment : Fragment() {
 	private fun showSnackBarDelete(id: String, isCompleted: Boolean) {
 		Snackbar.make(
 			requireView(),
-			deleting + if (isCompleted) completed else failed,
+			getString(
+				R.string.deleting_info,
+				if (isCompleted) getString(R.string.completed) else getString(R.string.failed)
+			),
 			Snackbar.LENGTH_SHORT
-		).setAction(cancel) {
+		).setAction(getString(R.string.cancel)) {
 			viewModel.deleteBase(id, false)
 		}
 			.setAnchorView(binding.insertTask).show()
@@ -134,19 +129,11 @@ class TaskListFragment : Fragment() {
 	private fun showSnackBarRestore(completed: Boolean) {
 		Snackbar.make(
 			requireView(),
-			restore + if (completed) completed else failed,
+			getString(
+				R.string.restoring_info,
+				if (completed) getString(R.string.completed) else getString(R.string.failed)
+			),
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTask).show()
-	}
-
-	companion object {
-		const val requestKey = "requestKey"
-		const val requestValue = "id"
-		const val completing = "Completing "
-		const val failed = " failed"
-		const val deleting = "Deleting "
-		const val completed = " completed"
-		const val cancel = "Cancel"
-		const val restore = "Restore"
 	}
 }

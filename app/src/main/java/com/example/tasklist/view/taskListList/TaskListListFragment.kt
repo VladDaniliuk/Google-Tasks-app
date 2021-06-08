@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TaskListListFragment : Fragment() {
-
 	private val viewModel: TaskListListViewModel by viewModels()
 	private lateinit var binding: FragmentTaskListListBinding
 
@@ -37,8 +36,8 @@ class TaskListListFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		setFragmentResultListener(requestKey) { _, bundle ->
-			bundle.getString(requestValue)?.let { id ->
+		setFragmentResultListener(getString(R.string.request_key)) { _, bundle ->
+			bundle.getString(getString(R.string.request_value))?.let { id ->
 				viewModel.deleteBase(id)
 			}
 		}
@@ -84,20 +83,16 @@ class TaskListListFragment : Fragment() {
 	@SuppressLint("ShowToast")
 	private fun showSnackBarResult(id: String, completed: Boolean) {
 		Snackbar.make(
-			requireView(), "Deleting ${
-				(viewModel.list.value?.filter {
-					it.id == id
-				}?.toList()?.get(0)?.title)
-			}" + if (completed) {
-				" completed"
-			} else {
-				" failed"
-			}, Snackbar.LENGTH_SHORT
+			requireView(),
+			getString(
+				R.string.deleting_list_info,
+				(viewModel.list.value?.find { it.id == id }?.title),
+				if (completed) {
+					getString(R.string.completed)
+				} else {
+					getString(R.string.failed)
+				}
+			), Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTaskList).show()
-	}
-
-	companion object {
-		const val requestKey = "requestKey"
-		const val requestValue = "id"
 	}
 }

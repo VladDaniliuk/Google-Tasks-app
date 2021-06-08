@@ -154,6 +154,16 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 			})
 	}
 
+	fun deleteTask() {
+		taskRepository.onDeleteTask(task.value?.parentId!!, task.value?.id!!, true)
+			.subscribeOn(Schedulers.io())
+			.subscribe({
+				onDeleteBaseResult.postValue(Triple(task.value?.id!!, second = true, third = true))
+			}, {
+				onDeleteBaseResult.postValue(Triple(task.value?.id!!, second = true, third = false))
+			})
+	}
+
 	companion object Strings {
 		const val completed = "completed"
 		const val needAction = "needsAction"

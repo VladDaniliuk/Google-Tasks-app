@@ -14,7 +14,6 @@ import javax.inject.Inject
 class ChangeTaskListViewModel @Inject constructor(
 	private val taskListRepository: TaskListRepository
 ) : ViewModel() {
-
 	val isLoading = MutableLiveData(false)
 	val taskName = MutableLiveData<String>()
 

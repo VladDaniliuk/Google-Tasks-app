@@ -70,8 +70,8 @@ class TaskListListViewModel @Inject constructor(
 	* So get first element of list(0) and make it clickable/unclickable
 	*/
 	private fun setTaskListClickable(id: String, clickable: Boolean) {
-		list.value?.filter {
+		list.value?.find {
 			it.id == id
-		}?.toList()?.get(0)?.clickable?.postValue(clickable)
+		}?.clickable?.postValue(clickable)
 	}
 }

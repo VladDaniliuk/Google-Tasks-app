@@ -11,7 +11,6 @@ import javax.inject.Inject
 class CreateTaskListViewModel @Inject constructor(
 	private val taskListRepository: TaskListRepository
 ) : CreateBaseViewModel() {
-
 	override fun onCreateBaseClick() {
 		isLoading.postValue(true)
 		taskListRepository.createTaskList(baseName.value.orEmpty())
