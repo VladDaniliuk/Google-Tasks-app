@@ -1,5 +1,9 @@
 package com.example.tasklist.di
 
+import android.content.res.Resources
+import com.example.tasklist.R
+import com.example.tasklist.api.model.body.GoogleRefreshToken
+import com.example.tasklist.api.model.response.AccessTokenResponse
 import com.example.tasklist.api.service.SignInApi
 import com.example.tasklist.api.service.SignInApiHolder
 import com.example.tasklist.api.service.TaskListsApi
@@ -14,6 +18,7 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,36 +30,66 @@ class RetrofitModule {
 	@Provides
 	fun provideSignInApiHolder(): SignInApiHolder = SignInApiHolder()
 
-	/*private fun provideInterceptor(
+	private fun provideInterceptor(
 		preferenceManager: PreferenceManager,
-		chain: Interceptor.Chain
+		chain: Interceptor.Chain,
+		signInApiHolder: SignInApiHolder,
 	): Response {
 		return preferenceManager.getToken?.let { token ->
 			preferenceManager.getTokenType?.let { tokenType ->
-				chain.proceed(
+				val v = chain.proceed(
 					chain.request().newBuilder()
 						.addHeader("Authorization", "$tokenType $token").build()
 				)
+				when (v.code) {
+					403, 401 -> {
+						Timber.v("401/403")
+
+						val accessTokenResponse: AccessTokenResponse? =
+							signInApiHolder.signInApi?.refreshToken(
+								GoogleRefreshToken(
+									Resources.getSystem().getString(R.string.default_web_client_id),
+									Resources.getSystem().getString(R.string.secret),
+									"refresh_token",
+									preferenceManager.getRefreshToken!!
+								)
+							)?.blockingGet()
+						preferenceManager.setUserToken(accessTokenResponse!!.accessToken)
+						preferenceManager.getToken?.let { token ->
+							chain.proceed(
+								chain.request().newBuilder()
+									.addHeader("Authorization", "$tokenType $token").build()
+							)
+						}
+					}
+					else -> {
+						Timber.v(v.code.toString())
+						v
+					}
+				}
 			} ?: run {
 				chain.proceed(chain.request())
 			}
 		} ?: run {
 			chain.proceed(chain.request())
 		}
-	}*/
+	}
 
 	@Provides
 	@Singleton
 	fun provideRetrofit(
-		tokenAuthenticator: TokenAuthenticator
+		preferenceManager: PreferenceManager,
+		signInApiHolder: SignInApiHolder,
 	): Retrofit {
 		return Retrofit.Builder().baseUrl(URL).client(
 			OkHttpClient.Builder().addInterceptor(
 				HttpLoggingInterceptor().setLevel(
 					HttpLoggingInterceptor.Level.BODY
 				)
-			)
-				.authenticator(tokenAuthenticator)
+			).addInterceptor { chain ->
+				provideInterceptor(preferenceManager, chain, signInApiHolder)
+			}
+//				.authenticator(tokenAuthenticator)
 				.build()
 		).addCallAdapterFactory(RxJava3CallAdapterFactory.create())
 			.addConverterFactory(GsonConverterFactory.create())
@@ -116,3 +151,35 @@ class TokenAuthenticator @Inject constructor(
 		}
 	}
 }
+/*
+class AuthenticationInterceptorRefreshToken @Inject constructor(
+	private val retrofitBuilder: RetrofitModule,
+	private val preferenceManager: PreferenceManager,
+	private val signInApiHolder: SignInApiHolder
+) : Interceptor {
+	@Throws(IOException::class)
+	override fun intercept(chain: Interceptor.Chain): Response {
+		//MAKE SYNCHRONIZED
+		synchronized(this) {
+			val originalRequest = chain.request()
+
+			preferenceManager.getToken?.let { token ->
+				preferenceManager.getTokenType?.let { tokenType ->
+
+					val authenticationRequest = originalRequest.newBuilder()
+						.addHeader(
+							"Authorization",
+							"$tokenType $token"
+						).build()
+					val initialResponse = chain.proceed(authenticationRequest)
+
+					return when (initialResponse.code) {
+						403, 401 -> {
+							return
+						}
+						else -> null
+					}
+				}
+			}
+
+		}*/
