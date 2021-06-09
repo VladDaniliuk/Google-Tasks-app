@@ -116,7 +116,7 @@ class TaskListFragment : Fragment() {
 	private fun navigateToTask(id: String, view: View) {
 		exitTransition = MaterialElevationScale(false)
 		reenterTransition = MaterialElevationScale(true)
-		val extras = FragmentNavigatorExtras(view to "shared_sub_element")
+		val extras = FragmentNavigatorExtras(view to id)
 		findNavController().navigate(
 			TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(
 				viewModel.parentId!!,

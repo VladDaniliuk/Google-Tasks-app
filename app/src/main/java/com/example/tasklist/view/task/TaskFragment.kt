@@ -61,8 +61,6 @@ class TaskFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		postponeEnterTransition()
-		view.doOnPreDraw { startPostponedEnterTransition() }
-
 		viewModel.onCompleteTaskClick.observe(viewLifecycleOwner) {
 			viewModel.onCompleteTaskClick()
 		}
@@ -73,6 +71,7 @@ class TaskFragment : Fragment() {
 
 		viewModel.task.observe(viewLifecycleOwner) {
 			viewModel.taskAdapter.submitList(it.list)
+			view.doOnPreDraw { startPostponedEnterTransition() }
 		}
 
 		viewModel.onTaskDelete.observe(viewLifecycleOwner) {
@@ -83,7 +82,7 @@ class TaskFragment : Fragment() {
 		viewModel.onTaskClick.observe(viewLifecycleOwner) {
 			exitTransition = MaterialElevationScale(false)
 			reenterTransition = MaterialElevationScale(true)
-			val extras = FragmentNavigatorExtras(it.second to "shared_sub_element")
+			val extras = FragmentNavigatorExtras(it.second to it.first)
 			findNavController().navigate(
 				TaskFragmentDirections.actionTaskFragmentSelf(
 					viewModel.id!!.first,
