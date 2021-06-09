@@ -24,7 +24,7 @@
 
 		<com.google.android.material.button.MaterialButton
 			android:id="@+id/materialButton"
-			isVisible="@{!viewModel.isClicked}"
+			isVisible="@{!viewModel.isLoading}"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8sp"
@@ -37,7 +37,7 @@
 
 		<com.google.android.material.progressindicator.LinearProgressIndicator
 			android:id="@+id/linearProgressIndicator"
-			isVisible="@{viewModel.isClicked}"
+			isVisible="@{viewModel.isLoading}"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:indeterminate="true"
@@ -50,7 +50,7 @@
 			android:layout_marginStart="8sp"
 			android:background="?selectableItemBackgroundBorderless"
 			android:contentDescription="@string/set_date"
-			android:clickable="@{!viewModel.isClicked}"
+			android:clickable="@{!viewModel.isLoading}"
 			android:onClick="@{viewModel.setDateClickListener}"
 			android:src="@drawable/ic_baseline_today_24"
 			app:layout_constraintBottom_toBottomOf="parent"
@@ -62,9 +62,9 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8sp"
-			app:closeIconEnabled="@{!viewModel.isClicked}"
+			app:closeIconEnabled="@{!viewModel.isLoading}"
 			isDue="@{viewModel.dueDate}"
-			android:clickable="@{!viewModel.isClicked}"
+			android:clickable="@{!viewModel.isLoading}"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintStart_toEndOf="@+id/picker"
 			app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />

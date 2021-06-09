@@ -14,8 +14,7 @@ import javax.inject.Inject
 class ChangeTaskListViewModel @Inject constructor(
 	private val taskListRepository: TaskListRepository
 ) : ViewModel() {
-
-	val isClicked = MutableLiveData(false)
+	val isLoading = MutableLiveData(false)
 	val taskName = MutableLiveData<String>()
 
 	val onChangeTaskListClick = SingleLiveEvent<Unit>()
@@ -43,7 +42,7 @@ class ChangeTaskListViewModel @Inject constructor(
 	}
 
 	fun changeTaskListClick() {
-		isClicked.postValue(true)
+		isLoading.postValue(true)
 		taskListId?.let { taskListId ->
 			taskName.value?.let { task ->
 				taskListRepository.changeTaskList(taskListId, task).subscribeOn(Schedulers.io())
@@ -51,7 +50,7 @@ class ChangeTaskListViewModel @Inject constructor(
 					.subscribe({
 						onChangeTaskListFinish.postValue(true)
 					}, {
-						isClicked.postValue(false)
+						isLoading.postValue(false)
 						onChangeTaskListFinish.postValue(false)
 					})
 			}

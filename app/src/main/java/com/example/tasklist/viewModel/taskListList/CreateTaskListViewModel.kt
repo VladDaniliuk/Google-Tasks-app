@@ -12,15 +12,14 @@ class CreateTaskListViewModel @Inject constructor(
 	private val taskListRepository: TaskListRepository
 ) : CreateBaseViewModel() {
 	override fun onCreateBaseClick() {
-		isClicked.postValue(true)
+		isLoading.postValue(true)
 		taskListRepository.createTaskList(baseName.value.orEmpty())
 			.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 			.subscribe({
 				onCreateBaseFinish.call()
 			}, {
-				isClicked.postValue(false)
+				isLoading.postValue(false)
 				onCreateBaseError.call()
 			})
 	}
-
 }

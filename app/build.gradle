@@ -94,7 +94,7 @@ dependencies {
 	testImplementation 'junit:junit:4.13.2'
 	implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 	implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
-	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.0"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10"
 	implementation "io.reactivex.rxjava3:rxjava:3.0.13-RC2"
 	implementation 'com.jakewharton.timber:timber:4.7.1'
 }

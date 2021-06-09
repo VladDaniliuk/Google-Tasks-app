@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
 
-open class SwipeController(val context: Context) : Callback() {
+open class SwipeController(private val context: Context) : Callback() {
 	override fun getMovementFlags(
 		recyclerView: RecyclerView,
 		viewHolder: RecyclerView.ViewHolder

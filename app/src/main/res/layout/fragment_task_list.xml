@@ -19,6 +19,8 @@
 		<com.google.android.material.appbar.AppBarLayout
 			android:id="@+id/main.appbar"
 			android:layout_width="match_parent"
+			app:liftOnScroll="true"
+			app:liftOnScrollTargetViewId="@id/list_view"
 			android:layout_height="250dp">
 
 			<com.google.android.material.appbar.CollapsingToolbarLayout
@@ -30,12 +32,14 @@
 				app:layout_scrollFlags="scroll|exitUntilCollapsed"
 				app:title="@{viewModel.listName}">
 
-				<com.google.android.material.appbar.MaterialToolbar
+				<androidx.appcompat.widget.Toolbar
 					android:id="@+id/main.toolbar"
 					android:layout_width="match_parent"
 					android:layout_height="?attr/actionBarSize"
 					app:expandedTitleTextAppearance="?textAppearanceHeadline6"
-					app:layout_collapseMode="pin" />
+					app:layout_collapseMode="pin"
+					app:menu="@menu/menu_task_list"
+					app:onMenuItemClickListener="@{viewModel.onMenuItemClickListener}" />
 			</com.google.android.material.appbar.CollapsingToolbarLayout>
 		</com.google.android.material.appbar.AppBarLayout>
 
@@ -48,9 +52,9 @@
 
 			<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/list_view"
-				itemTouchHelper="@{viewModel.onDeleteBaseClick}"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
+				itemTouchHelper="@{viewModel.onDeleteBaseClick}"
 				app:adapter="@{viewModel.adapter}"
 				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 				tools:itemCount="20"
