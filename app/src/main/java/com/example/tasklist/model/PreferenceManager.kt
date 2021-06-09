@@ -13,6 +13,7 @@ interface PreferenceManager {
 	val getTokenType: String?
 	val getRefreshToken: String?
 	fun setToken(userToken: AccessTokenResponse)
+	fun setUserToken(userToken: String)
 }
 
 class PreferenceManagerImpl @Inject constructor(@ApplicationContext context: Context) :
@@ -39,6 +40,12 @@ class PreferenceManagerImpl @Inject constructor(@ApplicationContext context: Con
 			putString("USER_TOKEN", userToken.accessToken)
 			putString("USER_REFRESH_TOKEN", userToken.refreshToken)
 			putString("USER_TOKEN_TYPE", userToken.tokenType)
+		}
+	}
+
+	override fun setUserToken(userToken: String) {
+		sharedPref.edit(true) {
+			putString("USER_TOKEN", userToken)
 		}
 	}
 }
