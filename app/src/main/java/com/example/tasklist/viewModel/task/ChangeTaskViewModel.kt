@@ -24,7 +24,7 @@ class ChangeTaskViewModel @Inject constructor(
 	val isClicked = MutableLiveData(false)
 
 	val onChangeTaskClick = SingleLiveEvent<Unit>()
-	val onChangeTaskClickResult = SingleLiveEvent<Pair<Boolean,Boolean>>()
+	val onChangeTaskClickResult = SingleLiveEvent<Pair<Boolean, Boolean>>()
 
 	var id: Pair<String, String>? = null
 		set(value) {
@@ -54,12 +54,14 @@ class ChangeTaskViewModel @Inject constructor(
 				taskListList.postValue(it)
 			}
 	}
+
 /*
 *	Pair(First,Second)
 *	First - Choice in rename/change tasklist
 *	Second - Connection
 * 	First : Rename - false | Change tasklist - true
 */
+
 	fun changeTask(newTaskListId: String? = null) {
 		isClicked.postValue(true)
 		if (newTaskListId != null) {
@@ -79,7 +81,7 @@ class ChangeTaskViewModel @Inject constructor(
 					})
 			}
 		} else {
-			taskRepository.changeTask(id!!.first, id!!.second, taskName.value!!)
+			taskRepository.changeTask(id!!.first, Task(id!!.second, taskName.value))
 				.subscribeOn(Schedulers.io())
 				.subscribe({
 					isClicked.postValue(false)

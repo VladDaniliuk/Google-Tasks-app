@@ -12,7 +12,7 @@ class TaskItemModel(
 	override val title: String,
 	var status: String,
 	val dueDate: String? = null,
-	val notes: String? = null,
+	var notes: String? = null,
 	private val onTaskClickListener: OnTaskClickListener?,
 	val list: List<TaskItemModel>? = null,
 	var subTaskVisibility: Int = View.GONE

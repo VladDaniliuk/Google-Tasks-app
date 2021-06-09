@@ -14,8 +14,15 @@ class AddSubTaskAdapter(private val onClick: View.OnClickListener) :
 	RecyclerView.Adapter<AddSubTaskAdapter.ViewHolder>() {
 	var taskItemModel: TaskItemModel? = null
 		set(value) {
-			field = value
-			notifyDataSetChanged()
+			if (field != value) {
+				if (field == null) {
+					field = value
+					notifyDataSetChanged()
+					return
+				}
+
+				field = value
+			}
 		}
 
 	inner class ViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)

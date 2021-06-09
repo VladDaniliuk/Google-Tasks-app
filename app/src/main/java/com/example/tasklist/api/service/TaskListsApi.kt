@@ -1,7 +1,6 @@
 package com.example.tasklist.api.service
 
 import com.example.tasklist.api.model.response.BaseListResponse
-import com.example.tasklist.api.model.response.BaseResponse
 import com.example.tasklist.api.model.response.TaskList
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -16,14 +15,16 @@ interface TaskListsApi {
 	fun getTaskList(@Path("taskListId") taskListId: String): Call<TaskList>*/
 
 	@POST("/tasks/v1/users/@me/lists")
-	fun insertTaskList(@Body taskList: TaskList): Single<BaseResponse<TaskList>>
+	fun insertTaskList(@Body taskList: TaskList): Single<TaskList>
 
 	@GET("/tasks/v1/users/@me/lists")
 	fun getAllTaskLists(): Single<BaseListResponse<TaskList>>
 
 	@PATCH("/tasks/v1/users/@me/lists/{taskList}")
-	fun patchTaskList(@Path("taskList") taskListId: String, @Body taskList: TaskList):
-			Single<BaseResponse<TaskList>>
+	fun patchTaskList(
+		@Path("taskList") taskListId: String,
+		@Body taskList: TaskList
+	): Single<TaskList>
 
 	/*@PUT("/tasks/v1/users/@me/lists/{taskList}")
 	fun updateTaskList(@Path("taskList") taskListId: String, @Body taskList: TaskList):

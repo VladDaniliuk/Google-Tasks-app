@@ -3,6 +3,13 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools">
 
+	<data>
+
+		<variable
+			name="onClick"
+			type="android.view.View.OnClickListener" />
+	</data>
+
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
@@ -11,6 +18,7 @@
 			android:id="@+id/chip4"
 			android:layout_width="0sp"
 			android:layout_height="wrap_content"
+			android:onClick="@{onClick}"
 			app:closeIconEnabled="true"
 			app:layout_constraintStart_toEndOf="@+id/picker"
 			app:layout_constraintTop_toTopOf="parent"
@@ -25,6 +33,7 @@
 			android:clickable="true"
 			android:focusable="true"
 			android:gravity="center_vertical"
+			android:onClick="@{onClick}"
 			android:text="@string/add_due_date"
 			app:layout_constraintBottom_toBottomOf="@+id/picker"
 			app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +48,7 @@
 			android:clickable="true"
 			android:contentDescription="@string/set_date"
 			android:focusable="true"
+			android:onClick="@{onClick}"
 			android:paddingHorizontal="@dimen/default_margin_start"
 			android:paddingTop="@dimen/default_margin_top"
 			android:paddingBottom="@dimen/default_margin_top"

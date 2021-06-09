@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 interface TaskRepository {
-	fun changeTask(taskListId: String, taskId: String, newName: String): Completable
+	fun changeTask(taskListId: String, task: Task): Completable
 	fun completeTask(task: TaskItemModel): Completable
 	fun createTask(
 		taskListId: String,
@@ -33,10 +33,10 @@ class TaskRepositoryImpl @Inject constructor(
 	private val tasksApi: TasksApi,
 	private val taskDao: TaskDao
 ) : TaskRepository {
-	override fun changeTask(taskListId: String, taskId: String, newName: String): Completable {
-		return tasksApi.patchTask(taskListId, taskId, Task(taskId, newName)).flatMapCompletable {
-			fetchTask(taskListId, taskId)
-			Completable.complete()
+	override fun changeTask(taskListId: String, task: Task): Completable {
+		return tasksApi.patchTask(taskListId, task.id, task).flatMapCompletable { taskItem ->
+			taskItem.parentId = taskListId
+			Completable.fromCallable { taskDao.updateTask(taskItem) }
 		}
 	}
 
@@ -50,9 +50,9 @@ class TaskRepositoryImpl @Inject constructor(
 	}
 
 	override fun fetchTask(parentId: String, taskId: String): Completable {
-		return tasksApi.getTask(parentId, taskId).flatMapCompletable {
-			it.resourse.parentId = parentId
-			Completable.fromCallable { taskDao.updateTask(it.resourse) }
+		return tasksApi.getTask(parentId, taskId).flatMapCompletable { taskItem ->
+			taskItem.parentId = parentId
+			Completable.fromCallable { taskDao.updateTask(taskItem) }
 		}
 	}
 
