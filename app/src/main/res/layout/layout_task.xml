@@ -85,6 +85,7 @@
 				android:layout_height="wrap_content"
 				android:visibility="@{model.subTaskVisibility}"
 				app:adapter="@{model.adapter}"
+				android:nestedScrollingEnabled="false"
 				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 				app:layout_constraintEnd_toStartOf="@+id/picker"
 				app:layout_constraintStart_toEndOf="@+id/materialCheckBox"
