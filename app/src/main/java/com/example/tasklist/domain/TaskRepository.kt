@@ -105,7 +105,9 @@ class TaskRepositoryImpl @Inject constructor(
 	override fun onDeleteTask(taskListId: String, taskId: String, onDelete: Boolean): Completable {
 		return tasksApi.patchTask(taskListId, taskId, Task(id = taskId, deleted = onDelete))
 			.flatMapCompletable {
-				fetchTasks(taskListId)
+				Completable.fromCallable {
+					taskDao.insertTask(it).subscribeOn(Schedulers.io()).subscribe()
+				}
 			}
 	}
 }

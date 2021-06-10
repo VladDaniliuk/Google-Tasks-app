@@ -63,8 +63,8 @@ class TaskListListFragment : Fragment() {
 		}
 
 		viewModel.onDeleteBaseResult.observe(viewLifecycleOwner) {
-			showSnackBarResult(it.first, it.second)
-			if (!it.second) viewModel.adapter.notifyDataSetChanged()
+			showSnackBarResult(it)
+			if (!it) viewModel.adapter.notifyDataSetChanged()
 		}
 	}
 
@@ -81,12 +81,11 @@ class TaskListListFragment : Fragment() {
 	}
 
 	@SuppressLint("ShowToast")
-	private fun showSnackBarResult(id: String, completed: Boolean) {
+	private fun showSnackBarResult(completed: Boolean) {
 		Snackbar.make(
 			requireView(),
 			getString(
-				R.string.deleting_list_info,
-				(viewModel.list.value?.find { it.id == id }?.title),
+				R.string.deleting_info,
 				if (completed) {
 					getString(R.string.completed)
 				} else {

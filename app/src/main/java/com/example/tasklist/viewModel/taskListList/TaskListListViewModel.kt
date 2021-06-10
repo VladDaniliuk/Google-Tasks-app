@@ -57,17 +57,16 @@ class TaskListListViewModel @Inject constructor(
 		setTaskListClickable(id, false)
 		taskListRepository.deleteTaskList(id).subscribeOn(Schedulers.io())
 			.subscribe({
-				onDeleteBaseResult.postValue(Triple(id, true, forDelete))
+				onDeleteBaseResult.postValue(true)
 			}, {
 				setTaskListClickable(id, true)
-				onDeleteBaseResult.postValue(Triple(id, false, forDelete))
+				onDeleteBaseResult.postValue(false)
 			})
 	}
 
 	/*
-	* Filter all taskLists by id, convert to list and get first element
-	* In this situation we always have only one element in filtered list
-	* So get first element of list(0) and make it clickable/unclickable
+	* Filter all taskLists by id
+	* So make it clickable/unclickable
 	*/
 	private fun setTaskListClickable(id: String, clickable: Boolean) {
 		list.value?.find {

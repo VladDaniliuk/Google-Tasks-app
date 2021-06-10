@@ -15,9 +15,9 @@
 		android:layout_height="wrap_content"
 		android:layout_marginHorizontal="16dp"
 		android:layout_marginVertical="8dp"
-		android:clickable="true"
+		android:clickable="@{model.clickable}"
 		android:focusable="true"
-		android:onClick="@{() -> model.click()}"
+		android:onClick="@{(v) -> model.click()}"
 		app:cardCornerRadius="8dp"
 		app:cardElevation="8dp">
 
@@ -70,11 +70,11 @@
 			<com.google.android.material.chip.Chip
 				android:id="@+id/chip4"
 				isDue="@{model.dueDate}"
-				android:clickable="false"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="8dp"
 				android:layout_marginTop="8dp"
+				android:clickable="false"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/textView"
 				tools:text="due today" />
