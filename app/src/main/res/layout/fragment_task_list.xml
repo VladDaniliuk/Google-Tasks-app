@@ -12,7 +12,9 @@
 
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:transitionName="shared_element"
+		android:transitionGroup="true">
 
 		<com.google.android.material.appbar.AppBarLayout
 			android:id="@+id/main.appbar"

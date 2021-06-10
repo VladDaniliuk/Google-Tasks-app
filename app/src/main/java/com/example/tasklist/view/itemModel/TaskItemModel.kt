@@ -25,16 +25,16 @@ class TaskItemModel(
 		submitList(list)
 	}
 
-	fun click() {
-		onTaskClickListener?.onTaskItemClick(this)
+	fun click(view: View) {
+		onTaskClickListener?.onTaskItemClick(this, view)
 	}
 
-	fun onExpand() {
-		onTaskClickListener?.onExpandItemClick(this)
+	fun onExpand(view: View) {
+		onTaskClickListener?.onExpandItemClick(this, view)
 	}
 
-	fun onExecute() {
-		onTaskClickListener?.onTaskExecuteClick(this)
+	fun onExecute(view: View) {
+		onTaskClickListener?.onTaskExecuteClick(this, view)
 	}
 
 	override fun hashCode(): Int {
@@ -70,9 +70,9 @@ class TaskItemModel(
 	}
 
 	interface OnTaskClickListener {
-		fun onTaskItemClick(model: TaskItemModel)
-		fun onExpandItemClick(model: TaskItemModel)
-		fun onTaskExecuteClick(model: TaskItemModel)
+		fun onTaskItemClick(model: TaskItemModel, view: View)
+		fun onExpandItemClick(model: TaskItemModel, view: View)
+		fun onTaskExecuteClick(model: TaskItemModel, view: View)
 	}
 
 	fun copy(

@@ -1,21 +1,28 @@
 package com.example.tasklist.view.task
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskBinding
+import com.example.tasklist.dev.themeColor
 import com.example.tasklist.view.taskList.CreateTaskFragment
 import com.example.tasklist.view.taskList.TaskListFragment
 import com.example.tasklist.viewModel.task.TaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialElevationScale
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 
@@ -24,6 +31,15 @@ class TaskFragment : Fragment() {
 	private val args: TaskFragmentArgs by navArgs()
 	private lateinit var binding: FragmentTaskBinding
 	private val viewModel: TaskViewModel by viewModels()
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		enterTransition = MaterialFadeThrough()
+		sharedElementEnterTransition = MaterialContainerTransform().apply {
+			scrimColor = Color.TRANSPARENT
+			setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+		}
+	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -42,6 +58,9 @@ class TaskFragment : Fragment() {
 
 	@SuppressLint("SimpleDateFormat")
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		postponeEnterTransition()
 		viewModel.onCompleteTaskClick.observe(viewLifecycleOwner) {
 			viewModel.onCompleteTaskClick()
 		}
@@ -52,6 +71,7 @@ class TaskFragment : Fragment() {
 
 		viewModel.task.observe(viewLifecycleOwner) {
 			viewModel.taskAdapter.submitList(it.list)
+			view.doOnPreDraw { startPostponedEnterTransition() }
 		}
 
 		viewModel.onTaskDelete.observe(viewLifecycleOwner) {
@@ -60,11 +80,14 @@ class TaskFragment : Fragment() {
 		}
 
 		viewModel.onTaskClick.observe(viewLifecycleOwner) {
+			exitTransition = MaterialElevationScale(false)
+			reenterTransition = MaterialElevationScale(true)
+			val extras = FragmentNavigatorExtras(it.second to it.first)
 			findNavController().navigate(
 				TaskFragmentDirections.actionTaskFragmentSelf(
 					viewModel.id!!.first,
-					it
-				)
+					it.first
+				), extras
 			)
 		}
 

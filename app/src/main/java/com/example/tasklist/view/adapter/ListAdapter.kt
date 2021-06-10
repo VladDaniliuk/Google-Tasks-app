@@ -1,8 +1,10 @@
 package com.example.tasklist.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
@@ -31,6 +33,7 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 		fun bind(item: T, variableId: Int) {
 			binding.setVariable(variableId, item)
 			binding.executePendingBindings()
+			ViewCompat.setTransitionName(binding.root,item.id)
 		}
 
 		/*override fun getLifecycle(): Lifecycle {
@@ -57,6 +60,7 @@ class UserItemDiffCallback<V : BaseItemModel> : DiffUtil.ItemCallback<V>() {
 	override fun areItemsTheSame(oldItem: V, newItem: V): Boolean =
 		oldItem.id == newItem.id
 
+	@SuppressLint("DiffUtilEquals")
 	override fun areContentsTheSame(oldItem: V, newItem: V): Boolean =
 		oldItem == newItem
 }

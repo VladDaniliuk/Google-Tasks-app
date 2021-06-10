@@ -72,11 +72,11 @@ class TaskListViewModel @Inject constructor(
 						task.task.due,
 						task.task.notes,
 						object : SimpleTaskClickListener() {
-							override fun onTaskItemClick(model: TaskItemModel) {
-								onBaseClick.postValue(model.id)
+							override fun onTaskItemClick(model: TaskItemModel, view: View) {
+								onBaseClick.postValue(model.id to view)
 							}
 
-							override fun onExpandItemClick(model: TaskItemModel) {
+							override fun onExpandItemClick(model: TaskItemModel, view: View) {
 								_list.value?.let { currentList ->
 									_list.postValue(currentList.map { taskItemModel ->
 										taskItemModel.copy(
@@ -93,7 +93,7 @@ class TaskListViewModel @Inject constructor(
 								}
 							}
 
-							override fun onTaskExecuteClick(model: TaskItemModel) {
+							override fun onTaskExecuteClick(model: TaskItemModel, view: View) {
 								taskRepository.completeTask(model)
 									.subscribeOn(Schedulers.computation())
 									.subscribe({}, { onExecuteTaskResult.postValue(model.title) })
@@ -108,7 +108,10 @@ class TaskListViewModel @Inject constructor(
 								it.due,
 								task.task.notes,
 								object : SimpleTaskClickListener() {
-									override fun onTaskExecuteClick(model: TaskItemModel) {
+									override fun onTaskExecuteClick(
+										model: TaskItemModel,
+										view: View
+									) {
 										taskRepository.completeTask(model)
 											.subscribeOn(Schedulers.computation())
 											.subscribe()
