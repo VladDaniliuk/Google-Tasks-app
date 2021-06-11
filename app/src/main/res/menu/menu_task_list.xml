@@ -11,4 +11,9 @@
 		android:id="@+id/edit"
 		android:title="@string/edit_task_list"
 		app:showAsAction="never" />
+	<item
+		android:id="@+id/sort"
+		android:icon="@drawable/ic_baseline_sort_24"
+		app:showAsAction="ifRoom"
+		android:title="@string/sort_tasks"/>
 </menu>

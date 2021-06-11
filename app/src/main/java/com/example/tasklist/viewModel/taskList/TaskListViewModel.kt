@@ -28,9 +28,11 @@ class TaskListViewModel @Inject constructor(
 	private val _list = MutableLiveData<List<TaskItemModel>>()
 	val list: LiveData<List<TaskItemModel>> = _list
 	val listName = MutableLiveData<String>()
+	val setting = MutableLiveData<String>()
 
 	val onTaskListDelete = SingleLiveEvent<Unit>()
 	val onTaskListEdit = SingleLiveEvent<Unit>()
+	val onTaskSort = SingleLiveEvent<Unit>()
 	val onMenuItemClickListener = Toolbar.OnMenuItemClickListener {
 		onItemClicked(it)
 		return@OnMenuItemClickListener true
@@ -60,7 +62,7 @@ class TaskListViewModel @Inject constructor(
 	}
 
 	private fun getTasks(parentId: String) {
-		taskRepository.getTasks(parentId)
+		taskRepository.getTasks(parentId, Pair(setting.value,setting.value))
 			.observeOn(AndroidSchedulers.mainThread())
 			.map { list ->
 				list.map { task ->
@@ -159,10 +161,10 @@ class TaskListViewModel @Inject constructor(
 	}
 
 	fun onItemClicked(menuItem: MenuItem) {
-		if (menuItem.itemId == R.id.delete) {
-			onTaskListDelete.call()
-		} else if (menuItem.itemId == R.id.edit) {
-			onTaskListEdit.call()
+		when (menuItem.itemId) {
+			R.id.delete -> onTaskListDelete.call()
+			R.id.edit -> onTaskListEdit.call()
+			R.id.sort -> onTaskSort.call()
 		}
 	}
 }

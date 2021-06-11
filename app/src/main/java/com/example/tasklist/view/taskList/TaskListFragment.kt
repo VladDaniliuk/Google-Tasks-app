@@ -61,8 +61,17 @@ class TaskListFragment : Fragment() {
 		postponeEnterTransition()
 		view.doOnPreDraw { startPostponedEnterTransition() }
 
+		findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("key")
+			?.observe(viewLifecycleOwner) { s ->
+				viewModel.setting.postValue(s)
+			}
+
 		binding.swipeRefresh.setOnRefreshListener {
 			viewModel.fetchBase()
+		}
+
+		viewModel.setting.observe(viewLifecycleOwner) {
+			viewModel.parentId = viewModel.parentId
 		}
 
 		viewModel.onBaseClick.observe(viewLifecycleOwner) {
@@ -87,6 +96,11 @@ class TaskListFragment : Fragment() {
 					viewModel.parentId!!
 				)
 			)
+		}
+
+		viewModel.onTaskSort.observe(viewLifecycleOwner) {
+			findNavController()
+				.navigate(TaskListFragmentDirections.actionTaskListFragmentToSortTaskFragment())
 		}
 
 		viewModel.onExecuteTaskResult.observe(viewLifecycleOwner) {

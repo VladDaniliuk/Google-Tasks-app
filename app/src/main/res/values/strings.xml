@@ -33,4 +33,6 @@
 	<string name="cancel" tools:ignore="ButtonCase">cancel</string>
 	<string name="request_key">requestKey</string>
 	<string name="request_value">id</string>
+	<string name="sort_tasks">Sort tasks</string>
+	<string name="hide_completed_tasks">Hide completed tasks</string>
 </resources>
