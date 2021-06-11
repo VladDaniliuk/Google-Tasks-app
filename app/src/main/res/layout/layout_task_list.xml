@@ -17,7 +17,7 @@
 		android:layout_marginVertical="8dp"
 		android:clickable="@{model.clickable}"
 		android:focusable="true"
-		android:onClick="@{(v) -> model.click()}"
+		android:onClick="@{(v) -> model.click(v)}"
 		app:cardCornerRadius="8dp"
 		app:cardElevation="8dp">
 

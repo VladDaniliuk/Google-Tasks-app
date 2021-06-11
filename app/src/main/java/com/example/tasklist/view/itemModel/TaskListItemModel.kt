@@ -1,12 +1,14 @@
 package com.example.tasklist.view.itemModel
 
+import android.view.View
+
 data class TaskListItemModel(
 	override val id: String,
 	override val title: String,
-	val taskListListViewModel: (id: String) -> Unit
+	val taskListListViewModel: ((id: String, view: View) -> Unit)? = null
 ) : BaseItemModel() {
-	fun click() {
-		taskListListViewModel(id)
+	fun click(view: View) {
+		taskListListViewModel?.invoke(id, view)
 	}
 
 	override fun equals(other: Any?): Boolean {

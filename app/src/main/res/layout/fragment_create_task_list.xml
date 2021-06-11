@@ -19,6 +19,7 @@
 			android:layout_height="wrap_content"
 			android:layout_margin="8sp"
 			android:hint="@string/new_task_list"
+			android:maxLines="4"
 			android:text="@={viewModel.baseName}"
 			app:layout_constraintTop_toTopOf="parent" />
 

@@ -20,6 +20,7 @@
 			android:layout_height="wrap_content"
 			android:layout_margin="8sp"
 			android:hint="@string/new_task_name"
+			android:maxLines="4"
 			android:text="@={viewModel.taskName}"
 			app:layout_constraintTop_toBottomOf="@+id/menu" />
 
@@ -55,6 +56,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="@string/task_list"
+				android:maxLines="4"
 				android:inputType="none" />
 		</com.google.android.material.textfield.TextInputLayout>
 	</androidx.constraintlayout.widget.ConstraintLayout>

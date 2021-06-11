@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Lifecycle
@@ -32,6 +33,7 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 			binding.lifecycleOwner = this
 			binding.setVariable(variableId, item)
 			binding.executePendingBindings()
+			ViewCompat.setTransitionName(binding.root,item.id)
 		}
 	}
 
