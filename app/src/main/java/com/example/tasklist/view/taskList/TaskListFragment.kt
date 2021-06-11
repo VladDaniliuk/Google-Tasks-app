@@ -38,10 +38,7 @@ class TaskListFragment : Fragment() {
 			scrimColor = Color.TRANSPARENT
 			setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
 		}
-	}
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
 		viewModel.parentId = args.parentId
 	}
 
