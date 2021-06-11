@@ -19,6 +19,7 @@
 			android:layout_height="wrap_content"
 			android:layout_margin="8sp"
 			android:hint="@string/new_task"
+			android:maxLines="4"
 			android:text="@={viewModel.baseName}"
 			app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,8 +50,8 @@
 			android:layout_height="wrap_content"
 			android:layout_marginStart="8sp"
 			android:background="?selectableItemBackgroundBorderless"
-			android:contentDescription="@string/set_date"
 			android:clickable="@{!viewModel.isLoading}"
+			android:contentDescription="@string/set_date"
 			android:onClick="@{viewModel.setDateClickListener}"
 			android:src="@drawable/ic_baseline_today_24"
 			app:layout_constraintBottom_toBottomOf="parent"
@@ -59,12 +60,12 @@
 
 		<com.google.android.material.chip.Chip
 			android:id="@+id/chip"
+			isDue="@{viewModel.dueDate}"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8sp"
-			app:closeIconEnabled="@{!viewModel.isLoading}"
-			isDue="@{viewModel.dueDate}"
 			android:clickable="@{!viewModel.isLoading}"
+			app:closeIconEnabled="@{!viewModel.isLoading}"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintStart_toEndOf="@+id/picker"
 			app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />

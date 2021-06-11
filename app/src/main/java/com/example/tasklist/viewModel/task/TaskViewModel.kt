@@ -47,7 +47,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	private var addSubTaskAdapter = AddSubTaskAdapter {
 		onAddSubTaskClick.call()
 	}
-	var taskControlsAdapter = TaskAdapter(
+	private var taskControlsAdapter = TaskAdapter(
 		{ onAddDueDateClick.call() },
 		{ onDeleteDueDateClick.call() }
 	) {
@@ -112,13 +112,13 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 							it.due,
 							it.notes,
 							object : SimpleTaskClickListener() {
-								override fun onTaskExecuteClick(model: TaskItemModel) {
+								override fun onTaskExecuteClick(model: TaskItemModel, view: View) {
 									taskRepository.completeTask(model)
 										.subscribeOn(Schedulers.computation()).subscribe()
 								}
 
-								override fun onTaskItemClick(model: TaskItemModel) {
-									onTaskClick.postValue(model.id)
+								override fun onTaskItemClick(model: TaskItemModel, view: View) {
+									onTaskClick.postValue(Pair(model.id, view))
 								}
 							}
 						)

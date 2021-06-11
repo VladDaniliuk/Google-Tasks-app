@@ -31,7 +31,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="8dp"
-				android:onClick="@{() -> model.onExecute()}"
+				android:onClick="@{(v) -> model.onExecute(v)}"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,7 +60,7 @@
 				android:clickable="true"
 				android:contentDescription="@string/string_expand_button"
 				android:focusable="true"
-				android:onClick="@{() -> model.onExpand()}"
+				android:onClick="@{(v) -> model.onExpand(v)}"
 				android:src="@drawable/ic_baseline_expand_more_24"
 				app:layout_constraintBottom_toBottomOf="@+id/textView"
 				app:layout_constraintEnd_toEndOf="parent"
@@ -85,6 +85,7 @@
 				android:layout_height="wrap_content"
 				android:visibility="@{model.subTaskVisibility}"
 				app:adapter="@{model.adapter}"
+				android:nestedScrollingEnabled="false"
 				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 				app:layout_constraintEnd_toStartOf="@+id/picker"
 				app:layout_constraintStart_toEndOf="@+id/materialCheckBox"
