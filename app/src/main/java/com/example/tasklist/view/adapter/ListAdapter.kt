@@ -20,6 +20,7 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 ) : ListAdapter<T, BaseItemAdapter<T, B>.ViewHolder>(UserItemDiffCallback()) {
 	inner class ViewHolder(private var binding: ViewDataBinding/*, lifecycleOwner: LifecycleOwner*/) :
 		RecyclerView.ViewHolder(binding.root)/*,LifecycleOwner*/ {
+		var baseItem: BaseItemModel? = null
 		/*private val lifecycleRegistry = LifecycleRegistry(this)
 
 	init {
@@ -33,7 +34,8 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 		fun bind(item: T, variableId: Int) {
 			binding.setVariable(variableId, item)
 			binding.executePendingBindings()
-			ViewCompat.setTransitionName(binding.root,item.id)
+			ViewCompat.setTransitionName(binding.root, item.id)
+			baseItem = item
 		}
 
 		/*override fun getLifecycle(): Lifecycle {

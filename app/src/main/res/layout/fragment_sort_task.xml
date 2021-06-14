@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 
@@ -31,14 +32,14 @@
 				android:layout_marginStart="32dp"
 				android:src="@drawable/ic_baseline_done_24_multicolor"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent" />
+				app:layout_constraintTop_toTopOf="parent"
+				tools:ignore="ContentDescription" />
 
 			<TextView
-				android:id="@+id/textView5"
+				android:id="@+id/completedTask"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="24dp"
-				android:text="@string/hide_completed_tasks"
 				android:textAppearance="?textAppearanceBody1"
 				android:textSize="16sp"
 				app:layout_constraintBottom_toBottomOf="@+id/imageView2"
@@ -65,14 +66,14 @@
 				android:layout_marginStart="32dp"
 				android:src="@drawable/ic_baseline_sort_24"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent" />
+				app:layout_constraintTop_toTopOf="parent"
+				tools:ignore="ContentDescription" />
 
 			<TextView
-				android:id="@+id/textView6"
+				android:id="@+id/sort_tasks"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="24dp"
-				android:text="Sort by date to complete/date to adding"
 				android:textAppearance="?textAppearanceBody1"
 				android:textSize="16sp"
 				app:layout_constraintBottom_toBottomOf="@+id/imageView3"
@@ -99,14 +100,14 @@
 				android:layout_marginStart="32dp"
 				android:src="@drawable/ic_baseline_delete_outline_24_multicolor"
 				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintStart_toStartOf="parent" />
+				app:layout_constraintStart_toStartOf="parent"
+				tools:ignore="ContentDescription" />
 
 			<TextView
-				android:id="@+id/textView4"
+				android:id="@+id/deleted_tasks"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="24dp"
-				android:text="Show deleted tasks"
 				android:textAppearance="?textAppearanceBody1"
 				android:textSize="16sp"
 				app:layout_constraintBottom_toBottomOf="@+id/imageView4"

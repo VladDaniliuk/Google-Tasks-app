@@ -38,6 +38,15 @@ class TaskListFragment : Fragment() {
 			scrimColor = Color.TRANSPARENT
 			setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
 		}
+
+		viewModel.setting.postValue(
+			Triple(
+				getString(R.string.show),
+				getString(R.string.add),
+				getString(R.string.assigned)
+			)
+		)
+		viewModel.parentId = args.parentId
 	}
 
 	override fun onCreateView(
@@ -50,8 +59,6 @@ class TaskListFragment : Fragment() {
 		binding.viewModel = viewModel
 		binding.lifecycleOwner = viewLifecycleOwner
 
-		viewModel.parentId = args.parentId
-
 		return binding.root
 	}
 
@@ -61,8 +68,10 @@ class TaskListFragment : Fragment() {
 		postponeEnterTransition()
 		view.doOnPreDraw { startPostponedEnterTransition() }
 
-		findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("key")
-			?.observe(viewLifecycleOwner) { s ->
+		findNavController().currentBackStackEntry?.savedStateHandle
+			?.getLiveData<Triple<String, String, String>>(
+				"key"
+			)?.observe(viewLifecycleOwner) { s ->
 				viewModel.setting.postValue(s)
 			}
 
@@ -100,7 +109,13 @@ class TaskListFragment : Fragment() {
 
 		viewModel.onTaskSort.observe(viewLifecycleOwner) {
 			findNavController()
-				.navigate(TaskListFragmentDirections.actionTaskListFragmentToSortTaskFragment())
+				.navigate(
+					TaskListFragmentDirections.actionTaskListFragmentToSortTaskFragment(
+						completedTasks = viewModel.setting.value!!.first,
+						sortByDate = viewModel.setting.value!!.second,
+						deletedTasks = viewModel.setting.value!!.third
+					)
+				)
 		}
 
 		viewModel.onExecuteTaskResult.observe(viewLifecycleOwner) {

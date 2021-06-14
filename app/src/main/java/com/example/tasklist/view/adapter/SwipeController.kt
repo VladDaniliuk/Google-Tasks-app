@@ -5,18 +5,20 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper.Callback
 import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
+import com.example.tasklist.view.itemModel.TaskItemModel
 
 open class SwipeController(private val context: Context) : Callback() {
 	override fun getMovementFlags(
 		recyclerView: RecyclerView,
 		viewHolder: RecyclerView.ViewHolder
 	): Int {
-		if(viewHolder is TaskAdapter.ViewHolder || viewHolder is AddSubTaskAdapter.ViewHolder) {
+		if (viewHolder is TaskAdapter.ViewHolder || viewHolder is AddSubTaskAdapter.ViewHolder) {
 			return makeMovementFlags(0, 0)
 		}
 		return makeMovementFlags(0, LEFT)
@@ -50,18 +52,27 @@ open class SwipeController(private val context: Context) : Callback() {
 		}
 
 		val itemView = viewHolder.itemView
+		lateinit var drawableDelete: Drawable
 		val paint = Paint()
 		val background = RectF(
 			itemView.left.toFloat(),
 			itemView.top.toFloat(),
 			itemView.right.toFloat(), itemView.bottom.toFloat()
 		)
-		val drawableDelete =
-			ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_outline_24)
+
+		//if (
+		((viewHolder as BaseItemAdapter<*, *>.ViewHolder).baseItem as TaskItemModel)//.deleted!=null){
+		//drawableDelete = ContextCompat.getDrawable(context, R.drawable.ic_baseline_restore_from_trash_24)
+		//paint.color = Color.GREEN
+		//} else {
+
+		drawableDelete =
+			ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_outline_24)!!
 
 		paint.color = Color.RED
+		//}
 
-		drawableDelete!!.setBounds(
+		drawableDelete.setBounds(
 			(itemView.right - drawableDelete.intrinsicWidth * 1.5).toInt(),
 			itemView.top + (itemView.height - drawableDelete.intrinsicHeight) / 2,
 			itemView.right - drawableDelete.intrinsicWidth / 2,

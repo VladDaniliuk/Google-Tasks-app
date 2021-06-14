@@ -17,6 +17,7 @@ import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.baseViewModel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -25,20 +26,22 @@ class TaskListViewModel @Inject constructor(
 	private val taskRepository: TaskRepository,
 	private val taskListRepository: TaskListRepository
 ) : BaseViewModel() {
+	private var getTaskDisposable: Disposable? = null
+
 	private val _list = MutableLiveData<List<TaskItemModel>>()
 	val list: LiveData<List<TaskItemModel>> = _list
 	val listName = MutableLiveData<String>()
-	val setting = MutableLiveData<String>()
+	val setting = MutableLiveData<Triple<String, String, String>>()
 
+	val onExecuteTaskResult = SingleLiveEvent<String>()
 	val onTaskListDelete = SingleLiveEvent<Unit>()
 	val onTaskListEdit = SingleLiveEvent<Unit>()
 	val onTaskSort = SingleLiveEvent<Unit>()
+
 	val onMenuItemClickListener = Toolbar.OnMenuItemClickListener {
 		onItemClicked(it)
 		return@OnMenuItemClickListener true
 	}
-
-	val onExecuteTaskResult = SingleLiveEvent<String>()
 
 	val adapter = BaseItemAdapter<TaskItemModel, LayoutTaskBinding>(
 		BR.model,
@@ -62,7 +65,8 @@ class TaskListViewModel @Inject constructor(
 	}
 
 	private fun getTasks(parentId: String) {
-		taskRepository.getTasks(parentId, Pair(setting.value,setting.value))
+		getTaskDisposable?.dispose()
+		getTaskDisposable = taskRepository.getTasks(parentId, setting.value)
 			.observeOn(AndroidSchedulers.mainThread())
 			.map { list ->
 				list.map { task ->
@@ -153,9 +157,9 @@ class TaskListViewModel @Inject constructor(
 			.subscribe({
 				onDeleteBaseResult.postValue(Triple(id, forDelete, true))
 			}, {
-				list.value?.filter {
+				list.value?.find {
 					it.id == id
-				}?.toList()?.get(0)?.clickable?.postValue(true)
+				}?.clickable?.postValue(true)
 				onDeleteBaseResult.postValue(Triple(id, forDelete, false))
 			})
 	}
