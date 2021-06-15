@@ -10,6 +10,7 @@ import com.example.tasklist.view.itemModel.TaskItemModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.*
 import javax.inject.Inject
 
 interface TaskRepository {
@@ -19,7 +20,7 @@ interface TaskRepository {
 		taskListId: String,
 		parentId: String?,
 		title: String,
-		dueDate: String?
+		dueDate: Date?
 	): Completable
 
 	fun fetchTask(parentId: String, taskId: String): Completable
@@ -42,10 +43,10 @@ class TaskRepositoryImpl @Inject constructor(
 
 	override fun fetchTasks(taskListId: String): Completable {
 		return tasksApi.getAllTasks(taskListId).flatMapCompletable { baseListResponse ->
-			baseListResponse.items.forEach {
-				it.parentId = taskListId
+			baseListResponse.items.map {
+				it.copy(parentId = taskListId)
 			}
-			Completable.fromCallable { taskDao.updateAllTaskLists(baseListResponse.items) }
+			return@flatMapCompletable Completable.fromCallable { taskDao.updateAllTaskLists(baseListResponse.items) }
 		}
 	}
 
@@ -94,7 +95,7 @@ class TaskRepositoryImpl @Inject constructor(
 		taskListId: String,
 		parentId: String?,
 		title: String,
-		dueDate: String?
+		dueDate: Date?
 	): Completable {
 		return tasksApi.insertTask(taskListId, parentId, Task("", title, due = dueDate))
 			.flatMapCompletable {

@@ -82,21 +82,21 @@ fun ImageButton.bindingIsSubtaskVisible(isSubTaskVisible: Int) {
 
 @SuppressLint("SimpleDateFormat")
 @BindingAdapter("isDue")
-fun Chip.bindingIsDue(due: String?) {
+fun Chip.bindingIsDue(due: Date?) {
 	if (due == null) {
 		this.visibility = View.GONE
 	} else {
-		val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+		//val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 		val outputFormat = SimpleDateFormat("dd MMMM, yyyy")
-		val date: Date = inputFormat.parse(due)!!
+		//val date: Date = inputFormat.parse(due)!!
 
 		this.visibility = View.VISIBLE
-		this.text = outputFormat.format(date)
+		this.text = outputFormat.format(due)
 	}
 }
 
 @BindingAdapter("isDue")
-fun TextView.bindingIsDue(due: String?) {
+fun TextView.bindingIsDue(due: Date?) {
 	if (due == null) {
 		this.visibility = View.VISIBLE
 	} else {

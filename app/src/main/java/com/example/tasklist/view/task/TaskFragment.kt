@@ -16,7 +16,6 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskBinding
 import com.example.tasklist.dev.themeColor
 import com.example.tasklist.view.taskList.CreateTaskFragment
-import com.example.tasklist.view.taskList.TaskListFragment
 import com.example.tasklist.viewModel.task.TaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
@@ -24,7 +23,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class TaskFragment : Fragment() {
@@ -126,13 +125,12 @@ class TaskFragment : Fragment() {
 
 			picker.show(childFragmentManager, null)
 			picker.addOnPositiveButtonClickListener {
-				val inputFormat = SimpleDateFormat(CreateTaskFragment.dateFormat)
-				viewModel.changeTask(inputFormat.format(picker.selection).toString())
+				viewModel.changeTask(Date(it))
 			}
 		}
 
 		viewModel.onDeleteDueDateClick.observe(viewLifecycleOwner) {
-			viewModel.changeTask("")
+			viewModel.changeTask(null)
 		}
 
 		binding.swipeRefresh.setOnRefreshListener {

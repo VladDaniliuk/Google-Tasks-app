@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class CreateTaskFragment : BottomSheetDialogFragment() {
@@ -90,13 +90,11 @@ class CreateTaskFragment : BottomSheetDialogFragment() {
 
 		picker.show(childFragmentManager, null)
 		picker.addOnPositiveButtonClickListener {
-			val inputFormat = SimpleDateFormat(dateFormat)
-			viewModel.dueDate.postValue(inputFormat.format(picker.selection).toString())
+			viewModel.dueDate.postValue(Date(it))
 		}
 	}
 
 	companion object Strings {
-		const val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 		const val selectDate = "Select date"
 		const val connectionError = "Connection error"
 	}

@@ -8,6 +8,7 @@ import com.example.tasklist.viewModel.baseViewModel.CreateBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,7 +18,7 @@ class CreateTaskViewModel @Inject constructor(
 	var taskListId: String? = null
 	var taskParentId: String? = null
 
-	var dueDate = MutableLiveData<String>()
+	var dueDate = MutableLiveData<Date>()
 
 	val setDateClick = SingleLiveEvent<Unit>()
 
@@ -31,7 +32,7 @@ class CreateTaskViewModel @Inject constructor(
 			taskListId!!,
 			taskParentId,
 			baseName.value.orEmpty(),
-			dueDate.value.orEmpty()
+			dueDate.value
 		).subscribeOn(Schedulers.io())
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe({

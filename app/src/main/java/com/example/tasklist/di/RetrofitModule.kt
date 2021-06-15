@@ -1,13 +1,19 @@
 package com.example.tasklist.di
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.example.tasklist.R
 import com.example.tasklist.api.model.body.GoogleRefreshToken
+import com.example.tasklist.api.model.response.Task
 import com.example.tasklist.api.service.SignInApi
 import com.example.tasklist.api.service.SignInApiHolder
 import com.example.tasklist.api.service.TaskListsApi
 import com.example.tasklist.api.service.TasksApi
 import com.example.tasklist.model.PreferenceManager
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +25,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -30,6 +40,7 @@ class RetrofitModule {
 	@Provides
 	fun provideSignInApiHolder(): SignInApiHolder = SignInApiHolder()
 
+	@SuppressLint("SimpleDateFormat")
 	@Provides
 	@Singleton
 	fun provideRetrofit(
@@ -43,8 +54,41 @@ class RetrofitModule {
 			).authenticator(tokenAuthenticator)
 				.build()
 		).addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-			.addConverterFactory(GsonConverterFactory.create())
+			.addConverterFactory(
+				GsonConverterFactory.create(
+					GsonBuilder().registerTypeAdapter(Task::class.java,TaskDeserialize()).create()
+				)
+			)
 			.build()
+	}
+
+	class TaskDeserialize : JsonDeserializer<Task> {
+		override fun deserialize(
+			json: JsonElement?,
+			typeOfT: Type?,
+			context: JsonDeserializationContext?
+		): Task? {
+			json?.let {
+				return Task(
+					json.asJsonObject["id"].asString,
+					json.asJsonObject["title"].asString,
+					json.asJsonObject["kind"].asString,
+					json.asJsonObject["etag"].asString,
+					null,
+					json.asJsonObject["selfLink"].asString,
+					json.asJsonObject["parent"]?.asString,
+					json.asJsonObject["position"].asString,
+					null,
+					json.asJsonObject["status"].asString,
+					null,
+					null,
+					null,
+					null,
+					null
+				)
+			}
+			return null
+		}
 	}
 
 	@Provides

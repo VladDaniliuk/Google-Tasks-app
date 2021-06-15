@@ -21,6 +21,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -176,7 +177,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 			})
 	}
 
-	fun changeTask(due: String? = null, notes: String? = task.value?.notes) {
+	fun changeTask(due: Date? = null, notes: String? = task.value?.notes) {
 		editDisposable?.dispose()
 		editDisposable = if (due == null) {
 			taskRepository.changeTask(id!!.first, Task(id!!.second, notes = notes))

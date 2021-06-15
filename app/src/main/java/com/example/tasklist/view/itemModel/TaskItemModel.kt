@@ -5,13 +5,14 @@ import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskBinding
 import com.example.tasklist.view.adapter.BaseItemAdapter
+import java.util.*
 
 class TaskItemModel(
 	override val id: String,
 	val parentId: String,
 	override val title: String,
 	var status: String,
-	val dueDate: String? = null,
+	val dueDate: Date? = null,
 	var notes: String? = null,
 	private val onTaskClickListener: OnTaskClickListener?,
 	val list: List<TaskItemModel>? = null,
@@ -81,7 +82,7 @@ class TaskItemModel(
 		title: String? = null,
 		status: String? = null,
 		onTaskClickListener: OnTaskClickListener? = null,
-		dueDate: String? = null,
+		dueDate: Date? = null,
 		notes: String? = null,
 		list: List<TaskItemModel>? = null,
 		subTaskVisibility: Int? = null
