@@ -16,7 +16,6 @@ import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskBinding
 import com.example.tasklist.dev.themeColor
 import com.example.tasklist.view.taskList.CreateTaskFragment
-import com.example.tasklist.view.taskList.TaskListFragment
 import com.example.tasklist.viewModel.task.TaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
@@ -92,7 +91,7 @@ class TaskFragment : Fragment() {
 		}
 
 		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
-			viewModel.deleteSubTask(it, true)
+				viewModel.deleteSubTask(it.first, !it.second)
 		}
 
 		viewModel.onDeleteBaseResult.observe(viewLifecycleOwner) {

@@ -138,7 +138,7 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
-			viewModel.deleteBase(it, true)
+			viewModel.deleteBase(it.first, !it.second)
 		}
 	}
 

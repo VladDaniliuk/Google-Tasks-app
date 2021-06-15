@@ -60,17 +60,20 @@ open class SwipeController(private val context: Context) : Callback() {
 			itemView.right.toFloat(), itemView.bottom.toFloat()
 		)
 
-		//if (
-		((viewHolder as BaseItemAdapter<*, *>.ViewHolder).baseItem as TaskItemModel)//.deleted!=null){
-		//drawableDelete = ContextCompat.getDrawable(context, R.drawable.ic_baseline_restore_from_trash_24)
-		//paint.color = Color.GREEN
-		//} else {
-
 		drawableDelete =
 			ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_outline_24)!!
-
 		paint.color = Color.RED
-		//}
+
+		((viewHolder as BaseItemAdapter<*, *>.ViewHolder)
+			.baseItem as? TaskItemModel)?.deleted?.let {
+			if (it) {
+				drawableDelete = ContextCompat.getDrawable(
+					context,
+					R.drawable.ic_baseline_restore_from_trash_24
+				)!!
+				paint.color = ContextCompat.getColor(context, R.color.green)
+			}
+		}
 
 		drawableDelete.setBounds(
 			(itemView.right - drawableDelete.intrinsicWidth * 1.5).toInt(),

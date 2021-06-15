@@ -13,6 +13,7 @@ class TaskItemModel(
 	var status: String,
 	val dueDate: String? = null,
 	var notes: String? = null,
+	var deleted: Boolean? = null,
 	private val onTaskClickListener: OnTaskClickListener?,
 	val list: List<TaskItemModel>? = null,
 	var subTaskVisibility: Int = View.GONE
@@ -46,6 +47,7 @@ class TaskItemModel(
 		result = 31 * result + subTaskVisibility
 		result = 31 * result + (list?.hashCode() ?: 0)
 		result = 31 * result + notes?.hashCode()!!
+		result = 31 * result + deleted?.hashCode()!!
 		//result = 31 * result + clickable.hashCode()
 		return result
 	}
@@ -64,6 +66,7 @@ class TaskItemModel(
 		if (subTaskVisibility != other.subTaskVisibility) return false
 		if (list != other.list) return false
 		if (notes != other.notes) return false
+		if (deleted != other.deleted) return false
 		//if (clickable != other.clickable) return false
 
 		return true
@@ -83,6 +86,7 @@ class TaskItemModel(
 		onTaskClickListener: OnTaskClickListener? = null,
 		dueDate: String? = null,
 		notes: String? = null,
+		deleted: Boolean? = null,
 		list: List<TaskItemModel>? = null,
 		subTaskVisibility: Int? = null
 	): TaskItemModel {
@@ -93,6 +97,7 @@ class TaskItemModel(
 			status ?: this.status,
 			dueDate ?: this.dueDate,
 			notes ?: this.notes,
+			deleted ?: this.deleted,
 			onTaskClickListener ?: this.onTaskClickListener,
 			list ?: this.list,
 			subTaskVisibility ?: this.subTaskVisibility

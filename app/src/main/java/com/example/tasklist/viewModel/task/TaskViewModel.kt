@@ -34,7 +34,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	val onAddSubTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskError = SingleLiveEvent<String>()
-	val onDeleteBaseClick = SingleLiveEvent<String>()
+	val onDeleteBaseClick = SingleLiveEvent<Pair<String,Boolean>>()
 	val onDeleteBaseResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
 	val onDeleteDueDateClick = SingleLiveEvent<Unit>()
 	val onTaskClick = SingleLiveEvent<Pair<String, View>>()
@@ -101,6 +101,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 					taskWithSubTasks.task.status!!,
 					taskWithSubTasks.task.due,
 					taskWithSubTasks.task.notes,
+					taskWithSubTasks.task.deleted,
 					null,
 					taskWithSubTasks.subTasks.map {
 						TaskItemModel(
@@ -110,6 +111,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 							it.status!!,
 							it.due,
 							it.notes,
+							it.deleted,
 							object : SimpleTaskClickListener() {
 								override fun onTaskExecuteClick(model: TaskItemModel, view: View) {
 									taskRepository.completeTask(model)
