@@ -10,10 +10,8 @@ import com.example.tasklist.api.service.SignInApiHolder
 import com.example.tasklist.api.service.TaskListsApi
 import com.example.tasklist.api.service.TasksApi
 import com.example.tasklist.model.PreferenceManager
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
+import com.google.api.client.util.DateTime
+import com.google.gson.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,7 +25,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -56,13 +53,15 @@ class RetrofitModule {
 		).addCallAdapterFactory(RxJava3CallAdapterFactory.create())
 			.addConverterFactory(
 				GsonConverterFactory.create(
-					GsonBuilder().registerTypeAdapter(Task::class.java,TaskDeserialize()).create()
+					GsonBuilder().registerTypeAdapter(Task::class.java, TaskDeserializer())
+						.registerTypeAdapter(Task::class.java,TaskSerializer()).create()
 				)
 			)
 			.build()
 	}
 
-	class TaskDeserialize : JsonDeserializer<Task> {
+	class TaskDeserializer : JsonDeserializer<Task> {
+		@SuppressLint("SimpleDateFormat")
 		override fun deserialize(
 			json: JsonElement?,
 			typeOfT: Type?,
@@ -71,23 +70,40 @@ class RetrofitModule {
 			json?.let {
 				return Task(
 					json.asJsonObject["id"].asString,
-					json.asJsonObject["title"].asString,
-					json.asJsonObject["kind"].asString,
-					json.asJsonObject["etag"].asString,
-					null,
-					json.asJsonObject["selfLink"].asString,
+					json.asJsonObject["title"]?.asString,
+					json.asJsonObject["kind"]?.asString,
+					json.asJsonObject["etag"]?.asString,
+					json.asJsonObject["updated"]?.let {
+						DateTime.parseRfc3339(it.asString)
+					},
+					json.asJsonObject["selfLink"]?.asString,
 					json.asJsonObject["parent"]?.asString,
-					json.asJsonObject["position"].asString,
-					null,
-					json.asJsonObject["status"].asString,
-					null,
-					null,
-					null,
-					null,
-					null
+					json.asJsonObject["position"]?.asString,
+					json.asJsonObject["notes"]?.asString,
+					json.asJsonObject["status"]?.asString,
+					json.asJsonObject["due"]?.let {
+						DateTime.parseRfc3339(it.asString)
+					},
+					json.asJsonObject["completed"]?.let {
+						DateTime.parseRfc3339(it.asString)
+					},
+					json.asJsonObject["deleted"]?.asBoolean,
+					json.asJsonObject["hidden"]?.asBoolean
 				)
 			}
 			return null
+		}
+	}
+
+	class TaskSerializer : JsonSerializer<Task> {
+		override fun serialize(
+			src: Task?,
+			typeOfSrc: Type?,
+			context: JsonSerializationContext?
+		): JsonElement {
+			return JsonParser().parse(
+				Gson().toJson(src, Task::class.java)
+			)
 		}
 	}
 

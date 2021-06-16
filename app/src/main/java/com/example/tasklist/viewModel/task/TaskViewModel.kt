@@ -17,6 +17,7 @@ import com.example.tasklist.view.adapter.AddSubTaskAdapter
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.adapter.TaskAdapter
 import com.example.tasklist.view.itemModel.TaskItemModel
+import com.google.api.client.util.DateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
@@ -177,7 +178,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 			})
 	}
 
-	fun changeTask(due: Date? = null, notes: String? = task.value?.notes) {
+	fun changeTask(due: DateTime? = null, notes: String? = task.value?.notes) {
 		editDisposable?.dispose()
 		editDisposable = if (due == null) {
 			taskRepository.changeTask(id!!.first, Task(id!!.second, notes = notes))

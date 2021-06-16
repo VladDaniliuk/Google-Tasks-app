@@ -7,6 +7,7 @@ import com.example.tasklist.api.model.response.TaskWithSubTasks
 import com.example.tasklist.api.service.TasksApi
 import com.example.tasklist.db.dao.TaskDao
 import com.example.tasklist.view.itemModel.TaskItemModel
+import com.google.api.client.util.DateTime
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -20,7 +21,7 @@ interface TaskRepository {
 		taskListId: String,
 		parentId: String?,
 		title: String,
-		dueDate: Date?
+		dueDate: DateTime?
 	): Completable
 
 	fun fetchTask(parentId: String, taskId: String): Completable
@@ -43,10 +44,14 @@ class TaskRepositoryImpl @Inject constructor(
 
 	override fun fetchTasks(taskListId: String): Completable {
 		return tasksApi.getAllTasks(taskListId).flatMapCompletable { baseListResponse ->
-			baseListResponse.items.map {
-				it.copy(parentId = taskListId)
+			baseListResponse.items.forEach {
+				it.parentId = taskListId
 			}
-			return@flatMapCompletable Completable.fromCallable { taskDao.updateAllTaskLists(baseListResponse.items) }
+			Completable.fromCallable {
+				taskDao.updateAllTaskLists(
+					baseListResponse.items
+				)
+			}
 		}
 	}
 
@@ -95,8 +100,9 @@ class TaskRepositoryImpl @Inject constructor(
 		taskListId: String,
 		parentId: String?,
 		title: String,
-		dueDate: Date?
+		dueDate: DateTime?
 	): Completable {
+		dueDate?.toStringRfc3339()
 		return tasksApi.insertTask(taskListId, parentId, Task("", title, due = dueDate))
 			.flatMapCompletable {
 				fetchTasks(taskListId)

@@ -20,6 +20,7 @@ import com.example.tasklist.view.adapter.SwipeController
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.api.client.util.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -82,7 +83,7 @@ fun ImageButton.bindingIsSubtaskVisible(isSubTaskVisible: Int) {
 
 @SuppressLint("SimpleDateFormat")
 @BindingAdapter("isDue")
-fun Chip.bindingIsDue(due: Date?) {
+fun Chip.bindingIsDue(due: DateTime?) {
 	if (due == null) {
 		this.visibility = View.GONE
 	} else {
@@ -91,12 +92,12 @@ fun Chip.bindingIsDue(due: Date?) {
 		//val date: Date = inputFormat.parse(due)!!
 
 		this.visibility = View.VISIBLE
-		this.text = outputFormat.format(due)
+		//this.text = outputFormat.format(due)
 	}
 }
 
 @BindingAdapter("isDue")
-fun TextView.bindingIsDue(due: Date?) {
+fun TextView.bindingIsDue(due: DateTime?) {
 	if (due == null) {
 		this.visibility = View.VISIBLE
 	} else {

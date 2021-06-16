@@ -18,6 +18,7 @@ import com.example.tasklist.viewModel.baseViewModel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -133,6 +134,7 @@ class TaskListViewModel @Inject constructor(
 		parentId?.let {
 			taskRepository.fetchTasks(it)
 				.subscribeOn(Schedulers.io())
+				.doOnError(Timber::e)
 				.onErrorComplete()
 				.doFinally {
 					fetchInProgress.postValue(false)

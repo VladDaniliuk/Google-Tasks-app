@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.domain.TaskRepository
 import com.example.tasklist.viewModel.baseViewModel.CreateBaseViewModel
+import com.google.api.client.util.DateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -18,7 +19,7 @@ class CreateTaskViewModel @Inject constructor(
 	var taskListId: String? = null
 	var taskParentId: String? = null
 
-	var dueDate = MutableLiveData<Date>()
+	var dueDate = MutableLiveData<DateTime>()
 
 	val setDateClick = SingleLiveEvent<Unit>()
 

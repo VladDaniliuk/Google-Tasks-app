@@ -22,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
+import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -125,7 +126,8 @@ class TaskFragment : Fragment() {
 
 			picker.show(childFragmentManager, null)
 			picker.addOnPositiveButtonClickListener {
-				viewModel.changeTask(Date(it))
+				viewModel.changeTask(
+					DateTime.parseRfc3339(Date(it).toString()))
 			}
 		}
 

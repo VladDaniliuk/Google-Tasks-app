@@ -15,7 +15,11 @@ import com.example.tasklist.viewModel.taskList.CreateTaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 @AndroidEntryPoint
@@ -90,7 +94,17 @@ class CreateTaskFragment : BottomSheetDialogFragment() {
 
 		picker.show(childFragmentManager, null)
 		picker.addOnPositiveButtonClickListener {
-			viewModel.dueDate.postValue(Date(it))
+			val df2 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+			val date = Date(it)
+			val dateText = df2.format(date)
+			val it = DateTime.parseRfc3339(dateText)
+			Timber.v(
+				it.toString()
+			)
+			viewModel.dueDate.postValue(it)
+			/*SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(
+					dateText
+				)*/
 		}
 	}
 
