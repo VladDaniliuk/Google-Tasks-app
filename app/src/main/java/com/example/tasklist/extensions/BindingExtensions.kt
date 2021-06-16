@@ -20,6 +20,7 @@ import com.example.tasklist.view.adapter.SwipeController
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.api.client.util.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,7 +41,7 @@ fun SwipeRefreshLayout.bindingSetRefreshing(isRefreshing: Boolean) {
 @BindingAdapter("isCompletedText", "text")
 fun TextView.bindingSetChecked(isCompleted: String, title: String) {
 	val spannable = SpannableStringBuilder(title)
-	if (isCompleted == "completed") {
+	if (isCompleted == resources.getString(R.string.completed)) {
 		spannable.setSpan(
 			StrikethroughSpan(),
 			0, // start
@@ -63,10 +64,13 @@ fun CheckBox.bindingSetChecked(isCompleted: String) {
 @BindingAdapter("isCompletedButton")
 fun ExtendedFloatingActionButton.bindingSetChecked(isCompleted: String?) {
 	this.setIconResource(
-		if (isCompleted == "completed") R.drawable.ic_baseline_close_24
+		if (isCompleted == resources.getString(R.string.completed)) R.drawable.ic_baseline_close_24
 		else R.drawable.ic_baseline_done_24
 	)
-	this.text = (if (isCompleted == "completed") "Incomplete" else "Complete") + " task"
+	this.text =
+		if (isCompleted == resources.getString(R.string.completed))
+			resources.getString(R.string.incomplete_task)
+		else resources.getString(R.string.complete_task)
 	this.extend()
 }
 
@@ -86,12 +90,9 @@ fun Chip.bindingIsDue(due: String?) {
 	if (due == null) {
 		this.visibility = View.GONE
 	} else {
-		val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-		val outputFormat = SimpleDateFormat("dd MMMM, yyyy")
-		val date: Date = inputFormat.parse(due)!!
-
 		this.visibility = View.VISIBLE
-		this.text = outputFormat.format(date)
+		this.text = SimpleDateFormat(resources.getString(R.string.date_type))
+			.format(Date(DateTime(due).value))
 	}
 }
 
