@@ -53,32 +53,47 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="32dp"
-			android:background="?selectableItemBackground"
-			android:clickable="true"
-			android:focusable="true"
-			android:onClick="@{viewModel.sortTaskClickListener}"
 			app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-			<ImageView
-				android:id="@+id/imageView3"
-				android:layout_width="32dp"
-				android:layout_height="32dp"
-				android:layout_marginStart="32dp"
-				android:src="@drawable/ic_baseline_sort_24"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent"
-				tools:ignore="ContentDescription" />
 
 			<TextView
 				android:id="@+id/sort_tasks"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="24dp"
+				android:layout_marginStart="32dp"
+				android:text="@string/sort_by"
 				android:textAppearance="?textAppearanceBody1"
 				android:textSize="16sp"
-				app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-				app:layout_constraintStart_toEndOf="@+id/imageView3"
-				app:layout_constraintTop_toTopOf="@+id/imageView3" />
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<RadioGroup
+				android:id="@+id/sort_methodes"
+				onClick="@{viewModel.onRadioButtonChoose}"
+				android:layout_width="0sp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="32dp"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/sort_tasks">
+
+				<com.google.android.material.radiobutton.MaterialRadioButton
+					android:id="@+id/date_to_complete"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/date_to_complete" />
+
+				<com.google.android.material.radiobutton.MaterialRadioButton
+					android:id="@+id/date_to_add"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/date_to_add" />
+
+				<com.google.android.material.radiobutton.MaterialRadioButton
+					android:id="@+id/my_order"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/my_order" />
+			</RadioGroup>
 		</androidx.constraintlayout.widget.ConstraintLayout>
 
 		<androidx.constraintlayout.widget.ConstraintLayout

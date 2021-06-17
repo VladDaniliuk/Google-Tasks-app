@@ -48,23 +48,32 @@ class SortTaskFragment : BottomSheetDialogFragment() {
 		viewModel.setting.observe(viewLifecycleOwner) {
 			binding.completedTask.text = getString(
 				R.string.completed_tasks,
-				if (viewModel.setting.value?.first == getString(R.string.show))
-					getString(R.string.hide)
-				else
-					getString(R.string.show)
-			)
-			binding.sortTasks.text = getString(
-				R.string.sort_by_date_to,
-				if (viewModel.setting.value?.second == getString(R.string.add))
-					getString(R.string.complete)
-				else
-					getString(R.string.add)
+				when (viewModel.setting.value?.first) {
+					getString(R.string.show) -> getString(R.string.hide)
+					else -> getString(R.string.show)
+				}
 			)
 			binding.deletedTasks.text = getString(
 				R.string.show__tasks,
-				if (viewModel.setting.value?.third == getString(R.string.deleted_small))
-					getString(R.string.assigned)
-				else getString(R.string.deleted_small)
+				when (viewModel.setting.value?.third) {
+					getString(R.string.deleted_small) -> getString(R.string.assigned)
+					else -> getString(R.string.deleted_small)
+				}
+			)
+		}
+
+		viewModel.onRadioButtonChoose.observe(viewLifecycleOwner) {
+			viewModel.postSetting.postValue(
+				viewModel.setting.value?.copy(
+					second = getString(
+						when (it) {
+							R.id.date_to_complete -> R.string.date_to_complete
+							R.id.date_to_add -> R.string.date_to_add
+							R.id.my_order -> R.string.my_order
+							else -> throw IllegalStateException("Source $it is not correct")
+						}
+					)
+				)
 			)
 		}
 

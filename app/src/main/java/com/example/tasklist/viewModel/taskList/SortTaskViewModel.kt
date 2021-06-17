@@ -10,60 +10,36 @@ class SortTaskViewModel : ViewModel() {
 	val setting = MutableLiveData<Triple<String, String, String>>()
 
 	val onDeletedTask = SingleLiveEvent<Unit>()
+	val onRadioButtonChoose = SingleLiveEvent<Int>()
 
 	val completedTaskClickListener = View.OnClickListener {
-		if (setting.value?.first ?: show == show)
+		setting.value?.let {
 			postSetting.postValue(
 				Triple(
-					hide,
-					setting.value?.second ?: add,
-					setting.value?.third ?: add
+					when (it.first) {
+						show -> hide
+						else -> show
+					},
+					it.second,
+					it.third
 				)
 			)
-		else
-			postSetting.postValue(
-				Triple(
-					show,
-					setting.value?.second ?: add,
-					setting.value?.third ?: add
-				)
-			)
+		}
+
 	}
-	val sortTaskClickListener = View.OnClickListener {
-		if (setting.value?.second ?: add == add)
-			postSetting.postValue(
-				Triple(
-					setting.value?.first ?: show,
-					complete,
-					setting.value?.third ?: add
-				)
-			)
-		else
-			postSetting.postValue(
-				Triple(
-					setting.value?.first ?: show,
-					add,
-					setting.value?.third ?: add
-				)
-			)
-	}
+
 	val deletedTaskClickListener = View.OnClickListener {
-		if (setting.value?.third ?: assigned == assigned)
+		setting.value?.let {
 			postSetting.postValue(
 				Triple(
-					setting.value?.first ?: show,
-					setting.value?.second ?: add,
-					deleted
+					it.first, it.second,
+					when (it.third) {
+						assigned -> deleted
+						else -> assigned
+					}
 				)
 			)
-		else
-			postSetting.postValue(
-				Triple(
-					setting.value?.first ?: show,
-					setting.value?.second ?: add,
-					assigned
-				)
-			)
+		}
 	}
 
 	companion object {

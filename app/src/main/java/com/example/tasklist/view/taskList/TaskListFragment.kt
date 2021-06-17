@@ -42,7 +42,7 @@ class TaskListFragment : Fragment() {
 		viewModel.setting.postValue(
 			Triple(
 				getString(R.string.show),
-				getString(R.string.add),
+				getString(R.string.my_order),
 				getString(R.string.assigned)
 			)
 		)

@@ -5,9 +5,9 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StrikethroughSpan
 import android.view.View
-import android.widget.CheckBox
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
+import androidx.core.view.forEach
+import androidx.core.view.get
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -132,4 +132,11 @@ fun RecyclerView.bindingItemTouchHelper(onItemAdapter: SingleLiveEvent<Pair<Stri
 
 	val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
 	itemTouchHelper.attachToRecyclerView(this)
+}
+
+@BindingAdapter("onClick")
+fun RadioGroup.bindingOnClick(onRadioButtonChoose: SingleLiveEvent<Int>){
+	this.setOnCheckedChangeListener { group, checkedId ->
+		onRadioButtonChoose.postValue(checkedId)
+	}
 }
