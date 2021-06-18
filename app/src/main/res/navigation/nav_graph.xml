@@ -133,7 +133,7 @@
 			android:defaultValue="Show" />
 		<argument
 			android:name="sort_by_date"
-			android:defaultValue="add" />
+			app:argType="integer"/>
 		<argument
 			android:name="deleted_tasks"
 			android:defaultValue="assigned" />

@@ -31,13 +31,14 @@ interface TasksApi {
 		@Query("maxResults") maxResults: Int = 100
 	): Single<BaseListResponse<Task>>
 
-	/*
-		@POST("/tasks/v1/lists/{taskList}/tasks/{task}/move")
-		fun moveTask(
-			@Path("taskList") taskListId: String,
-			@Path("task") taskId: String
-		): Call<Task>//request body must be empty
-	*/
+
+	@POST("/tasks/v1/lists/{taskList}/tasks/{task}/move")
+	fun moveTask(
+		@Path("taskList") taskListId: String,
+		@Path("task") taskId: String,
+		@Query("previous") previousTaskId: String
+	): Single<Task>
+
 	@PATCH("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun patchTask(
 		@Path("taskList") taskListId: String, @Path("task") taskId: String,

@@ -31,9 +31,10 @@ class TaskListViewModel @Inject constructor(
 	private val _list = MutableLiveData<List<TaskItemModel>>()
 	val list: LiveData<List<TaskItemModel>> = _list
 	val listName = MutableLiveData<String>()
-	val setting = MutableLiveData<Triple<String, String, String>>()
+	val setting = MutableLiveData<Triple<String, Int, String>>()
 
 	val onExecuteTaskResult = SingleLiveEvent<String>()
+	val onItemMoved = SingleLiveEvent<Pair<String,String>>()
 	val onTaskListDelete = SingleLiveEvent<Unit>()
 	val onTaskListEdit = SingleLiveEvent<Unit>()
 	val onTaskSort = SingleLiveEvent<Unit>()
@@ -172,5 +173,9 @@ class TaskListViewModel @Inject constructor(
 			R.id.edit -> onTaskListEdit.call()
 			R.id.sort -> onTaskSort.call()
 		}
+	}
+
+	fun moveTask(task: String,previousTask: String) {
+		taskRepository.moveTask(parentId!!,task,previousTask).subscribeOn(Schedulers.io()).subscribe()
 	}
 }

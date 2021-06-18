@@ -42,7 +42,7 @@ class TaskListFragment : Fragment() {
 		viewModel.setting.postValue(
 			Triple(
 				getString(R.string.show),
-				getString(R.string.my_order),
+				R.id.my_order,
 				getString(R.string.assigned)
 			)
 		)
@@ -69,7 +69,7 @@ class TaskListFragment : Fragment() {
 		view.doOnPreDraw { startPostponedEnterTransition() }
 
 		findNavController().currentBackStackEntry?.savedStateHandle
-			?.getLiveData<Triple<String, String, String>>(
+			?.getLiveData<Triple<String, Int, String>>(
 				"key"
 			)?.observe(viewLifecycleOwner) { s ->
 				viewModel.setting.postValue(s)
@@ -139,6 +139,10 @@ class TaskListFragment : Fragment() {
 
 		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
 			viewModel.deleteBase(it.first, !it.second)
+		}
+
+		viewModel.onItemMoved.observe(viewLifecycleOwner) {
+			viewModel.moveTask(it.first, it.second)
 		}
 	}
 

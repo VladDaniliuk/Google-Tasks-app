@@ -64,16 +64,7 @@ class SortTaskFragment : BottomSheetDialogFragment() {
 
 		viewModel.onRadioButtonChoose.observe(viewLifecycleOwner) {
 			viewModel.postSetting.postValue(
-				viewModel.setting.value?.copy(
-					second = getString(
-						when (it) {
-							R.id.date_to_complete -> R.string.date_to_complete
-							R.id.date_to_add -> R.string.date_to_add
-							R.id.my_order -> R.string.my_order
-							else -> throw IllegalStateException("Source $it is not correct")
-						}
-					)
-				)
+				viewModel.setting.value?.copy(second = binding.sortMethodes.checkedRadioButtonId)
 			)
 		}
 

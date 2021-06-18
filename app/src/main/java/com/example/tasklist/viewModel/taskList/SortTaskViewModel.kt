@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.example.tasklist.dev.SingleLiveEvent
 
 class SortTaskViewModel : ViewModel() {
-	val postSetting = MutableLiveData<Triple<String, String, String>>()
-	val setting = MutableLiveData<Triple<String, String, String>>()
+	val postSetting = MutableLiveData<Triple<String, Int, String>>()
+	val setting = MutableLiveData<Triple<String, Int, String>>()
 
 	val onDeletedTask = SingleLiveEvent<Unit>()
 	val onRadioButtonChoose = SingleLiveEvent<Int>()

@@ -68,28 +68,31 @@
 
 			<RadioGroup
 				android:id="@+id/sort_methodes"
-				onClick="@{viewModel.onRadioButtonChoose}"
 				android:layout_width="0sp"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="32dp"
+				android:checkedButton="@{viewModel.setting.second}"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/sort_tasks">
 
 				<com.google.android.material.radiobutton.MaterialRadioButton
 					android:id="@+id/date_to_complete"
+					onClick="@{viewModel.onRadioButtonChoose}"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/date_to_complete" />
 
 				<com.google.android.material.radiobutton.MaterialRadioButton
 					android:id="@+id/date_to_add"
+					onClick="@{viewModel.onRadioButtonChoose}"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/date_to_add" />
 
 				<com.google.android.material.radiobutton.MaterialRadioButton
 					android:id="@+id/my_order"
+					onClick="@{viewModel.onRadioButtonChoose}"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/my_order" />
