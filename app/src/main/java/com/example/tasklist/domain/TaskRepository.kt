@@ -92,8 +92,7 @@ class TaskRepositoryImpl @Inject constructor(
 		previousTaskId: String?
 	): Completable {
 		return tasksApi.moveTask(taskListId, taskId, previousTaskId).flatMapCompletable {
-//			fetchTasks(taskListId)
-			Completable.complete()
+			fetchTasks(taskListId)
 		}
 	}
 

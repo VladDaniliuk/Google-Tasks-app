@@ -18,6 +18,7 @@ import com.example.tasklist.R
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.adapter.SwipeController
+import com.example.tasklist.view.itemModel.BaseItemModel
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.google.android.material.chip.Chip
@@ -26,7 +27,6 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 @BindingAdapter("isVisible")
 fun View.setVisibility(isVisible: Boolean) {
@@ -116,10 +116,10 @@ fun RecyclerView.bindingItemTouchHelper(
 ) {
 	val adapter = adapter ?: return
 	var startPos: Int? = null
+	var startList: List<BaseItemModel> = emptyList()
 
 	val taskSubject = BehaviorSubject.create<Pair<String, String?>>().apply {
 		distinctUntilChanged()
-//			.debounce(600, TimeUnit.MILLISECONDS)
 			.subscribe {
 				onItemMoved!!.postValue(it)
 				startPos = null
@@ -132,7 +132,6 @@ fun RecyclerView.bindingItemTouchHelper(
 			viewHolder: RecyclerView.ViewHolder,
 			target: RecyclerView.ViewHolder
 		): Boolean {
-//			(adapter as BaseItemAdapter<*, *>).onItemMove(startPos ?: viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
 			return true
 		}
 
@@ -145,25 +144,12 @@ fun RecyclerView.bindingItemTouchHelper(
 			x: Int,
 			y: Int
 		) {
+			if (startPos == null) {
+				startList = (adapter as BaseItemAdapter<*, *>).currentList
+			}
 			startPos = startPos ?: fromPos
-			adapter.notifyItemMoved(fromPos, toPos)
-			/*if ((adapter as BaseItemAdapter<*, *>)
-					.currentList[viewHolder.bindingAdapterPosition] is TaskItemModel
-			) {
-				startPos = startPos ?: fromPos
 
-				startPos?.let { startPos ->
-					Timber.v(adapter.currentList[startPos].id)
-					taskSubject.onNext(
-						adapter.currentList[startPos].id to when {
-							startPos < toPos -> adapter.currentList[toPos].id
-							toPos == 0 -> null
-							else -> adapter.currentList[toPos - 1].id
-						}
-					)
-				}
-				adapter.notifyItemMoved(startPos ?: fromPos, toPos)
-			}*/
+			(adapter as BaseItemAdapter<*, *>).onItemMove(fromPos, toPos)
 		}
 
 		override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
@@ -193,15 +179,14 @@ fun RecyclerView.bindingItemTouchHelper(
 						.currentList[viewHolder.bindingAdapterPosition] is TaskItemModel
 				) {
 					val toPos = viewHolder.bindingAdapterPosition
-					Timber.v(adapter.currentList[startPos].id)
+					Timber.v(startList[startPos].id)
 					taskSubject.onNext(
-						adapter.currentList[startPos].id to when {
-							startPos < toPos -> adapter.currentList[toPos].id
+						startList[startPos].id to when {
+							startPos < toPos -> startList[toPos].id
 							toPos == 0 -> null
-							else -> adapter.currentList[toPos - 1].id
+							else -> startList[toPos - 1].id
 						}
 					)
-					adapter.onItemMove(startPos, toPos)
 				}
 			}
 			startPos = null

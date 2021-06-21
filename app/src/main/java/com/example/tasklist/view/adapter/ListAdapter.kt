@@ -69,10 +69,12 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 }
 
 class UserItemDiffCallback<V : BaseItemModel> : DiffUtil.ItemCallback<V>() {
-	override fun areItemsTheSame(oldItem: V, newItem: V): Boolean =
-		oldItem.id == newItem.id
+	override fun areItemsTheSame(oldItem: V, newItem: V): Boolean {
+		return oldItem.id == newItem.id
+	}
 
 	@SuppressLint("DiffUtilEquals")
-	override fun areContentsTheSame(oldItem: V, newItem: V): Boolean =
-		oldItem == newItem
+	override fun areContentsTheSame(oldItem: V, newItem: V): Boolean {
+		return oldItem == newItem
+	}
 }
