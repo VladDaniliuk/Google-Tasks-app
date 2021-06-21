@@ -62,7 +62,7 @@ interface TaskDao {
 	}
 
 	@Transaction
-	fun updateAllTaskLists(list: List<Task>) {
+	fun updateAllTasks(list: List<Task>) {
 		deleteAllSync()
 		insertAllTasksSync(list)
 	}

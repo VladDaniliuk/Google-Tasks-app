@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
 import com.example.tasklist.view.itemModel.TaskItemModel
 
-open class SwipeController(private val context: Context) : Callback() {
+open class SwipeController(
+	private val context: Context
+) : Callback() {
 	override fun getMovementFlags(
 		recyclerView: RecyclerView,
 		viewHolder: RecyclerView.ViewHolder
@@ -39,6 +41,14 @@ open class SwipeController(private val context: Context) : Callback() {
 	}
 
 	override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {}
+
+	override fun canDropOver(
+		recyclerView: RecyclerView,
+		current: RecyclerView.ViewHolder,
+		target: RecyclerView.ViewHolder
+	): Boolean {
+		return super.canDropOver(recyclerView, current, target)
+	}
 
 	override fun onChildDraw(
 		canvas: Canvas,

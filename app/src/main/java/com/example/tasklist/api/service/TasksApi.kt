@@ -36,7 +36,7 @@ interface TasksApi {
 	fun moveTask(
 		@Path("taskList") taskListId: String,
 		@Path("task") taskId: String,
-		@Query("previous") previousTaskId: String
+		@Query("previous") previousTaskId: String?
 	): Single<Task>
 
 	@PATCH("/tasks/v1/lists/{taskList}/tasks/{task}")

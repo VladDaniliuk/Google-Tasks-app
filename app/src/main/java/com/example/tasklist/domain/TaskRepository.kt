@@ -11,7 +11,6 @@ import com.example.tasklist.view.itemModel.TaskItemModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 interface TaskRepository {
@@ -32,7 +31,7 @@ interface TaskRepository {
 		setting: Triple<String, Int, String>? = null
 	): Flowable<List<TaskWithSubTasks>>
 
-	fun moveTask(taskListId: String, taskId: String, previousTaskId: String): Completable
+	fun moveTask(taskListId: String, taskId: String, previousTaskId: String?): Completable
 	fun onDeleteTask(taskListId: String, taskId: String, onDelete: Boolean): Completable
 }
 
@@ -52,7 +51,7 @@ class TaskRepositoryImpl @Inject constructor(
 			baseListResponse.items.forEach {
 				it.parentId = taskListId
 			}
-			Completable.fromCallable { taskDao.updateAllTaskLists(baseListResponse.items) }
+			Completable.fromCallable { taskDao.updateAllTasks(baseListResponse.items) }
 		}
 	}
 
@@ -87,8 +86,13 @@ class TaskRepositoryImpl @Inject constructor(
 		}
 	}
 
-	override fun moveTask(taskListId: String, taskId: String, previousTaskId: String): Completable {
-		return tasksApi.moveTask(taskListId, previousTaskId, taskId).flatMapCompletable {
+	override fun moveTask(
+		taskListId: String,
+		taskId: String,
+		previousTaskId: String?
+	): Completable {
+		return tasksApi.moveTask(taskListId, taskId, previousTaskId).flatMapCompletable {
+//			fetchTasks(taskListId)
 			Completable.complete()
 		}
 	}

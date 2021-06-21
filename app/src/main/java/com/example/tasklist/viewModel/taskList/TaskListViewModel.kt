@@ -19,6 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,7 +35,7 @@ class TaskListViewModel @Inject constructor(
 	val setting = MutableLiveData<Triple<String, Int, String>>()
 
 	val onExecuteTaskResult = SingleLiveEvent<String>()
-	val onItemMoved = SingleLiveEvent<Pair<String,String>>()
+	val onItemMoved = SingleLiveEvent<Pair<String, String?>>()
 	val onTaskListDelete = SingleLiveEvent<Unit>()
 	val onTaskListEdit = SingleLiveEvent<Unit>()
 	val onTaskSort = SingleLiveEvent<Unit>()
@@ -151,7 +152,7 @@ class TaskListViewModel @Inject constructor(
 
 	override fun deleteBase(id: String, forDelete: Boolean) {
 		if (forDelete) {
-			list.value?.find {
+			_list.value?.find {
 				it.id == id
 			}?.clickable?.postValue(false)
 		}
@@ -160,7 +161,7 @@ class TaskListViewModel @Inject constructor(
 			.subscribe({
 				onDeleteBaseResult.postValue(Triple(id, forDelete, true))
 			}, {
-				list.value?.find {
+				_list.value?.find {
 					it.id == id
 				}?.clickable?.postValue(true)
 				onDeleteBaseResult.postValue(Triple(id, forDelete, false))
@@ -175,7 +176,11 @@ class TaskListViewModel @Inject constructor(
 		}
 	}
 
-	fun moveTask(task: String,previousTask: String) {
-		taskRepository.moveTask(parentId!!,task,previousTask).subscribeOn(Schedulers.io()).subscribe()
+	fun moveTask(task: String, previousTask: String?) {
+		parentId?.let { parentId ->
+			taskRepository.moveTask(parentId, task, previousTask).subscribeOn(Schedulers.io())
+				.subscribe({}, { e -> Timber.v(e) })
+		}
+
 	}
 }

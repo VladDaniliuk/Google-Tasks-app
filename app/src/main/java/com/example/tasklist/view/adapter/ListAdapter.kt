@@ -56,6 +56,16 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		holder.bind(getItem(position), variableId)
 	}
+
+	fun onItemMove(fromPosition: Int, toPosition: Int) {
+		val list = currentList.toMutableList()
+		val movedItem = list[fromPosition]
+		with(list) {
+			removeAt(fromPosition)
+			add(toPosition, movedItem)
+		}
+		submitList(list)
+	}
 }
 
 class UserItemDiffCallback<V : BaseItemModel> : DiffUtil.ItemCallback<V>() {
