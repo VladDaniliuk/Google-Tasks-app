@@ -19,8 +19,10 @@ import com.example.tasklist.view.adapter.TaskAdapter
 import com.example.tasklist.view.itemModel.TaskItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -74,7 +76,11 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 		set(value) {
 			field = value
 			field?.let {
-				fetchTask()
+				Flowable.interval(5, TimeUnit.MINUTES)
+					.subscribeOn(Schedulers.computation())
+					.subscribe {
+						fetchTask()
+					}
 			}
 		}
 

@@ -10,7 +10,9 @@ import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.baseViewModel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +41,11 @@ class TaskListListViewModel @Inject constructor(
 				_list.postValue(it)
 			}
 
-		fetchBase()
+		Flowable.interval(5, TimeUnit.MINUTES)
+			.subscribeOn(Schedulers.computation())
+			.subscribe {
+				fetchBase()
+			}
 	}
 
 	override fun fetchBase() {

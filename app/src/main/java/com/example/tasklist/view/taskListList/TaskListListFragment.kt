@@ -11,14 +11,19 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.taskListList.TaskListListViewModel
+import com.example.tasklist.worker.FetchWorker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class TaskListListFragment : Fragment() {
@@ -44,6 +49,13 @@ class TaskListListFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		context?.let { context ->
+			val uploadWorkRequest: WorkRequest =
+				PeriodicWorkRequest.Builder(FetchWorker::class.java, 1, TimeUnit.MINUTES)
+					.build()
+			WorkManager.getInstance(context).enqueue(uploadWorkRequest)
+		}
 
 		postponeEnterTransition()
 		view.doOnPreDraw { startPostponedEnterTransition() }
