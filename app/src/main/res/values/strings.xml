@@ -49,4 +49,6 @@
 	<string name="date_to_add">date to add</string>
 	<string name="my_order">my order</string>
 	<string name="sort_by">Sort by</string>
+	<string name="sort_in_my_order">Sort in my order</string>
+	<string name="snacbar_sort_change">Can\'t change order of tasks with this sorting settings</string>
 </resources>

@@ -100,22 +100,27 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.onTaskListEdit.observe(viewLifecycleOwner) {
-			findNavController().navigate(
-				TaskListFragmentDirections.actionTaskListFragmentToChangeTaskListFragment(
-					viewModel.parentId!!
+			viewModel.parentId?.let { id ->
+				findNavController().navigate(
+					TaskListFragmentDirections.actionTaskListFragmentToChangeTaskListFragment(
+						id
+					)
 				)
-			)
+			}
 		}
 
 		viewModel.onTaskSort.observe(viewLifecycleOwner) {
-			findNavController()
-				.navigate(
-					TaskListFragmentDirections.actionTaskListFragmentToSortTaskFragment(
-						completedTasks = viewModel.setting.value!!.first,
-						sortByDate = viewModel.setting.value!!.second,
-						deletedTasks = viewModel.setting.value!!.third
+			viewModel.setting.value?.let { setting ->
+				findNavController()
+					.navigate(
+						TaskListFragmentDirections.actionTaskListFragmentToSortTaskFragment(
+							completedTasks = setting.first,
+							sortByDate = setting.second,
+							deletedTasks = setting.third
+						)
 					)
-				)
+			}
+
 		}
 
 		viewModel.onExecuteTaskResult.observe(viewLifecycleOwner) {
@@ -130,11 +135,14 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.onCreateBaseClick.observe(viewLifecycleOwner) {
-			findNavController().navigate(
-				TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment(
-					viewModel.parentId!!, null
+			viewModel.parentId?.let { id ->
+				findNavController().navigate(
+					TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment(
+						id, null
+					)
 				)
-			)
+			}
+
 		}
 
 		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
@@ -142,7 +150,14 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.onItemMoved.observe(viewLifecycleOwner) {
-			viewModel.moveTask(it.first, it.second)
+			viewModel.setting.value?.let { setting ->
+				if (setting.second != R.id.my_order) {
+					showSnackBarChangeSetting()
+					viewModel.fetchBase(false)
+				} else {
+					viewModel.moveTask(it.first, it.second)
+				}
+			}
 		}
 	}
 
@@ -196,5 +211,26 @@ class TaskListFragment : Fragment() {
 			),
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.insertTask).show()
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarChangeSetting() {
+		viewModel.setting.value?.let { setting ->
+			Snackbar.make(
+				requireView(),
+				getString(R.string.snacbar_sort_change),
+				Snackbar.LENGTH_SHORT
+			).setAction(getString(R.string.sort_in_my_order)) {
+				viewModel.setting.postValue(
+					setting.copy(
+						second = R.id.my_order,
+						third = when (setting.third) {
+							getString(R.string.deleted_small) -> getString(R.string.assigned)
+							else -> setting.third
+						}
+					)
+				)
+			}.setAnchorView(binding.insertTask).show()
+		}
 	}
 }

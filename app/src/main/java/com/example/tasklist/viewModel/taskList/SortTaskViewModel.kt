@@ -3,25 +3,26 @@ package com.example.tasklist.viewModel.taskList
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tasklist.R
 import com.example.tasklist.dev.SingleLiveEvent
 
 class SortTaskViewModel : ViewModel() {
 	val postSetting = MutableLiveData<Triple<String, Int, String>>()
 	val setting = MutableLiveData<Triple<String, Int, String>>()
 
-	val onDeletedTask = SingleLiveEvent<Unit>()
 	val onRadioButtonChoose = SingleLiveEvent<Int>()
 
 	val completedTaskClickListener = View.OnClickListener {
-		setting.value?.let {
+		setting.value?.let { setting ->
 			postSetting.postValue(
 				Triple(
-					when (it.first) {
-						show -> hide
-						else -> show
+					when (setting.first) {
+						it.resources.getString(R.string.show) -> it.resources
+							.getString(R.string.hide)
+						else -> it.resources.getString(R.string.show)
 					},
-					it.second,
-					it.third
+					setting.second,
+					setting.third
 				)
 			)
 		}
@@ -29,25 +30,23 @@ class SortTaskViewModel : ViewModel() {
 	}
 
 	val deletedTaskClickListener = View.OnClickListener {
-		setting.value?.let {
+		setting.value?.let { setting ->
 			postSetting.postValue(
-				Triple(
-					it.first, it.second,
-					when (it.third) {
-						assigned -> deleted
-						else -> assigned
+				when (setting.third) {
+					it.resources.getString(R.string.assigned) -> {
+						when (setting.second) {
+							R.id.my_order -> setting.copy(
+								third = it.resources.getString(R.string.deleted_small),
+								second = R.id.date_to_add
+							)
+							else -> setting.copy(
+								third = it.resources.getString(R.string.deleted_small)
+							)
+						}
 					}
-				)
+					else -> setting.copy(third = it.resources.getString(R.string.assigned))
+				}
 			)
 		}
-	}
-
-	companion object {
-		const val show = "Show"
-		const val hide = "Hide"
-		const val add = "add"
-		const val complete = "complete"
-		const val deleted = "deleted"
-		const val assigned = "assigned"
 	}
 }

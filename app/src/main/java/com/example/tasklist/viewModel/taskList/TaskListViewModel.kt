@@ -138,8 +138,8 @@ class TaskListViewModel @Inject constructor(
 			}
 	}
 
-	override fun fetchBase() {
-		fetchInProgress.postValue(true)
+	override fun fetchBase(withAnim: Boolean?) {
+		fetchInProgress.postValue(withAnim)
 		parentId?.let {
 			taskRepository.fetchTasks(it)
 				.subscribeOn(Schedulers.io())
