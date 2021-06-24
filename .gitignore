@@ -102,3 +102,5 @@ lint/tmp/
 .cxx
 /.run/
 /Key
+/Key.b64
+/keystore.b64
