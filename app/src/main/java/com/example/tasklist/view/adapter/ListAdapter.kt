@@ -28,12 +28,14 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 
 	inner class ViewHolder(private var binding: ViewDataBinding) :
 		LifecycleViewHolder(binding.root) {
+    var baseItem: BaseItemModel? = null
 
 		fun bind(item: T, variableId: Int) {
 			binding.lifecycleOwner = this
 			binding.setVariable(variableId, item)
 			binding.executePendingBindings()
-			ViewCompat.setTransitionName(binding.root,item.id)
+			ViewCompat.setTransitionName(binding.root, item.id)
+			baseItem = item
 		}
 	}
 

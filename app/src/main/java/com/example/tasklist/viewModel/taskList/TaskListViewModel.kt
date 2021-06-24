@@ -17,6 +17,7 @@ import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.baseViewModel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -25,18 +26,22 @@ class TaskListViewModel @Inject constructor(
 	private val taskRepository: TaskRepository,
 	private val taskListRepository: TaskListRepository
 ) : BaseViewModel() {
+	private var getTaskDisposable: Disposable? = null
+
 	private val _list = MutableLiveData<List<TaskItemModel>>()
 	val list: LiveData<List<TaskItemModel>> = _list
 	val listName = MutableLiveData<String>()
+	val setting = MutableLiveData<Triple<String, String, String>>()
 
+	val onExecuteTaskResult = SingleLiveEvent<String>()
 	val onTaskListDelete = SingleLiveEvent<Unit>()
 	val onTaskListEdit = SingleLiveEvent<Unit>()
+	val onTaskSort = SingleLiveEvent<Unit>()
+
 	val onMenuItemClickListener = Toolbar.OnMenuItemClickListener {
 		onItemClicked(it)
 		return@OnMenuItemClickListener true
 	}
-
-	val onExecuteTaskResult = SingleLiveEvent<String>()
 
 	val adapter = BaseItemAdapter<TaskItemModel, LayoutTaskBinding>(
 		BR.model,
@@ -48,7 +53,7 @@ class TaskListViewModel @Inject constructor(
 			field = value
 			field?.let {
 				getTaskList(it)
-				//getTasks(it)
+				getTasks(it)
 				fetchBase()
 			}
 		}
@@ -59,8 +64,9 @@ class TaskListViewModel @Inject constructor(
 		}
 	}
 
-	fun getTasks(parentId: String) {
-		taskRepository.getTasks(parentId)
+	private fun getTasks(parentId: String) {
+		getTaskDisposable?.dispose()
+		getTaskDisposable = taskRepository.getTasks(parentId, setting.value)
 			.observeOn(AndroidSchedulers.mainThread())
 			.map { list ->
 				list.map { task ->
@@ -71,6 +77,7 @@ class TaskListViewModel @Inject constructor(
 						task.task.status!!,
 						task.task.due,
 						task.task.notes,
+						task.task.deleted,
 						object : SimpleTaskClickListener() {
 							override fun onTaskItemClick(model: TaskItemModel, view: View) {
 								onBaseClick.postValue(model.id to view)
@@ -106,7 +113,8 @@ class TaskListViewModel @Inject constructor(
 								it.title!!,
 								it.status!!,
 								it.due,
-								task.task.notes,
+								it.notes,
+								it.deleted,
 								object : SimpleTaskClickListener() {
 									override fun onTaskExecuteClick(
 										model: TaskItemModel,
@@ -153,10 +161,10 @@ class TaskListViewModel @Inject constructor(
 	}
 
 	fun onItemClicked(menuItem: MenuItem) {
-		if (menuItem.itemId == R.id.delete) {
-			onTaskListDelete.call()
-		} else if (menuItem.itemId == R.id.edit) {
-			onTaskListEdit.call()
+		when (menuItem.itemId) {
+			R.id.delete -> onTaskListDelete.call()
+			R.id.edit -> onTaskListEdit.call()
+			R.id.sort -> onTaskSort.call()
 		}
 	}
 

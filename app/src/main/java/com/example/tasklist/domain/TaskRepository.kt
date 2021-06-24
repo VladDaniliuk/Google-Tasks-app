@@ -6,6 +6,7 @@ import com.example.tasklist.api.model.response.Task
 import com.example.tasklist.api.model.response.TaskWithSubTasks
 import com.example.tasklist.api.service.TasksApi
 import com.example.tasklist.db.dao.TaskDao
+import com.example.tasklist.extensions.TaskComparator
 import com.example.tasklist.view.itemModel.TaskItemModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
@@ -25,7 +26,11 @@ interface TaskRepository {
 	fun fetchTask(parentId: String, taskId: String): Completable
 	fun fetchTasks(taskListId: String): Completable
 	fun getTask(parentId: String, taskId: String): Flowable<TaskWithSubTasks>
-	fun getTasks(parentId: String): Flowable<List<TaskWithSubTasks>>
+	fun getTasks(
+		parentId: String,
+		setting: Triple<String, String, String>? = null
+	): Flowable<List<TaskWithSubTasks>>
+
 	fun onDeleteTask(taskListId: String, taskId: String, onDelete: Boolean): Completable
 }
 
@@ -60,11 +65,23 @@ class TaskRepositoryImpl @Inject constructor(
 		return taskDao.getTask(parentId, taskId)
 	}
 
-	override fun getTasks(parentId: String): Flowable<List<TaskWithSubTasks>> {
+	override fun getTasks(
+		parentId: String,
+		setting: Triple<String, String, String>?
+	): Flowable<List<TaskWithSubTasks>> {
 		return taskDao.getAll(parentId).flatMap { list ->
 			Flowable.fromIterable(list).filter { task ->
-				task.task.parent == null && task.task.deleted == null
-			}.toList().toFlowable()
+				(task.task.parent == null) and
+						when (setting?.first) {
+							"Hide" -> task.task.completed == null
+							else -> true
+						} and
+						when (setting?.third) {
+							"deleted" -> task.task.deleted != null
+							else -> task.task.deleted == null
+						}
+			}.toSortedList(TaskComparator(setting?.second))
+				.toFlowable()
 		}
 	}
 
@@ -102,7 +119,11 @@ class TaskRepositoryImpl @Inject constructor(
 			}
 	}
 
-	override fun onDeleteTask(taskListId: String, taskId: String, onDelete: Boolean): Completable {
+	override fun onDeleteTask(
+		taskListId: String,
+		taskId: String,
+		onDelete: Boolean
+	): Completable {
 		return tasksApi.patchTask(taskListId, taskId, Task(id = taskId, deleted = onDelete))
 			.flatMapCompletable {
 				Completable.fromCallable {

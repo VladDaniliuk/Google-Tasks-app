@@ -94,7 +94,7 @@ class TaskFragment : Fragment() {
 		}
 
 		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
-			viewModel.deleteSubTask(it, true)
+				viewModel.deleteSubTask(it.first, !it.second)
 		}
 
 		viewModel.onDeleteSubTaskResult.observe(viewLifecycleOwner) {

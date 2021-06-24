@@ -9,7 +9,7 @@ open class BaseViewModel : ViewModel() {
 	val fetchInProgress = MutableLiveData(false)
 
 	val onCreateBaseClick = SingleLiveEvent<Unit>()
-	val onDeleteBaseClick = SingleLiveEvent<String>()
+	val onDeleteBaseClick = SingleLiveEvent<Pair<String,Boolean>>()
 	val onDeleteBaseResult = SingleLiveEvent<Boolean>()
 	val onBaseClick = SingleLiveEvent<Pair<String, View>>()
 

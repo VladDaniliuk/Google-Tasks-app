@@ -18,6 +18,7 @@ import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.adapter.SwipeController
 import com.example.tasklist.view.itemModel.TaskItemModel
+import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.api.client.util.DateTime
@@ -106,18 +107,27 @@ fun TextView.bindingIsDue(due: String?) {
 }
 
 @BindingAdapter("itemTouchHelper")
-fun RecyclerView.bindingItemTouchHelper(onItemAdapter: SingleLiveEvent<String>) {
+fun RecyclerView.bindingItemTouchHelper(onItemAdapter: SingleLiveEvent<Pair<String, Boolean>>) {
+	val adapter = adapter ?: return
 	val simpleItemTouchCallback = object : SwipeController(this.context) {
 		override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-			onItemAdapter.postValue(
-				if (adapter is ConcatAdapter) {
-					((adapter as ConcatAdapter).adapters[1] as BaseItemAdapter<*, *>)
-						.currentList[viewHolder.bindingAdapterPosition].id
-				} else {
-					(adapter as BaseItemAdapter<*, *>)
-						.currentList[viewHolder.bindingAdapterPosition].id
+			val pair: Pair<String, Boolean> = when (adapter) {
+				is ConcatAdapter -> Pair(
+					(adapter.adapters[1] as BaseItemAdapter<*, *>)
+						.currentList[viewHolder.bindingAdapterPosition].id,
+					false
+				)
+				is BaseItemAdapter<*, *> -> {
+					when (val itemModel = adapter.currentList[viewHolder.bindingAdapterPosition]) {
+						is TaskItemModel -> Pair(itemModel.id, itemModel.deleted ?: false)
+						is TaskListItemModel -> Pair(itemModel.id, false)
+						else -> throw IllegalStateException("Position is not correct")
+					}
 				}
-			)
+				else -> throw IllegalStateException("Position is not correct")
+			}
+
+			onItemAdapter.postValue(pair)
 		}
 	}
 
