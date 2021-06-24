@@ -104,7 +104,7 @@ class TaskListViewModel @Inject constructor(
 
 							override fun onTaskExecuteClick(model: TaskItemModel, view: View) {
 								taskRepository.completeTask(model)
-									.subscribeOn(Schedulers.computation())
+									.subscribeOn(Schedulers.io())
 									.subscribe({}, { onExecuteTaskResult.postValue(model.title) })
 							}
 						},
@@ -123,7 +123,7 @@ class TaskListViewModel @Inject constructor(
 										view: View
 									) {
 										taskRepository.completeTask(model)
-											.subscribeOn(Schedulers.computation())
+											.subscribeOn(Schedulers.io())
 											.subscribe()
 									}
 								}
