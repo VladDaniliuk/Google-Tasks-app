@@ -35,8 +35,9 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	val onCompleteTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskError = SingleLiveEvent<String>()
 	val onDeleteBaseClick = SingleLiveEvent<String>()
-	val onDeleteBaseResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
+	val onDeleteSubTaskResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
 	val onDeleteDueDateClick = SingleLiveEvent<Unit>()
+	val onDeleteTaskResult = SingleLiveEvent<Boolean>()
 	val onTaskClick = SingleLiveEvent<Pair<String, View>>()
 	val onTaskDelete = SingleLiveEvent<Unit>()
 	val onTaskEdit = SingleLiveEvent<Unit>()
@@ -150,19 +151,19 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 
 	fun deleteSubTask(id: String, forDelete: Boolean) {
 		if (forDelete) {
-			task.value?.list?.filter {
+			task.value?.list?.find {
 				it.id == id
-			}?.toList()?.get(0)?.clickable?.postValue(false)
+			}?.clickable?.postValue(false)
 		}
 		taskRepository.onDeleteTask(task.value?.parentId!!, id, forDelete)
 			.subscribeOn(Schedulers.io())
 			.subscribe({
-				onDeleteBaseResult.postValue(Triple(id, forDelete, true))
+				onDeleteSubTaskResult.postValue(Triple(id, forDelete, true))
 			}, {
-				task.value?.list?.filter {
+				task.value?.list?.find {
 					it.id == id
-				}?.toList()?.get(0)?.clickable?.postValue(true)
-				onDeleteBaseResult.postValue(Triple(id, forDelete, false))
+				}?.clickable?.postValue(true)
+				onDeleteSubTaskResult.postValue(Triple(id, forDelete, false))
 			})
 	}
 
@@ -170,9 +171,9 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 		taskRepository.onDeleteTask(task.value?.parentId!!, task.value?.id!!, true)
 			.subscribeOn(Schedulers.io())
 			.subscribe({
-				onDeleteBaseResult.postValue(Triple(task.value?.id!!, second = true, third = true))
+				onDeleteTaskResult.postValue(true)
 			}, {
-				onDeleteBaseResult.postValue(Triple(task.value?.id!!, second = true, third = false))
+				onDeleteTaskResult.postValue(false)
 			})
 	}
 

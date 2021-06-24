@@ -48,7 +48,7 @@ class TaskListViewModel @Inject constructor(
 			field = value
 			field?.let {
 				getTaskList(it)
-				getTasks(it)
+				//getTasks(it)
 				fetchBase()
 			}
 		}
@@ -59,7 +59,7 @@ class TaskListViewModel @Inject constructor(
 		}
 	}
 
-	private fun getTasks(parentId: String) {
+	fun getTasks(parentId: String) {
 		taskRepository.getTasks(parentId)
 			.observeOn(AndroidSchedulers.mainThread())
 			.map { list ->
@@ -141,20 +141,14 @@ class TaskListViewModel @Inject constructor(
 	}
 
 	override fun deleteBase(id: String, forDelete: Boolean) {
-		if (forDelete) {
-			list.value?.find {
-				it.id == id
-			}?.clickable?.postValue(false)
-		}
+		setTaskClickable(id, false)
 		taskRepository.onDeleteTask(parentId!!, id, forDelete)
 			.subscribeOn(Schedulers.io())
 			.subscribe({
-				onDeleteBaseResult.postValue(Triple(id, forDelete, true))
+				onDeleteBaseResult.postValue(true)
 			}, {
-				list.value?.filter {
-					it.id == id
-				}?.toList()?.get(0)?.clickable?.postValue(true)
-				onDeleteBaseResult.postValue(Triple(id, forDelete, false))
+				setTaskClickable(id, true)
+				onDeleteBaseResult.postValue(false)
 			})
 	}
 
@@ -164,5 +158,15 @@ class TaskListViewModel @Inject constructor(
 		} else if (menuItem.itemId == R.id.edit) {
 			onTaskListEdit.call()
 		}
+	}
+
+	/*
+	* Filter all tasks by id
+	* So make it clickable/unclickable
+	*/
+	private fun setTaskClickable(id: String, clickable: Boolean) {
+		list.value?.find {
+			it.id == id
+		}?.clickable?.postValue(clickable)
 	}
 }
