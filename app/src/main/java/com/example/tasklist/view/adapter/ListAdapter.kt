@@ -28,7 +28,7 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 
 	inner class ViewHolder(private var binding: ViewDataBinding) :
 		LifecycleViewHolder(binding.root) {
-    var baseItem: BaseItemModel? = null
+		var baseItem: BaseItemModel? = null
 
 		fun bind(item: T, variableId: Int) {
 			binding.lifecycleOwner = this
@@ -50,15 +50,27 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		holder.bind(getItem(position), variableId)
 	}
+
+	fun onItemMove(fromPosition: Int, toPosition: Int) {
+		val list = currentList.toMutableList()
+		val movedItem = list[fromPosition]
+		with(list) {
+			removeAt(fromPosition)
+			add(toPosition, movedItem)
+		}
+		submitList(list)
+	}
 }
 
 class UserItemDiffCallback<V : BaseItemModel> : DiffUtil.ItemCallback<V>() {
-	override fun areItemsTheSame(oldItem: V, newItem: V): Boolean =
-		oldItem.id == newItem.id
+	override fun areItemsTheSame(oldItem: V, newItem: V): Boolean {
+		return oldItem.id == newItem.id
+	}
 
 	@SuppressLint("DiffUtilEquals")
-	override fun areContentsTheSame(oldItem: V, newItem: V): Boolean =
-		oldItem == newItem
+	override fun areContentsTheSame(oldItem: V, newItem: V): Boolean {
+		return oldItem == newItem
+	}
 }
 
 abstract class LifecycleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),

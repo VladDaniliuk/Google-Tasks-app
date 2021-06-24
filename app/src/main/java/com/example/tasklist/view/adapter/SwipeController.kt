@@ -7,21 +7,29 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.ItemTouchHelper.Callback
-import androidx.recyclerview.widget.ItemTouchHelper.LEFT
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
 import com.example.tasklist.view.itemModel.TaskItemModel
 
-open class SwipeController(private val context: Context) : Callback() {
+open class SwipeController(
+	private val context: Context
+) : Callback() {
 	override fun getMovementFlags(
 		recyclerView: RecyclerView,
 		viewHolder: RecyclerView.ViewHolder
 	): Int {
-		if (viewHolder is TaskAdapter.ViewHolder || viewHolder is AddSubTaskAdapter.ViewHolder) {
-			return makeMovementFlags(0, 0)
+		return when (recyclerView.adapter) {
+			is ConcatAdapter -> makeMovementFlags(
+				0,
+				if (viewHolder is BaseItemAdapter<*, *>.ViewHolder) LEFT else 0
+			)
+			else ->
+				if ((recyclerView.adapter as BaseItemAdapter<*, *>)
+						.currentList[viewHolder.bindingAdapterPosition] is TaskItemModel
+				) makeMovementFlags(UP or DOWN, LEFT) else makeMovementFlags(0, LEFT)
 		}
-		return makeMovementFlags(0, LEFT)
 	}
 
 	override fun onMove(
@@ -34,6 +42,14 @@ open class SwipeController(private val context: Context) : Callback() {
 
 	override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {}
 
+	override fun canDropOver(
+		recyclerView: RecyclerView,
+		current: RecyclerView.ViewHolder,
+		target: RecyclerView.ViewHolder
+	): Boolean {
+		return super.canDropOver(recyclerView, current, target)
+	}
+
 	override fun onChildDraw(
 		canvas: Canvas,
 		recyclerView: RecyclerView,
@@ -43,7 +59,7 @@ open class SwipeController(private val context: Context) : Callback() {
 		actionState: Int,
 		isCurrentlyActive: Boolean
 	) {
-		if ((dX == 0.toFloat()) && !isCurrentlyActive) {
+		if ((dX == 0.toFloat()) && !isCurrentlyActive || dY != 0.toFloat()) {
 			super.onChildDraw(
 				canvas, recyclerView, viewHolder, dX, dY, actionState,
 				isCurrentlyActive
@@ -88,7 +104,15 @@ open class SwipeController(private val context: Context) : Callback() {
 
 		drawableDelete.draw(canvas)
 
-		super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+		super.onChildDraw(
+			canvas,
+			recyclerView,
+			viewHolder,
+			dX,
+			dY,
+			actionState,
+			isCurrentlyActive
+		)
 	}
 
 	private fun dpToPx(): Float {

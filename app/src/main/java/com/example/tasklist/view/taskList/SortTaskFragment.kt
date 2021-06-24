@@ -46,30 +46,36 @@ class SortTaskFragment : BottomSheetDialogFragment() {
 		}
 
 		viewModel.setting.observe(viewLifecycleOwner) {
-			binding.completedTask.text = getString(
-				R.string.completed_tasks,
-				if (viewModel.setting.value?.first == getString(R.string.show))
-					getString(R.string.hide)
-				else
-					getString(R.string.show)
-			)
-			binding.sortTasks.text = getString(
-				R.string.sort_by_date_to,
-				if (viewModel.setting.value?.second == getString(R.string.add))
-					getString(R.string.complete)
-				else
-					getString(R.string.add)
-			)
-			binding.deletedTasks.text = getString(
-				R.string.show__tasks,
-				if (viewModel.setting.value?.third == getString(R.string.deleted_small))
-					getString(R.string.assigned)
-				else getString(R.string.deleted_small)
-			)
+			viewModel.setting.value?.let { setting ->
+				binding.completedTask.text = getString(
+					R.string.completed_tasks,
+					when (setting.first) {
+						getString(R.string.show) -> getString(R.string.hide)
+						else -> getString(R.string.show)
+					}
+				)
+				binding.deletedTasks.text = getString(
+					R.string.show__tasks,
+					when (setting.third) {
+						getString(R.string.deleted_small) -> getString(R.string.assigned)
+						else -> getString(R.string.deleted_small)
+					}
+				)
+			}
 		}
 
-		viewModel.onDeletedTask.observe(viewLifecycleOwner) {
-			findNavController().popBackStack()
+		viewModel.onRadioButtonChoose.observe(viewLifecycleOwner) { radioButtonId ->
+			viewModel.setting.value?.let { setting ->
+				viewModel.postSetting.postValue(
+					setting.copy(
+						second = binding.sortMethodes.checkedRadioButtonId,
+						third = when (radioButtonId) {
+							R.id.my_order -> getString(R.string.assigned)
+							else -> setting.third
+						}
+					)
+				)
+			}
 		}
 	}
 }

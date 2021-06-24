@@ -9,15 +9,17 @@ open class BaseViewModel : ViewModel() {
 	val fetchInProgress = MutableLiveData(false)
 
 	val onCreateBaseClick = SingleLiveEvent<Unit>()
+
 	val onDeleteBaseClick = SingleLiveEvent<Pair<String,Boolean>>()
 	val onDeleteBaseResult = SingleLiveEvent<Boolean>()
+
 	val onBaseClick = SingleLiveEvent<Pair<String, View>>()
 
 	val createBaseClickListener = View.OnClickListener {
 		onCreateBaseClick.call()
 	}
 
-	open fun fetchBase() {}
+	open fun fetchBase(withAnim: Boolean? = true) {}
 
-	open fun deleteBase(id: String,forDelete: Boolean = true) {}
+	open fun deleteBase(id: String, forDelete: Boolean = true) {}
 }

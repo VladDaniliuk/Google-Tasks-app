@@ -7,6 +7,7 @@ import android.text.style.StrikethroughSpan
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageButton
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ConcatAdapter
@@ -17,10 +18,13 @@ import com.example.tasklist.R
 import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.adapter.SwipeController
+import com.example.tasklist.view.itemModel.BaseItemModel
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import timber.log.Timber
 import com.google.api.client.util.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
@@ -106,10 +110,49 @@ fun TextView.bindingIsDue(due: String?) {
 	}
 }
 
-@BindingAdapter("itemTouchHelper")
-fun RecyclerView.bindingItemTouchHelper(onItemAdapter: SingleLiveEvent<Pair<String, Boolean>>) {
+@BindingAdapter("itemTouchHelper", "onItemMoved")
+fun RecyclerView.bindingItemTouchHelper(
+	onItemAdapter: SingleLiveEvent<Pair<String, Boolean>>,
+	onItemMoved: SingleLiveEvent<Pair<String, String?>>?
+) {
 	val adapter = adapter ?: return
+	var startPos: Int? = null
+	var startList: List<BaseItemModel> = emptyList()
+
+	val taskSubject = BehaviorSubject.create<Pair<String, String?>>().apply {
+		distinctUntilChanged()
+			.subscribe {
+				onItemMoved!!.postValue(it)
+				startPos = null
+			}
+	}
+
 	val simpleItemTouchCallback = object : SwipeController(this.context) {
+		override fun onMove(
+			recyclerView: RecyclerView,
+			viewHolder: RecyclerView.ViewHolder,
+			target: RecyclerView.ViewHolder
+		): Boolean {
+			return true
+		}
+
+		override fun onMoved(
+			recyclerView: RecyclerView,
+			viewHolder: RecyclerView.ViewHolder,
+			fromPos: Int,
+			target: RecyclerView.ViewHolder,
+			toPos: Int,
+			x: Int,
+			y: Int
+		) {
+			if (startPos == null) {
+				startList = (adapter as BaseItemAdapter<*, *>).currentList
+			}
+			startPos = startPos ?: fromPos
+
+			(adapter as BaseItemAdapter<*, *>).onItemMove(fromPos, toPos)
+		}
+
 		override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
 			val pair: Pair<String, Boolean> = when (adapter) {
 				is ConcatAdapter -> Pair(
@@ -129,8 +172,35 @@ fun RecyclerView.bindingItemTouchHelper(onItemAdapter: SingleLiveEvent<Pair<Stri
 
 			onItemAdapter.postValue(pair)
 		}
+
+		override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+			super.clearView(recyclerView, viewHolder)
+			startPos?.let { startPos ->
+				if ((adapter as BaseItemAdapter<*, *>)
+						.currentList[viewHolder.bindingAdapterPosition] is TaskItemModel
+				) {
+					val toPos = viewHolder.bindingAdapterPosition
+					Timber.v(startList[startPos].id)
+					taskSubject.onNext(
+						startList[startPos].id to when {
+							startPos < toPos -> startList[toPos].id
+							toPos == 0 -> null
+							else -> startList[toPos - 1].id
+						}
+					)
+				}
+			}
+			startPos = null
+		}
 	}
 
 	val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
 	itemTouchHelper.attachToRecyclerView(this)
+}
+
+@BindingAdapter("onClick")
+fun RadioButton.bindingOnClick(onRadioButtonChoose: SingleLiveEvent<Int>) {
+	this.setOnClickListener {
+		onRadioButtonChoose.postValue(it.id)
+	}
 }

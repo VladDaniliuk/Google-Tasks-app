@@ -3,75 +3,50 @@ package com.example.tasklist.viewModel.taskList
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tasklist.R
 import com.example.tasklist.dev.SingleLiveEvent
 
 class SortTaskViewModel : ViewModel() {
-	val postSetting = MutableLiveData<Triple<String, String, String>>()
-	val setting = MutableLiveData<Triple<String, String, String>>()
+	val postSetting = MutableLiveData<Triple<String, Int, String>>()
+	val setting = MutableLiveData<Triple<String, Int, String>>()
 
-	val onDeletedTask = SingleLiveEvent<Unit>()
+	val onRadioButtonChoose = SingleLiveEvent<Int>()
 
 	val completedTaskClickListener = View.OnClickListener {
-		if (setting.value?.first ?: show == show)
+		setting.value?.let { setting ->
 			postSetting.postValue(
 				Triple(
-					hide,
-					setting.value?.second ?: add,
-					setting.value?.third ?: add
+					when (setting.first) {
+						it.resources.getString(R.string.show) -> it.resources
+							.getString(R.string.hide)
+						else -> it.resources.getString(R.string.show)
+					},
+					setting.second,
+					setting.third
 				)
 			)
-		else
-			postSetting.postValue(
-				Triple(
-					show,
-					setting.value?.second ?: add,
-					setting.value?.third ?: add
-				)
-			)
-	}
-	val sortTaskClickListener = View.OnClickListener {
-		if (setting.value?.second ?: add == add)
-			postSetting.postValue(
-				Triple(
-					setting.value?.first ?: show,
-					complete,
-					setting.value?.third ?: add
-				)
-			)
-		else
-			postSetting.postValue(
-				Triple(
-					setting.value?.first ?: show,
-					add,
-					setting.value?.third ?: add
-				)
-			)
-	}
-	val deletedTaskClickListener = View.OnClickListener {
-		if (setting.value?.third ?: assigned == assigned)
-			postSetting.postValue(
-				Triple(
-					setting.value?.first ?: show,
-					setting.value?.second ?: add,
-					deleted
-				)
-			)
-		else
-			postSetting.postValue(
-				Triple(
-					setting.value?.first ?: show,
-					setting.value?.second ?: add,
-					assigned
-				)
-			)
+		}
+
 	}
 
-	companion object {
-		const val show = "Show"
-		const val hide = "Hide"
-		const val add = "add"
-		const val complete = "complete"
-		const val deleted = "deleted"
-		const val assigned = "assigned"
+	val deletedTaskClickListener = View.OnClickListener {
+		setting.value?.let { setting ->
+			postSetting.postValue(
+				when (setting.third) {
+					it.resources.getString(R.string.assigned) -> {
+						when (setting.second) {
+							R.id.my_order -> setting.copy(
+								third = it.resources.getString(R.string.deleted_small),
+								second = R.id.date_to_add
+							)
+							else -> setting.copy(
+								third = it.resources.getString(R.string.deleted_small)
+							)
+						}
+					}
+					else -> setting.copy(third = it.resources.getString(R.string.assigned))
+				}
+			)
+		}
 	}
 }

@@ -19,6 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,9 +32,10 @@ class TaskListViewModel @Inject constructor(
 	private val _list = MutableLiveData<List<TaskItemModel>>()
 	val list: LiveData<List<TaskItemModel>> = _list
 	val listName = MutableLiveData<String>()
-	val setting = MutableLiveData<Triple<String, String, String>>()
+	val setting = MutableLiveData<Triple<String, Int, String>>()
 
 	val onExecuteTaskResult = SingleLiveEvent<String>()
+	val onItemMoved = SingleLiveEvent<Pair<String, String?>>()
 	val onTaskListDelete = SingleLiveEvent<Unit>()
 	val onTaskListEdit = SingleLiveEvent<Unit>()
 	val onTaskSort = SingleLiveEvent<Unit>()
@@ -136,8 +138,8 @@ class TaskListViewModel @Inject constructor(
 			}
 	}
 
-	override fun fetchBase() {
-		fetchInProgress.postValue(true)
+	override fun fetchBase(withAnim: Boolean?) {
+		fetchInProgress.postValue(withAnim)
 		parentId?.let {
 			taskRepository.fetchTasks(it)
 				.subscribeOn(Schedulers.io())
@@ -168,6 +170,13 @@ class TaskListViewModel @Inject constructor(
 		}
 	}
 
+	fun moveTask(task: String, previousTask: String?) {
+		parentId?.let { parentId ->
+			taskRepository.moveTask(parentId, task, previousTask).subscribeOn(Schedulers.io())
+				.subscribe({}, { e -> Timber.v(e) })
+		}
+  }
+ 
 	/*
 	* Filter all tasks by id
 	* So make it clickable/unclickable
