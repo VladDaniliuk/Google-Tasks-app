@@ -2,11 +2,15 @@ package com.example.tasklist.view.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,42 +19,32 @@ import com.example.tasklist.view.itemModel.BaseItemModel
 class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 	private val variableId: Int,
 	@LayoutRes
-	private val layoutRes: Int/*,
-	private var lifecycleOwner: LifecycleOwner*/
+	private val layoutRes: Int
 ) : ListAdapter<T, BaseItemAdapter<T, B>.ViewHolder>(UserItemDiffCallback()) {
-	inner class ViewHolder(private var binding: ViewDataBinding/*, lifecycleOwner: LifecycleOwner*/) :
-		RecyclerView.ViewHolder(binding.root)/*,LifecycleOwner*/ {
-		var baseItem: BaseItemModel? = null
-		/*private val lifecycleRegistry = LifecycleRegistry(this)
-
-	init {
-		lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+	override fun onViewAttachedToWindow(holder: ViewHolder) {
+		super.onViewAttachedToWindow(holder)
+		holder.onStart()
 	}
 
-	fun lifecycleCreate() {
-		lifecycleRegistry.currentState = Lifecycle.State.CREATED
-	}*/
+	inner class ViewHolder(private var binding: ViewDataBinding) :
+		LifecycleViewHolder(binding.root) {
+    var baseItem: BaseItemModel? = null
 
 		fun bind(item: T, variableId: Int) {
+			binding.lifecycleOwner = this
 			binding.setVariable(variableId, item)
 			binding.executePendingBindings()
 			ViewCompat.setTransitionName(binding.root, item.id)
 			baseItem = item
 		}
-
-		/*override fun getLifecycle(): Lifecycle {
-			return lifecycleRegistry
-		}*/
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val inflater = LayoutInflater.from(parent.context)
 		val binding = DataBindingUtil.inflate<B>(inflater, layoutRes, parent, false)
-		/*val holder= ViewHolder(binding, lifecycleOwner)
-		binding.lifecycleOwner = holder
-		holder.lifecycleCreate()
-		return holder*/
-		return ViewHolder(binding)
+		val holder = ViewHolder(binding)
+		holder.onCreate()
+		return holder
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -65,4 +59,25 @@ class UserItemDiffCallback<V : BaseItemModel> : DiffUtil.ItemCallback<V>() {
 	@SuppressLint("DiffUtilEquals")
 	override fun areContentsTheSame(oldItem: V, newItem: V): Boolean =
 		oldItem == newItem
+}
+
+abstract class LifecycleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+	LifecycleOwner {
+	private val lifecycleRegistry = LifecycleRegistry(this)
+
+	init {
+		lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+	}
+
+	fun onCreate() {
+		lifecycleRegistry.currentState = Lifecycle.State.CREATED
+	}
+
+	fun onStart() {
+		lifecycleRegistry.currentState = Lifecycle.State.STARTED
+	}
+
+	override fun getLifecycle(): Lifecycle {
+		return lifecycleRegistry
+	}
 }

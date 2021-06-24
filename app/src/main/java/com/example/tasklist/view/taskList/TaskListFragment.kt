@@ -64,6 +64,7 @@ class TaskListFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		viewModel.getTasks(viewModel.parentId!!)
 
 		postponeEnterTransition()
 		view.doOnPreDraw { startPostponedEnterTransition() }
@@ -124,9 +125,7 @@ class TaskListFragment : Fragment() {
 		}
 
 		viewModel.onDeleteBaseResult.observe(viewLifecycleOwner) {
-			if (it.second) showSnackBarDelete(it.first, it.third)
-			else showSnackBarRestore(it.third)
-			if (!it.third) viewModel.adapter.notifyDataSetChanged()
+			showSnackBarDelete(it)
 		}
 
 		viewModel.onCreateBaseClick.observe(viewLifecycleOwner) {
@@ -168,7 +167,7 @@ class TaskListFragment : Fragment() {
 	}
 
 	@SuppressLint("ShowToast")
-	private fun showSnackBarDelete(id: String, isCompleted: Boolean) {
+	private fun showSnackBarDelete(isCompleted: Boolean) {
 		Snackbar.make(
 			requireView(),
 			getString(
@@ -176,21 +175,7 @@ class TaskListFragment : Fragment() {
 				if (isCompleted) getString(R.string.completed) else getString(R.string.failed)
 			),
 			Snackbar.LENGTH_SHORT
-		).setAction(getString(R.string.cancel)) {
-			viewModel.deleteBase(id, false)
-		}
+		)
 			.setAnchorView(binding.insertTask).show()
-	}
-
-	@SuppressLint("ShowToast")
-	private fun showSnackBarRestore(completed: Boolean) {
-		Snackbar.make(
-			requireView(),
-			getString(
-				R.string.restoring_info,
-				if (completed) getString(R.string.completed) else getString(R.string.failed)
-			),
-			Snackbar.LENGTH_SHORT
-		).setAnchorView(binding.insertTask).show()
 	}
 }

@@ -5,6 +5,8 @@ import com.example.tasklist.api.service.TaskListsApi
 import com.example.tasklist.db.dao.TaskListDao
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 interface TaskListRepository {
@@ -42,7 +44,7 @@ class TaskListRepositoryImpl @Inject constructor(
 
 	override fun deleteTaskList(id: String): Completable {
 		return taskListsApi.deleteTaskList(id).doOnComplete {
-			taskListDao.delete(id)
+			taskListDao.delete(id).subscribeOn(Schedulers.io()).subscribe()
 		}
 	}
 
