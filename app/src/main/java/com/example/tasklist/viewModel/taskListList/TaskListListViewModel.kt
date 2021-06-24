@@ -40,7 +40,7 @@ class TaskListListViewModel @Inject constructor(
 			Log.e("GET", "End")*/
 	init {
 		taskListRepository.getTaskLists()
-			.subscribeOn(Schedulers.computation())
+			.subscribeOn(Schedulers.io())
 			.map { m ->
 				m.map { taskList ->
 					TaskListItemModel(taskList.id, taskList.title) { id, view ->

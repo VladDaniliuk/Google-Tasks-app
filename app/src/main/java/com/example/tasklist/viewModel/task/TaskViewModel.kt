@@ -116,7 +116,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 							object : SimpleTaskClickListener() {
 								override fun onTaskExecuteClick(model: TaskItemModel, view: View) {
 									taskRepository.completeTask(model)
-										.subscribeOn(Schedulers.computation()).subscribe()
+										.subscribeOn(Schedulers.io()).subscribe()
 								}
 
 								override fun onTaskItemClick(model: TaskItemModel, view: View) {
@@ -135,7 +135,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 
 	fun onCompleteTaskClick() {
 		taskRepository.completeTask(task.value!!)
-			.subscribeOn(Schedulers.computation())
+			.subscribeOn(Schedulers.io())
 			.subscribe({
 				fetchTask()
 			}, {

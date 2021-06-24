@@ -30,7 +30,7 @@ class ChangeTaskViewModel @Inject constructor(
 		set(value) {
 			field = value
 			field?.let {
-				taskRepository.getTask(it.first, it.second).subscribeOn(Schedulers.computation())
+				taskRepository.getTask(it.first, it.second).subscribeOn(Schedulers.io())
 					.subscribe { taskWithSubTasks ->
 						task.postValue(taskWithSubTasks.task)
 						taskName.postValue(taskWithSubTasks.task.title!!)
@@ -44,7 +44,7 @@ class ChangeTaskViewModel @Inject constructor(
 
 	init {
 		taskListRepository.getTaskLists()
-			.subscribeOn(Schedulers.computation())
+			.subscribeOn(Schedulers.io())
 			.map { m ->
 				m.map { taskList ->
 					TaskListItemModel(taskList.id, taskList.title)
@@ -71,7 +71,7 @@ class ChangeTaskViewModel @Inject constructor(
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe({
 						taskRepository.onDeleteTask(id!!.first, id!!.second, true)
-							.subscribeOn(Schedulers.computation()).subscribe {
+							.subscribeOn(Schedulers.io()).subscribe {
 								isClicked.postValue(false)
 								onChangeTaskClickResult.postValue(Pair(first = true, second = true))
 							}
