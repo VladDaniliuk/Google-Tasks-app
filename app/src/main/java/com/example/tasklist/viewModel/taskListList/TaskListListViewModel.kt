@@ -11,9 +11,7 @@ import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.baseViewModel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,16 +27,19 @@ class TaskListListViewModel @Inject constructor(
 		R.layout.layout_task_list
 	)
 
-	init {
-		taskListRepository.fetchTaskLists().andThen(
-			taskListRepository.getTaskLists().flatMapCompletable { tasks ->
+	/*Log.e("GET", "Start")
+			taskListRepository.fetchTaskLists().andThen(
+				taskListRepository.getTaskLists().firstOrError()
+			).flatMapCompletable { tasks ->
 				Completable.merge(tasks.map {
+					Log.e("Task", it.id)
 					taskRepository.fetchTasks(it.id).subscribeOn(Schedulers.io())
 				})
 			}.subscribeOn(Schedulers.io())
-		).subscribeOn(Schedulers.io()).subscribe({ Timber.v("Norm")},{Timber.v(it.toString())})
-
-		/*taskListRepository.getTaskLists()
+				.subscribe({ Log.e("GET", "Good") }, { Log.e("GET", it.toString()) })
+			Log.e("GET", "End")*/
+	init {
+		taskListRepository.getTaskLists()
 			.subscribeOn(Schedulers.computation())
 			.map { m ->
 				m.map { taskList ->
@@ -51,11 +52,7 @@ class TaskListListViewModel @Inject constructor(
 				_list.postValue(it)
 			}
 
-		Flowable.interval(5, TimeUnit.MINUTES)
-			.subscribeOn(Schedulers.computation())
-			.subscribe {
-				fetchBase()
-			}*/
+		fetchBase()
 	}
 
 	override fun fetchBase() {
