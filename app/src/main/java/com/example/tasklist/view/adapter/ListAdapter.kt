@@ -28,7 +28,7 @@ class BaseItemAdapter<T : BaseItemModel, B : ViewDataBinding>(
 
 	inner class ViewHolder(private var binding: ViewDataBinding) :
 		LifecycleViewHolder(binding.root) {
-    var baseItem: BaseItemModel? = null
+		var baseItem: BaseItemModel? = null
 
 		fun bind(item: T, variableId: Int) {
 			binding.lifecycleOwner = this
@@ -70,6 +70,7 @@ class UserItemDiffCallback<V : BaseItemModel> : DiffUtil.ItemCallback<V>() {
 	@SuppressLint("DiffUtilEquals")
 	override fun areContentsTheSame(oldItem: V, newItem: V): Boolean {
 		return oldItem == newItem
+	}
 }
 
 abstract class LifecycleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
