@@ -6,6 +6,7 @@ import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskListBinding
 import com.example.tasklist.domain.TaskListRepository
+import com.example.tasklist.domain.TaskRepository
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.baseViewModel.BaseViewModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskListListViewModel @Inject constructor(
-	private val taskListRepository: TaskListRepository
+	private val taskListRepository: TaskListRepository,
+	private val taskRepository: TaskRepository
 ) : BaseViewModel() {
 	private val _list = MutableLiveData<List<TaskListItemModel>>()
 	val list: LiveData<List<TaskListItemModel>> = _list
@@ -25,6 +27,17 @@ class TaskListListViewModel @Inject constructor(
 		R.layout.layout_task_list
 	)
 
+	/*Log.e("GET", "Start")
+			taskListRepository.fetchTaskLists().andThen(
+				taskListRepository.getTaskLists().firstOrError()
+			).flatMapCompletable { tasks ->
+				Completable.merge(tasks.map {
+					Log.e("Task", it.id)
+					taskRepository.fetchTasks(it.id).subscribeOn(Schedulers.io())
+				})
+			}.subscribeOn(Schedulers.io())
+				.subscribe({ Log.e("GET", "Good") }, { Log.e("GET", it.toString()) })
+			Log.e("GET", "End")*/
 	init {
 		taskListRepository.getTaskLists()
 			.subscribeOn(Schedulers.computation())
