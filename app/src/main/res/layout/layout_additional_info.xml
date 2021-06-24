@@ -20,11 +20,11 @@
 
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/textInputEditText2"
-			android:layout_width="0sp"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginHorizontal="@dimen/default_margin_start"
 			android:hint="@string/add_additional_info"
-			android:paddingStart="0sp"
+			android:paddingStart="0dp"
 			android:theme="@style/TextInputLayoutStyle"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toEndOf="@+id/imageButton"

@@ -16,7 +16,7 @@
 
 		<com.google.android.material.chip.Chip
 			android:id="@+id/chip4"
-			android:layout_width="0sp"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:onClick="@{onClick}"
 			app:closeIconEnabled="true"
@@ -26,8 +26,8 @@
 
 		<TextView
 			android:id="@+id/textView"
-			android:layout_width="0sp"
-			android:layout_height="0sp"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
 			android:layout_marginEnd="@dimen/default_margin_start"
 			android:background="?selectableItemBackground"
 			android:clickable="true"

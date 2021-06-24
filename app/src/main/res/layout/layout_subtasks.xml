@@ -19,7 +19,7 @@
 
 		<TextView
 			android:id="@+id/textView2"
-			android:layout_width="0sp"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginHorizontal="@dimen/default_margin_start"
 			android:text="@string/subtask"

@@ -39,7 +39,7 @@
 				android:id="@+id/textView"
 				isCompletedText="@{model.status}"
 				text="@{model.title}"
-				android:layout_width="0sp"
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_margin="8dp"
 				android:gravity="center_vertical"
@@ -81,7 +81,7 @@
 
 
 			<androidx.recyclerview.widget.RecyclerView
-				android:layout_width="0sp"
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:visibility="@{model.subTaskVisibility}"
 				app:adapter="@{model.adapter}"

@@ -13,9 +13,9 @@
 	<com.google.android.material.card.MaterialCardView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginHorizontal="8sp"
+		android:layout_marginHorizontal="8dp"
 		android:layout_marginVertical="8dp"
-		android:elevation="0sp"
+		android:elevation="0dp"
 		android:onClick="@{(v) -> model.click(v)}">
 
 		<androidx.constraintlayout.widget.ConstraintLayout
