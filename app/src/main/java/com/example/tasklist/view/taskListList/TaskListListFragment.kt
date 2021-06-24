@@ -27,8 +27,12 @@ import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class TaskListListFragment : Fragment() {
+	@Inject lateinit var workerFactory: HiltWorkerFactory
+
 	private lateinit var binding: FragmentTaskListListBinding
 	private val viewModel: TaskListListViewModel by viewModels()
+
+	override fun getWorkManagerConfiguration() = Configuration.Builder().setWorkerFactory(workerFactory).build()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

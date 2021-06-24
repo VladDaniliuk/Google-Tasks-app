@@ -11,9 +11,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-class FetchWorker @Inject constructor(
-	context: Context,
-	workerParams: WorkerParameters,
+@HiltWorker
+class FetchWorker @AssistedInject constructor(
+	@Assisted context: Context,
+	@Assested workerParams: WorkerParameters,
 	private val taskListRepository: TaskListRepository,
 	private val taskRepository: TaskRepository
 ) : RxWorker(context, workerParams) {
