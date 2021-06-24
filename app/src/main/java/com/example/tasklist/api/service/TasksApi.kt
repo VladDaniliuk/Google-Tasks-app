@@ -5,21 +5,23 @@ import com.example.tasklist.api.model.response.Task
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.*
 
-interface 	TasksApi {
+interface TasksApi {
 
 	/*@DELETE("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun deleteTask(
 		@Path("taskList") taskListId: String, @Path("task") taskId: String
-	)
+	)*/
 
 	@GET("/tasks/v1/lists/{taskList}/tasks/{task}")
-	fun getTask(
-		@Path("taskList") taskListId: String, @Path("task") taskId: String
-	): Call<Task>
+	fun getTask(@Path("taskList") taskListId: String, @Path("task") taskId: String): Single<Task>
 
 	@POST("/tasks/v1/lists/{taskList}/tasks")
-	fun insertTask(@Path("taskList") taskListId: String, @Body task: Task): Call<Task>
-*/
+	fun insertTask(
+		@Path("taskList") taskListId: String,
+		@Query("parent") parentId: String?,
+		@Body task: Task
+	): Single<Task>
+
 	@GET("/tasks/v1/lists/{taskList}/tasks")
 	fun getAllTasks(
 		@Path("taskList") taskListId: String,
@@ -29,13 +31,14 @@ interface 	TasksApi {
 		@Query("maxResults") maxResults: Int = 100
 	): Single<BaseListResponse<Task>>
 
-	/*
-		@POST("/tasks/v1/lists/{taskList}/tasks/{task}/move")
-		fun moveTask(
-			@Path("taskList") taskListId: String,
-			@Path("task") taskId: String
-		): Call<Task>//request body must be empty
-	*/
+
+	@POST("/tasks/v1/lists/{taskList}/tasks/{task}/move")
+	fun moveTask(
+		@Path("taskList") taskListId: String,
+		@Path("task") taskId: String,
+		@Query("previous") previousTaskId: String?
+	): Single<Task>
+
 	@PATCH("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun patchTask(
 		@Path("taskList") taskListId: String, @Path("task") taskId: String,

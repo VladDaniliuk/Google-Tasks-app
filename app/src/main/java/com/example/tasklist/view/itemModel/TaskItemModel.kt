@@ -4,14 +4,16 @@ import android.view.View
 import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.LayoutTaskBinding
-import com.example.tasklist.view.BaseItemAdapter
+import com.example.tasklist.view.adapter.BaseItemAdapter
 
 class TaskItemModel(
 	override val id: String,
 	val parentId: String,
-	val title: String,
+	override val title: String,
 	var status: String,
 	val dueDate: String? = null,
+	var notes: String? = null,
+	var deleted: Boolean? = null,
 	private val onTaskClickListener: OnTaskClickListener?,
 	val list: List<TaskItemModel>? = null,
 	var subTaskVisibility: Int = View.GONE
@@ -24,16 +26,16 @@ class TaskItemModel(
 		submitList(list)
 	}
 
-	fun click() {
-		onTaskClickListener?.onTaskItemClick(this)
+	fun click(view: View) {
+		onTaskClickListener?.onTaskItemClick(this, view)
 	}
 
-	fun onExpand() {
-		onTaskClickListener?.onExpandItemClick(this)
+	fun onExpand(view: View) {
+		onTaskClickListener?.onExpandItemClick(this, view)
 	}
 
-	fun onExecute() {
-		onTaskClickListener?.onTaskExecuteClick(this)
+	fun onExecute(view: View) {
+		onTaskClickListener?.onTaskExecuteClick(this, view)
 	}
 
 	override fun hashCode(): Int {
@@ -44,6 +46,9 @@ class TaskItemModel(
 		result = 31 * result + dueDate?.hashCode()!!
 		result = 31 * result + subTaskVisibility
 		result = 31 * result + (list?.hashCode() ?: 0)
+		result = 31 * result + notes?.hashCode()!!
+		result = 31 * result + deleted?.hashCode()!!
+		//result = 31 * result + clickable.hashCode()
 		return result
 	}
 
@@ -60,14 +65,17 @@ class TaskItemModel(
 		if (dueDate != other.dueDate) return false
 		if (subTaskVisibility != other.subTaskVisibility) return false
 		if (list != other.list) return false
+		if (notes != other.notes) return false
+		if (deleted != other.deleted) return false
+		//if (clickable != other.clickable) return false
 
 		return true
 	}
 
 	interface OnTaskClickListener {
-		fun onTaskItemClick(model: TaskItemModel)
-		fun onExpandItemClick(model: TaskItemModel)
-		fun onTaskExecuteClick(model: TaskItemModel)
+		fun onTaskItemClick(model: TaskItemModel, view: View)
+		fun onExpandItemClick(model: TaskItemModel, view: View)
+		fun onTaskExecuteClick(model: TaskItemModel, view: View)
 	}
 
 	fun copy(
@@ -77,6 +85,8 @@ class TaskItemModel(
 		status: String? = null,
 		onTaskClickListener: OnTaskClickListener? = null,
 		dueDate: String? = null,
+		notes: String? = null,
+		deleted: Boolean? = null,
 		list: List<TaskItemModel>? = null,
 		subTaskVisibility: Int? = null
 	): TaskItemModel {
@@ -86,6 +96,8 @@ class TaskItemModel(
 			title ?: this.title,
 			status ?: this.status,
 			dueDate ?: this.dueDate,
+			notes ?: this.notes,
+			deleted ?: this.deleted,
 			onTaskClickListener ?: this.onTaskClickListener,
 			list ?: this.list,
 			subTaskVisibility ?: this.subTaskVisibility

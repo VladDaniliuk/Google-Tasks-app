@@ -13,9 +13,43 @@
 		<!-- Status bar color. -->
 		<item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 		<!-- Customize your theme here. -->
+		<item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
+
+		<item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
 	</style>
 
 	<style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
 		<item name="android:indeterminateTint">@color/black</item>
+	</style>
+
+	<style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+		<item name="android:windowSoftInputMode">adjustResize</item>
+		<item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+	</style>
+
+	<style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+		<item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+	</style>
+
+	<style name="CustomShapeAppearanceBottomSheetDialog" parent="">
+		<item name="cornerFamily">rounded</item>
+		<item name="cornerSizeTopRight">16dp</item>
+		<item name="cornerSizeTopLeft">16dp</item>
+		<item name="cornerSizeBottomRight">0dp</item>
+		<item name="cornerSizeBottomLeft">0dp</item>
+	</style>
+
+	<style name="TextAppearance.AppCompat.Headline.LikeHeadline2" parent="TextAppearance.AppCompat.Headline">
+		<item name="android:textSize">60sp</item>
+		<item name="fontWeight">900</item>
+	</style>
+
+<!--	<style name="Widget.MaterialComponents.AppBarLayout.Primary.Color" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
+<!--		<item name="android:background">@color/white</item>-->
+<!--	</style>-->
+	<color name="background">@color/black</color>
+
+	<style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+		<item name="boxStrokeColor">#00FFFFFF</item>
 	</style>
 </resources>

@@ -15,9 +15,9 @@
 		android:layout_height="wrap_content"
 		android:layout_marginHorizontal="16dp"
 		android:layout_marginVertical="8dp"
-		android:clickable="true"
+		android:clickable="@{model.clickable}"
 		android:focusable="true"
-		android:onClick="@{() -> model.click()}"
+		android:onClick="@{(v) -> model.click(v)}"
 		app:cardCornerRadius="8dp"
 		app:cardElevation="8dp">
 
@@ -31,7 +31,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="8dp"
-				android:onClick="@{() -> model.onExecute()}"
+				android:onClick="@{(v) -> model.onExecute(v)}"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,13 +44,13 @@
 				android:layout_margin="8dp"
 				android:gravity="center_vertical"
 				android:textAppearance="?textAppearanceHeadline5"
-				app:layout_constraintEnd_toStartOf="@+id/imageView"
+				app:layout_constraintEnd_toStartOf="@+id/picker"
 				app:layout_constraintStart_toEndOf="@+id/materialCheckBox"
 				app:layout_constraintTop_toTopOf="parent"
 				tools:text="Test" />
 
 			<ImageButton
-				android:id="@+id/imageView"
+				android:id="@+id/picker"
 				hasSubTask="@{model.list}"
 				isSubTaskVisible="@{model.subTaskVisibility}"
 				android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
 				android:clickable="true"
 				android:contentDescription="@string/string_expand_button"
 				android:focusable="true"
-				android:onClick="@{() -> model.onExpand()}"
+				android:onClick="@{(v) -> model.onExpand(v)}"
 				android:src="@drawable/ic_baseline_expand_more_24"
 				app:layout_constraintBottom_toBottomOf="@+id/textView"
 				app:layout_constraintEnd_toEndOf="parent"
@@ -72,9 +72,11 @@
 				isDue="@{model.dueDate}"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginHorizontal="8sp"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="8dp"
+				android:clickable="false"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/materialCheckBox"
+				app:layout_constraintTop_toBottomOf="@+id/textView"
 				tools:text="due today" />
 
 
@@ -83,8 +85,9 @@
 				android:layout_height="wrap_content"
 				android:visibility="@{model.subTaskVisibility}"
 				app:adapter="@{model.adapter}"
+				android:nestedScrollingEnabled="false"
 				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-				app:layout_constraintEnd_toStartOf="@+id/imageView"
+				app:layout_constraintEnd_toStartOf="@+id/picker"
 				app:layout_constraintStart_toEndOf="@+id/materialCheckBox"
 				app:layout_constraintTop_toBottomOf="@+id/chip4"
 				tools:itemCount="3"

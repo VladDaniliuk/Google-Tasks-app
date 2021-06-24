@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="default_margin_start">8dp</dimen>
+	<dimen name="default_margin_top">12dp</dimen>
+	<dimen name="default_margin_top_for_body_1">14dp</dimen>
+</resources>

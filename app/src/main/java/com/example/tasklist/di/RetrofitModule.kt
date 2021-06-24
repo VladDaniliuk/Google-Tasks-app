@@ -3,7 +3,6 @@ package com.example.tasklist.di
 import android.content.Context
 import com.example.tasklist.R
 import com.example.tasklist.api.model.body.GoogleRefreshToken
-import com.example.tasklist.api.model.response.AccessTokenResponse
 import com.example.tasklist.api.service.SignInApi
 import com.example.tasklist.api.service.SignInApiHolder
 import com.example.tasklist.api.service.TaskListsApi
@@ -16,10 +15,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.*
-import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,28 +30,9 @@ class RetrofitModule {
 	@Provides
 	fun provideSignInApiHolder(): SignInApiHolder = SignInApiHolder()
 
-	private fun provideInterceptor(
-		preferenceManager: PreferenceManager,
-		chain: Interceptor.Chain
-	): Response {
-		return preferenceManager.getToken?.let { token ->
-			preferenceManager.getTokenType?.let { tokenType ->
-				chain.proceed(
-					chain.request().newBuilder()
-						.addHeader("Authorization", "$tokenType $token").build()
-				)
-			} ?: run {
-				chain.proceed(chain.request())
-			}
-		} ?: run {
-			chain.proceed(chain.request())
-		}
-	}
-
 	@Provides
 	@Singleton
 	fun provideRetrofit(
-		preferenceManager: PreferenceManager,
 		tokenAuthenticator: TokenAuthenticator
 	): Retrofit {
 		return Retrofit.Builder().baseUrl(URL).client(
@@ -60,14 +40,12 @@ class RetrofitModule {
 				HttpLoggingInterceptor().setLevel(
 					HttpLoggingInterceptor.Level.BODY
 				)
-			)
-				.authenticator(tokenAuthenticator)
+			).authenticator(tokenAuthenticator)
 				.build()
 		).addCallAdapterFactory(RxJava3CallAdapterFactory.create())
 			.addConverterFactory(GsonConverterFactory.create())
 			.build()
 	}
-
 
 	@Provides
 	@Singleton
@@ -99,28 +77,38 @@ class TokenAuthenticator @Inject constructor(
 	private val signInApiHolder: SignInApiHolder,
 	@ApplicationContext private val context: Context
 ) : Authenticator {
-
-
-
 	override fun authenticate(route: Route?, response: Response): Request? {
 		if (response.request.header("Authorization") != null) {
-			return null// Give up, we've already failed to authenticate.
+			try {
+				val refreshToken = signInApiHolder.signInApi!!.refreshToken(
+					GoogleRefreshToken(
+						context.getString(R.string.default_web_client_id),
+						context.getString(R.string.secret),
+						"refresh_token",
+						preferenceManager.getRefreshToken!!
+					)
+				).blockingGet()
+				preferenceManager.setUserToken(refreshToken.accessToken)
+				return preferenceManager.getTokenType?.let { tokenType ->
+					response.request.newBuilder()
+						.addHeader(
+							"Authorization",
+							"$tokenType ${refreshToken.accessToken}"
+						).build()
+				}
+			} catch (e: Exception) {
+				Timber.e(e)
+				return null
+			}
 		}
+
 		return preferenceManager.getToken?.let { token ->
 			preferenceManager.getTokenType?.let { tokenType ->
-					response.request.newBuilder().header(
-						"Authorization",
-						"$tokenType $token"
-					).build()
+				response.request.newBuilder().header(
+					"Authorization",
+					"$tokenType $token"
+				).build()
 			}
-//			val accessTokenResponse: AccessTokenResponse? = signInApiHolder.signInApi?.refreshToken(
-//				GoogleRefreshToken(
-//					context.getString(R.string.default_web_client_id),
-//					context.getString(R.string.secret), "refresh_token", refreshToken
-//				)
-//			)?.blockingGet()
-
-
 		}
 	}
 }

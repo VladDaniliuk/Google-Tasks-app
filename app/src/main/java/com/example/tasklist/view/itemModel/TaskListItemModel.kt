@@ -1,12 +1,14 @@
 package com.example.tasklist.view.itemModel
 
+import android.view.View
+
 data class TaskListItemModel(
 	override val id: String,
-	val title: String,
-	val taskListListViewModel: (id: String) -> Unit
+	override val title: String,
+	val taskListListViewModel: ((id: String, view: View) -> Unit)? = null
 ) : BaseItemModel() {
-	fun click() {
-		taskListListViewModel(id)
+	fun click(view: View) {
+		taskListListViewModel?.invoke(id, view)
 	}
 
 	override fun equals(other: Any?): Boolean {
@@ -17,6 +19,7 @@ data class TaskListItemModel(
 
 		if (id != other.id) return false
 		if (title != other.title) return false
+		//if (clickable != other.clickable) return false
 
 		return true
 	}
@@ -24,7 +27,12 @@ data class TaskListItemModel(
 	override fun hashCode(): Int {
 		var result = id.hashCode()
 		result = 31 * result + title.hashCode()
+		result = 31 * result + clickable.hashCode()
 		result = 31 * result + taskListListViewModel.hashCode()
 		return result
+	}
+
+	override fun toString(): String {
+		return this.title
 	}
 }
