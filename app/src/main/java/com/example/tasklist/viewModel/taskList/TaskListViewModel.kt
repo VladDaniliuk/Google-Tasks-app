@@ -151,20 +151,14 @@ class TaskListViewModel @Inject constructor(
 	}
 
 	override fun deleteBase(id: String, forDelete: Boolean) {
-		if (forDelete) {
-			_list.value?.find {
-				it.id == id
-			}?.clickable?.postValue(false)
-		}
+		setTaskClickable(id, false)
 		taskRepository.onDeleteTask(parentId!!, id, forDelete)
 			.subscribeOn(Schedulers.io())
 			.subscribe({
-				onDeleteBaseResult.postValue(Triple(id, forDelete, true))
+				onDeleteBaseResult.postValue(true)
 			}, {
-				_list.value?.find {
-					it.id == id
-				}?.clickable?.postValue(true)
-				onDeleteBaseResult.postValue(Triple(id, forDelete, false))
+				setTaskClickable(id, true)
+				onDeleteBaseResult.postValue(false)
 			})
 	}
 
@@ -181,6 +175,15 @@ class TaskListViewModel @Inject constructor(
 			taskRepository.moveTask(parentId, task, previousTask).subscribeOn(Schedulers.io())
 				.subscribe({}, { e -> Timber.v(e) })
 		}
-
+  }
+ 
+	/*
+	* Filter all tasks by id
+	* So make it clickable/unclickable
+	*/
+	private fun setTaskClickable(id: String, clickable: Boolean) {
+		list.value?.find {
+			it.id == id
+		}?.clickable?.postValue(clickable)
 	}
 }
