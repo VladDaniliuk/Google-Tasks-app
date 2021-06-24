@@ -35,7 +35,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	val onCompleteTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskError = SingleLiveEvent<String>()
 	val onDeleteBaseClick = SingleLiveEvent<Pair<String,Boolean>>()
-	val onDeleteBaseResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
+	val onDeleteSubTaskResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
 	val onDeleteDueDateClick = SingleLiveEvent<Unit>()
 	val onDeleteTaskResult = SingleLiveEvent<Boolean>()
 	val onTaskClick = SingleLiveEvent<Pair<String, View>>()

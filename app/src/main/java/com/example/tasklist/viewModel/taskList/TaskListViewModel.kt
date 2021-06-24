@@ -53,7 +53,7 @@ class TaskListViewModel @Inject constructor(
 			field = value
 			field?.let {
 				getTaskList(it)
-				//getTasks(it)
+				getTasks(it)
 				fetchBase()
 			}
 		}
