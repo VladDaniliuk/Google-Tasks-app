@@ -22,8 +22,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
+import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 
 @AndroidEntryPoint
 class TaskFragment : Fragment() {
@@ -123,13 +123,14 @@ class TaskFragment : Fragment() {
 
 		viewModel.onAddDueDateClick.observe(viewLifecycleOwner) {
 			val picker = MaterialDatePicker.Builder.datePicker()
-				.setTitleText(CreateTaskFragment.selectDate)
+				.setTitleText(getString(R.string.select_date))
 				.build()
 
 			picker.show(childFragmentManager, null)
 			picker.addOnPositiveButtonClickListener {
-				val inputFormat = SimpleDateFormat(CreateTaskFragment.dateFormat)
-				viewModel.changeTask(inputFormat.format(picker.selection).toString())
+				picker.selection?.let {
+					viewModel.changeTask(DateTime(it,0).toString())
+				}
 			}
 		}
 

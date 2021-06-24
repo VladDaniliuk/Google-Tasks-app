@@ -9,14 +9,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentCreateTaskBinding
 import com.example.tasklist.dev.hideKeyboard
 import com.example.tasklist.viewModel.taskList.CreateTaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 
 @AndroidEntryPoint
 class CreateTaskFragment : BottomSheetDialogFragment() {
@@ -77,7 +78,7 @@ class CreateTaskFragment : BottomSheetDialogFragment() {
 	private fun showErrorSnackBar() {
 		Snackbar.make(
 			requireView(),
-			connectionError,
+			getString(R.string.connection_error),
 			Snackbar.LENGTH_SHORT
 		).setAnchorView(binding.root).show()
 	}
@@ -85,19 +86,12 @@ class CreateTaskFragment : BottomSheetDialogFragment() {
 	@SuppressLint("SimpleDateFormat")
 	fun showDatePicker() {
 		val picker = MaterialDatePicker.Builder.datePicker()
-			.setTitleText(selectDate)
+			.setTitleText(getString(R.string.select_date))
 			.build()
 
 		picker.show(childFragmentManager, null)
 		picker.addOnPositiveButtonClickListener {
-			val inputFormat = SimpleDateFormat(dateFormat)
-			viewModel.dueDate.postValue(inputFormat.format(picker.selection).toString())
+			viewModel.dueDate.postValue(DateTime(it, 0).toStringRfc3339())
 		}
-	}
-
-	companion object Strings {
-		const val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-		const val selectDate = "Select date"
-		const val connectionError = "Connection error"
 	}
 }
