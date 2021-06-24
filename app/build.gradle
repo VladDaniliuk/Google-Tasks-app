@@ -79,6 +79,7 @@ dependencies {
 	implementation "androidx.room:room-runtime:2.3.0"
 	implementation "androidx.room:room-rxjava3:2.3.0"
 	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+	implementation "androidx.work:work-runtime-ktx:2.6.0-beta01"
 	implementation "androidx.work:work-rxjava3:2.7.0-alpha04"
 	implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
 	implementation "com.google.android.gms:play-services-auth:19.0.0"
@@ -99,6 +100,7 @@ dependencies {
 	implementation "io.reactivex.rxjava3:rxjava:3.0.13-RC2"
 	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10"
 	implementation platform("com.google.firebase:firebase-bom:26.8.0")
+	implementation "androidx.hilt:hilt-work:1.0.0"
 	kapt "androidx.hilt:hilt-compiler:1.0.0"
 	kapt "androidx.room:room-compiler:2.3.0"
 	kapt "com.google.dagger:hilt-compiler:2.35.1"

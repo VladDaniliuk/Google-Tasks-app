@@ -1,20 +1,22 @@
 package com.example.tasklist.worker
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.WorkerParameters
 import androidx.work.rxjava3.RxWorker
 import com.example.tasklist.domain.TaskListRepository
 import com.example.tasklist.domain.TaskRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltWorker
 class FetchWorker @AssistedInject constructor(
 	@Assisted context: Context,
-	@Assested workerParams: WorkerParameters,
+	@Assisted workerParams: WorkerParameters,
 	private val taskListRepository: TaskListRepository,
 	private val taskRepository: TaskRepository
 ) : RxWorker(context, workerParams) {
