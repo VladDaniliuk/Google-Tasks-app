@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskBinding
 import com.example.tasklist.dev.themeColor
+import com.example.tasklist.view.taskList.CreateTaskFragment
 import com.example.tasklist.viewModel.task.TaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
@@ -74,6 +75,9 @@ class TaskFragment : Fragment() {
 
 		viewModel.onTaskDelete.observe(viewLifecycleOwner) {
 			viewModel.deleteTask()
+		}
+
+		viewModel.onDeleteTaskResult.observe(viewLifecycleOwner) {
 			findNavController().popBackStack()
 		}
 
@@ -93,7 +97,7 @@ class TaskFragment : Fragment() {
 			viewModel.deleteSubTask(it, true)
 		}
 
-		viewModel.onDeleteBaseResult.observe(viewLifecycleOwner) {
+		viewModel.onDeleteSubTaskResult.observe(viewLifecycleOwner) {
 			if (it.second) showSnackBarDelete(it.first, it.third)
 			else showSnackBarRestore(it.third)
 			if (!it.third) viewModel.adapter.notifyDataSetChanged()
