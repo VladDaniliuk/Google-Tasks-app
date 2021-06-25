@@ -9,10 +9,8 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.work.Configuration
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
@@ -26,25 +24,11 @@ import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class TaskListListFragment : Fragment(), Configuration.Provider {
-	@Inject
-	lateinit var workerFactory: HiltWorkerFactory
-
+class TaskListListFragment : Fragment() {
 	private lateinit var binding: FragmentTaskListListBinding
 	private val viewModel: TaskListListViewModel by viewModels()
-
-	/*override fun getWorkManagerConfiguration() =
-		PeriodicWorkRequest.Builder(FetchWorker::class.java, 1, TimeUnit.MINUTES).setWorkerFactory(workerFactory).build()
-*/
-	/*context?.let { context ->
-		val uploadWorkRequest: WorkRequest =
-			PeriodicWorkRequest.Builder(FetchWorker::class.java, 1, TimeUnit.MINUTES)
-				.build()
-		WorkManager.getInstance(context).enqueue(uploadWorkRequest)
-	}*/
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
