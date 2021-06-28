@@ -11,7 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentCreateTaskBinding
 import com.example.tasklist.dev.hideKeyboard
-import com.example.tasklist.view.BaseBottomSheetDialogFragment
+import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
 import com.example.tasklist.viewModel.taskList.CreateTaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar

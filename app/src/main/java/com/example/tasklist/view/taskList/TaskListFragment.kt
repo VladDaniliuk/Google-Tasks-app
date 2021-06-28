@@ -15,7 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.dev.themeColor
-import com.example.tasklist.view.BaseFragment
+import com.example.tasklist.view.base.BaseFragment
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.taskList.TaskListViewModel
 import com.google.android.material.snackbar.Snackbar

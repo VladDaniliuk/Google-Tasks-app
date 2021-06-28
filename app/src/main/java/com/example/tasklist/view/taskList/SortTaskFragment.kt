@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentSortTaskBinding
-import com.example.tasklist.view.BaseBottomSheetDialogFragment
+import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
 import com.example.tasklist.viewModel.taskList.SortTaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

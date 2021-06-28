@@ -14,7 +14,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
-import com.example.tasklist.view.BaseFragment
+import com.example.tasklist.view.base.BaseFragment
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.taskListList.TaskListListViewModel
 import com.example.tasklist.worker.FetchWorker

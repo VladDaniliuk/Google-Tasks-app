@@ -1,4 +1,4 @@
-package com.example.tasklist.view
+package com.example.tasklist.view.signIn
 
 import android.app.Activity
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentSignInBinding
+import com.example.tasklist.view.base.BaseFragment
 import com.example.tasklist.viewModel.SignInViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
