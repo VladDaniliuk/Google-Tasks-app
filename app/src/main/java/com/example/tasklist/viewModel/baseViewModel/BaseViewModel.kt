@@ -8,12 +8,14 @@ import com.example.tasklist.dev.SingleLiveEvent
 open class BaseViewModel : ViewModel() {
 	val fetchInProgress = MutableLiveData(false)
 
+	val onBaseClick = SingleLiveEvent<Pair<String, View>>()
 	val onCreateBaseClick = SingleLiveEvent<Unit>()
-
 	val onDeleteBaseClick = SingleLiveEvent<Pair<String,Boolean>>()
 	val onDeleteBaseResult = SingleLiveEvent<Boolean>()
 
-	val onBaseClick = SingleLiveEvent<Pair<String, View>>()
+	val onDeleteBaseClickEvent: (Pair<String, Boolean>) -> Unit = {
+		onDeleteBaseClick.postValue(it)
+	}
 
 	val createBaseClickListener = View.OnClickListener {
 		onCreateBaseClick.call()

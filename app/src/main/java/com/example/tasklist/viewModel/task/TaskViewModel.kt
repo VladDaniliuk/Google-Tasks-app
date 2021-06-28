@@ -34,7 +34,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	val onAddSubTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskError = SingleLiveEvent<String>()
-	val onDeleteBaseClick = SingleLiveEvent<Pair<String,Boolean>>()
+	val onDeleteBaseClick = SingleLiveEvent<Pair<String, Boolean>>()
 	val onDeleteSubTaskResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
 	val onDeleteDueDateClick = SingleLiveEvent<Unit>()
 	val onDeleteTaskResult = SingleLiveEvent<Boolean>()
@@ -43,6 +43,10 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	val onTaskEdit = SingleLiveEvent<Unit>()
 	val onNoteEdit = SingleLiveEvent<String>()
 	var dueDate = MutableLiveData<String>()
+
+	val onDeleteBaseClickEvent: (Pair<String, Boolean>) -> Unit = {
+		onDeleteBaseClick.postValue(it)
+	}
 
 	private var addSubTaskAdapter = AddSubTaskAdapter {
 		onAddSubTaskClick.call()

@@ -5,8 +5,6 @@ import com.example.tasklist.api.service.TaskListsApi
 import com.example.tasklist.db.dao.TaskListDao
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 interface TaskListRepository {
@@ -28,29 +26,23 @@ class TaskListRepositoryImpl @Inject constructor(
 		}
 	}
 
-	override fun getTaskLists(): Flowable<List<TaskList>> {
-		return taskListDao.getAll()
-	}
+	override fun getTaskLists(): Flowable<List<TaskList>> =
+		taskListDao.getAll()
 
-	override fun createTaskList(title: String): Completable {
-		return taskListsApi.insertTaskList(TaskList("", title)).flatMapCompletable {
-			fetchTaskLists()
-		}
-	}
+	override fun createTaskList(title: String): Completable =
+		taskListsApi.insertTaskList(TaskList("", title))
+			.ignoreElement()
+			.andThen(fetchTaskLists())
 
-	override fun getTaskList(id: String): Flowable<TaskList> {
-		return taskListDao.getTaskList(id)
-	}
+	override fun getTaskList(id: String): Flowable<TaskList> =
+		taskListDao.getTaskList(id)
 
-	override fun deleteTaskList(id: String): Completable {
-		return taskListsApi.deleteTaskList(id).doOnComplete {
-			taskListDao.delete(id).subscribeOn(Schedulers.io()).subscribe()
-		}
-	}
+	override fun deleteTaskList(id: String): Completable =
+		taskListsApi.deleteTaskList(id)
+			.andThen(taskListDao.delete(id))
 
-	override fun changeTaskList(id: String, newName: String): Completable {
-		return taskListsApi.patchTaskList(id, TaskList(id, newName)).flatMapCompletable {
-			fetchTaskLists()
-		}
-	}
+	override fun changeTaskList(id: String, newName: String): Completable =
+		taskListsApi.patchTaskList(id, TaskList(id, newName))
+			.ignoreElement()
+			.andThen(fetchTaskLists())
 }

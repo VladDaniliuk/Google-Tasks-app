@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 
-class Behavior : CoordinatorLayout.Behavior<ExtendedFloatingActionButton> {
+class FloatingActionButtonScrollReaction : CoordinatorLayout.Behavior<ExtendedFloatingActionButton> {
 
 	private val STATE_SCROLLED_DOWN = 1
 	private val STATE_SCROLLED_UP = 2

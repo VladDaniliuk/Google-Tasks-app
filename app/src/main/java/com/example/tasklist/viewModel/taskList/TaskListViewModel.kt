@@ -40,6 +40,10 @@ class TaskListViewModel @Inject constructor(
 	val onTaskListEdit = SingleLiveEvent<Unit>()
 	val onTaskSort = SingleLiveEvent<Unit>()
 
+	val onItemMovedEvent: (Pair<String, String?>) -> Unit = {
+		onItemMoved.postValue(it)
+	}
+
 	val onMenuItemClickListener = Toolbar.OnMenuItemClickListener {
 		onItemClicked(it)
 		return@OnMenuItemClickListener true

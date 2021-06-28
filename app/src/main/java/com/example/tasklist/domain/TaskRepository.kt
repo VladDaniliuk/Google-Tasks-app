@@ -90,16 +90,12 @@ class TaskRepositoryImpl @Inject constructor(
 		taskListId: String,
 		taskId: String,
 		previousTaskId: String?
-	): Completable {
-		return tasksApi.moveTask(taskListId, taskId, previousTaskId).flatMapCompletable {
-			fetchTasks(taskListId)
-		}
-	}
+	): Completable = tasksApi.moveTask(taskListId, taskId, previousTaskId)
+		.ignoreElement()
+		.andThen(fetchTasks(taskListId))
 
-	override fun completeTask(
-		task: TaskItemModel
-	): Completable {
-		return tasksApi.patchTask(
+	override fun completeTask(task: TaskItemModel): Completable =
+		tasksApi.patchTask(
 			task.parentId, task.id,
 			Task(
 				id = task.id,
@@ -113,33 +109,31 @@ class TaskRepositoryImpl @Inject constructor(
 			)
 		).doOnSuccess {
 			fetchTasks(task.parentId).subscribeOn(Schedulers.io()).onErrorComplete().subscribe()
-		}.flatMapCompletable {
+		}.ignoreElement().andThen {
 			Completable.complete()
 		}
-	}
+
 
 	override fun createTask(
 		taskListId: String,
 		parentId: String?,
 		title: String,
 		dueDate: String?
-	): Completable {
-		return tasksApi.insertTask(taskListId, parentId, Task("", title, due = dueDate))
-			.flatMapCompletable {
-				fetchTasks(taskListId)
-			}
-	}
+	): Completable = tasksApi.insertTask(taskListId, parentId, Task("", title, due = dueDate))
+		.ignoreElement()
+		.andThen(fetchTasks(taskListId))
 
 	override fun onDeleteTask(
 		taskListId: String,
 		taskId: String,
 		onDelete: Boolean
-	): Completable {
-		return tasksApi.patchTask(taskListId, taskId, Task(id = taskId, deleted = onDelete))
-			.flatMapCompletable {
+	): Completable =
+		tasksApi.patchTask(taskListId, taskId, Task(id = taskId, deleted = onDelete))
+			.flatMapCompletable { task ->
 				Completable.fromCallable {
-					taskDao.insertTask(it).subscribeOn(Schedulers.io()).subscribe()
+					taskDao.insertTask(task)
+						.subscribeOn(Schedulers.io())
+						.subscribe()
 				}
 			}
-	}
 }

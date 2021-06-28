@@ -78,21 +78,21 @@
 
 				<com.google.android.material.radiobutton.MaterialRadioButton
 					android:id="@+id/date_to_complete"
-					onClick="@{viewModel.onRadioButtonChoose}"
+					onClick="@{viewModel.onRadioButtonPost}"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/date_to_complete" />
 
 				<com.google.android.material.radiobutton.MaterialRadioButton
 					android:id="@+id/date_to_add"
-					onClick="@{viewModel.onRadioButtonChoose}"
+					onClick="@{viewModel.onRadioButtonPost}"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/date_to_add" />
 
 				<com.google.android.material.radiobutton.MaterialRadioButton
 					android:id="@+id/my_order"
-					onClick="@{viewModel.onRadioButtonChoose}"
+					onClick="@{viewModel.onRadioButtonPost}"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/my_order" />
