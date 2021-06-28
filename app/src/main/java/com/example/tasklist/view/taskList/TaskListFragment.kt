@@ -8,15 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.dev.themeColor
+import com.example.tasklist.view.BaseFragment
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.taskList.TaskListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -26,10 +25,9 @@ import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TaskListFragment : Fragment() {
+class TaskListFragment(override val viewModelClass: Class<TaskListViewModel>) :
+	BaseFragment<FragmentTaskListBinding, TaskListViewModel>() {
 	private val args: TaskListFragmentArgs by navArgs()
-	private lateinit var binding: FragmentTaskListBinding
-	private val viewModel: TaskListViewModel by viewModels()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

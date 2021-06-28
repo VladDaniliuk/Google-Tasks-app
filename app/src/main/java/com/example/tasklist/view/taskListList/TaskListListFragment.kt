@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.work.PeriodicWorkRequest
@@ -16,6 +14,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
+import com.example.tasklist.view.BaseFragment
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.taskListList.TaskListListViewModel
 import com.example.tasklist.worker.FetchWorker
@@ -26,9 +25,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
-class TaskListListFragment : Fragment() {
-	private lateinit var binding: FragmentTaskListListBinding
-	private val viewModel: TaskListListViewModel by viewModels()
+class TaskListListFragment(override val viewModelClass: Class<TaskListListViewModel>) :
+	BaseFragment<FragmentTaskListListBinding, TaskListListViewModel>() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

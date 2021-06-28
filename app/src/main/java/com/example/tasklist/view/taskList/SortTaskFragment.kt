@@ -4,20 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentSortTaskBinding
+import com.example.tasklist.view.BaseBottomSheetDialogFragment
 import com.example.tasklist.viewModel.taskList.SortTaskViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SortTaskFragment : BottomSheetDialogFragment() {
+class SortTaskFragment(override val viewModelClass: Class<SortTaskViewModel>) :
+	BaseBottomSheetDialogFragment<FragmentSortTaskBinding, SortTaskViewModel>() {
 	private val args: SortTaskFragmentArgs by navArgs()
-	private lateinit var binding: FragmentSortTaskBinding
-	private val viewModel: SortTaskViewModel by viewModels()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

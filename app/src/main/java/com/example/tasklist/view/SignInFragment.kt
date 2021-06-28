@@ -7,12 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentSignInBinding
-import com.example.tasklist.domain.LogInRepository
 import com.example.tasklist.viewModel.SignInViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -22,16 +19,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class SignInFragment : Fragment() {
-
-	@Inject
-	lateinit var logInRepository: LogInRepository
-	private val viewModel: SignInViewModel by viewModels()
-
-	private lateinit var binding: FragmentSignInBinding
+class SignInFragment(override val viewModelClass: Class<SignInViewModel>) :
+	BaseFragment<FragmentSignInBinding, SignInViewModel>() {
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
