@@ -33,7 +33,7 @@ class SignInViewModel @Inject constructor(
 	fun continueAuth(
 		clientId: String, secret: String, authCode: String?, authorizationCode: String, link: String
 	) {
-		logInRepository.onLogIn(clientId, secret, authCode, authorizationCode, link)
+		logInRepository.logIn(clientId, secret, authCode, authorizationCode, link)
 			.subscribeOn(Schedulers.io())
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe({

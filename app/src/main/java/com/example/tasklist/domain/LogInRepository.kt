@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.core.Completable
 import javax.inject.Inject
 
 interface LogInRepository {
-	fun onLogIn(
+	fun logIn(
 		clientId: String,
 		secret: String,
 		authCode: String?,
@@ -20,7 +20,7 @@ class LogInRepositoryImpl @Inject constructor(
 	private val signInApi: SignInApi,
 	private val preferenceManager: PreferenceManager
 ) : LogInRepository {
-	override fun onLogIn(
+	override fun logIn(
 		clientId: String, secret: String, authCode: String?,
 		authorizationCode: String, link: String
 	): Completable {
