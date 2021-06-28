@@ -39,7 +39,7 @@ class SignInViewModel @Inject constructor(
 			.subscribe({
 				onLoginSuccessEvent.call()
 			}, {
-				Log.e("LOG", null, it)
+				Timber.e(it)
 			})
 	}
 
