@@ -7,11 +7,6 @@ import retrofit2.http.*
 
 interface TasksApi {
 
-	/*@DELETE("/tasks/v1/lists/{taskList}/tasks/{task}")
-	fun deleteTask(
-		@Path("taskList") taskListId: String, @Path("task") taskId: String
-	)*/
-
 	@GET("/tasks/v1/lists/{taskList}/tasks/{task}")
 	fun getTask(@Path("taskList") taskListId: String, @Path("task") taskId: String): Single<Task>
 
@@ -44,10 +39,4 @@ interface TasksApi {
 		@Path("taskList") taskListId: String, @Path("task") taskId: String,
 		@Body task: Task
 	): Single<Task>
-/*
-	@PUT("/tasks/v1/lists/{taskList}/tasks/{task}")
-	fun updateTask(
-		@Path("taskList") taskListId: String, @Path("task") taskId: String,
-		@Body task: Task
-	): Call<Task>*/
 }
