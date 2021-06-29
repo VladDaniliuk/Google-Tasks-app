@@ -23,3 +23,7 @@ fun Context.themeColor(
 		it.getColor(0, Color.MAGENTA)
 	}
 }
+
+fun Context.dpToPx(dp: Float): Float {
+	return dp * resources.displayMetrics.density
+}

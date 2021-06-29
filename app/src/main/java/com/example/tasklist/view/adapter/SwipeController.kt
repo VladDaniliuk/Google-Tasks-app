@@ -1,5 +1,6 @@
 package com.example.tasklist.view.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
+import com.example.tasklist.dev.dpToPx
 import com.example.tasklist.view.itemModel.TaskItemModel
+import com.google.android.material.internal.ViewUtils.dpToPx
 
 open class SwipeController(
 	private val context: Context
@@ -114,8 +117,4 @@ open class SwipeController(
 			isCurrentlyActive
 		)
 	}
-}
-
-private fun Context.dpToPx(dp: Float): Float {
-	return dp * resources.displayMetrics.density
 }

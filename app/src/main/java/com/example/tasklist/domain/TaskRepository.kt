@@ -109,9 +109,7 @@ class TaskRepositoryImpl @Inject constructor(
 			)
 		).doOnSuccess {
 			fetchTasks(task.parentId).subscribeOn(Schedulers.io()).onErrorComplete().subscribe()
-		}.ignoreElement().andThen {
-			Completable.complete()
-		}
+		}.ignoreElement()
 
 
 	override fun createTask(
