@@ -13,9 +13,11 @@ import com.example.tasklist.viewModel.taskList.SortTaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SortTaskFragment(override val viewModelClass: Class<SortTaskViewModel>) :
+class SortTaskFragment :
 	BaseBottomSheetDialogFragment<FragmentSortTaskBinding, SortTaskViewModel>() {
 	private val args: SortTaskFragmentArgs by navArgs()
+
+	override val viewModelClass: Class<SortTaskViewModel> = SortTaskViewModel::class.java
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

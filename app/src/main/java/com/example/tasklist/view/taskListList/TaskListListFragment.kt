@@ -25,8 +25,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
-class TaskListListFragment(override val viewModelClass: Class<TaskListListViewModel>) :
+class TaskListListFragment :
 	BaseFragment<FragmentTaskListListBinding, TaskListListViewModel>() {
+
+	override val viewModelClass: Class<TaskListListViewModel> = TaskListListViewModel::class.java
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

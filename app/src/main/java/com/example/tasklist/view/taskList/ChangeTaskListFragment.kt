@@ -16,9 +16,12 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChangeTaskListFragment(override val viewModelClass: Class<ChangeTaskListViewModel>) :
+class ChangeTaskListFragment :
 	BaseBottomSheetDialogFragment<FragmentChangeTaskListBinding, ChangeTaskListViewModel>() {
 	private val args: ChangeTaskListFragmentArgs by navArgs()
+
+	override val viewModelClass: Class<ChangeTaskListViewModel> =
+		ChangeTaskListViewModel::class.java
 
 	override fun onCreateView(
 		inflater: LayoutInflater,

@@ -19,9 +19,11 @@ import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateTaskFragment(override val viewModelClass: Class<CreateTaskViewModel>) :
+class CreateTaskFragment :
 	BaseBottomSheetDialogFragment<FragmentCreateTaskBinding, CreateTaskViewModel>() {
 	private val args: CreateTaskFragmentArgs by navArgs()
+
+	override val viewModelClass: Class<CreateTaskViewModel> = CreateTaskViewModel::class.java
 
 	override fun onCreateView(
 		inflater: LayoutInflater,

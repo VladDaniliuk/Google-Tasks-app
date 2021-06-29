@@ -25,9 +25,11 @@ import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TaskListFragment(override val viewModelClass: Class<TaskListViewModel>) :
+class TaskListFragment :
 	BaseFragment<FragmentTaskListBinding, TaskListViewModel>() {
 	private val args: TaskListFragmentArgs by navArgs()
+
+	override val viewModelClass: Class<TaskListViewModel> = TaskListViewModel::class.java
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

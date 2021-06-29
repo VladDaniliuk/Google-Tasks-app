@@ -24,9 +24,11 @@ import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TaskFragment(override val viewModelClass: Class<TaskViewModel>) :
+class TaskFragment :
 	BaseFragment<FragmentTaskBinding, TaskViewModel>() {
 	private val args: TaskFragmentArgs by navArgs()
+
+	override val viewModelClass: Class<TaskViewModel> = TaskViewModel::class.java
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

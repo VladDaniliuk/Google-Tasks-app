@@ -6,19 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.databinding.FragmentCreateTaskListBinding
 import com.example.tasklist.dev.hideKeyboard
+import com.example.tasklist.view.BaseBottomSheetDialogFragment
 import com.example.tasklist.viewModel.taskListList.CreateTaskListViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateTaskListFragment : BottomSheetDialogFragment() {
-	private val viewModel: CreateTaskListViewModel by viewModels()
-	private lateinit var binding: FragmentCreateTaskListBinding
+class CreateTaskListFragment :
+	BaseBottomSheetDialogFragment<FragmentCreateTaskListBinding, CreateTaskListViewModel>() {
+	override val viewModelClass: Class<CreateTaskListViewModel> =
+		CreateTaskListViewModel::class.java
 
 	override fun onCreateView(
 		inflater: LayoutInflater,

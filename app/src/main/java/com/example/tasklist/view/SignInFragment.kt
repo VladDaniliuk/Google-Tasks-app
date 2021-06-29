@@ -21,8 +21,8 @@ import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignInFragment(override val viewModelClass: Class<SignInViewModel>) :
-	BaseFragment<FragmentSignInBinding, SignInViewModel>() {
+class SignInFragment : BaseFragment<FragmentSignInBinding, SignInViewModel>() {
+	override val viewModelClass: Class<SignInViewModel> = SignInViewModel::class.java
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
