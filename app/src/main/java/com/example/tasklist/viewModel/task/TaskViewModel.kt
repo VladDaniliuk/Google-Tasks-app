@@ -48,15 +48,12 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 		onDeleteBaseClick.postValue(it)
 	}
 
-	private var addSubTaskAdapter = AddSubTaskAdapter {
-		onAddSubTaskClick.call()
-	}
+	private var addSubTaskAdapter = AddSubTaskAdapter { onAddSubTaskClick.call() }
 	private var taskControlsAdapter = TaskAdapter(
 		{ onAddDueDateClick.call() },
-		{ onDeleteDueDateClick.call() }
-	) {
-		onNoteEdit.postValue(it)
-	}
+		{ onDeleteDueDateClick.call() },
+		{ onNoteEdit.postValue(it) }
+	)
 	val taskAdapter = BaseItemAdapter<TaskItemModel, LayoutSubTaskBinding>(
 		BR.model,
 		R.layout.layout_sub_task

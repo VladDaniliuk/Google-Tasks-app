@@ -100,7 +100,7 @@ open class SwipeController(
 					drawableDelete.intrinsicHeight
 		)
 
-		canvas.drawRoundRect(background, dpToPx(), dpToPx(), paint)
+		canvas.drawRoundRect(background, context.dpToPx(8.4F), context.dpToPx(8.4F), paint)
 
 		drawableDelete.draw(canvas)
 
@@ -114,8 +114,8 @@ open class SwipeController(
 			isCurrentlyActive
 		)
 	}
+}
 
-	private fun dpToPx(): Float {
-		return 8.4F * context.resources.displayMetrics.density
-	}
+private fun Context.dpToPx(dp: Float): Float {
+	return dp * resources.displayMetrics.density
 }

@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.databinding.FragmentCreateTaskListBinding
 import com.example.tasklist.dev.hideKeyboard
-import com.example.tasklist.view.BaseBottomSheetDialogFragment
+import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
 import com.example.tasklist.viewModel.taskListList.CreateTaskListViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
