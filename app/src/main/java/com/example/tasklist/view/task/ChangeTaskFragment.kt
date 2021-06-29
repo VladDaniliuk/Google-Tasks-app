@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.databinding.FragmentChangeTaskBinding
 import com.example.tasklist.dev.hideKeyboard
-import com.example.tasklist.view.BaseBottomSheetDialogFragment
+import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
 import com.example.tasklist.view.adapter.TaskListAdapter
 import com.example.tasklist.viewModel.task.ChangeTaskViewModel
 import com.google.android.material.snackbar.Snackbar

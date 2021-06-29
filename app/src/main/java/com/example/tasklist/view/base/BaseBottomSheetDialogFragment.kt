@@ -1,4 +1,4 @@
-package com.example.tasklist.view
+package com.example.tasklist.view.base
 
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
