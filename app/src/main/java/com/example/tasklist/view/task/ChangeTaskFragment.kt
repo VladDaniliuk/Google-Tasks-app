@@ -3,46 +3,38 @@ package com.example.tasklist.view.task
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.tasklist.BR
+import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentChangeTaskBinding
 import com.example.tasklist.dev.hideKeyboard
-import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
 import com.example.tasklist.view.adapter.TaskListAdapter
+import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
 import com.example.tasklist.viewModel.task.ChangeTaskViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChangeTaskFragment :
-	BaseBottomSheetDialogFragment<FragmentChangeTaskBinding, ChangeTaskViewModel>() {
+class ChangeTaskFragment(
+	override val layoutId: Int = R.layout.fragment_change_task,
+	override val bindingVariableName: Int = BR.viewModel,
+	override val viewModelClass: Class<ChangeTaskViewModel> = ChangeTaskViewModel::class.java
+) : BaseBottomSheetDialogFragment<FragmentChangeTaskBinding, ChangeTaskViewModel>() {
 	private val args: ChangeTaskFragmentArgs by navArgs()
 
-	override val viewModelClass: Class<ChangeTaskViewModel> = ChangeTaskViewModel::class.java
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		binding = FragmentChangeTaskBinding.inflate(inflater, container, false)
-
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
 		viewModel.id = Pair(args.taskListId, args.taskId)
-
-		binding.textInputEditText.requestFocus()
-
-		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		binding.textInputEditText.requestFocus()
+
 		viewModel.taskListList.observe(viewLifecycleOwner) { list ->
 			val adapter = TaskListAdapter(
 				requireContext(),

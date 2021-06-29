@@ -12,6 +12,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.dev.themeColor
@@ -25,14 +26,16 @@ import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TaskListFragment :
-	BaseFragment<FragmentTaskListBinding, TaskListViewModel>() {
-	private val args: TaskListFragmentArgs by navArgs()
-
+class TaskListFragment(
+	override val layoutId: Int = R.layout.fragment_task_list,
+	override val bindingVariableName: Int = BR.viewModel,
 	override val viewModelClass: Class<TaskListViewModel> = TaskListViewModel::class.java
+) : BaseFragment<FragmentTaskListBinding, TaskListViewModel>() {
+	private val args: TaskListFragmentArgs by navArgs()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+
 		enterTransition = MaterialFadeThrough()
 		sharedElementEnterTransition = MaterialContainerTransform().apply {
 			scrimColor = Color.TRANSPARENT
@@ -47,19 +50,6 @@ class TaskListFragment :
 			)
 		)
 		viewModel.parentId = args.parentId
-	}
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		binding = FragmentTaskListBinding.inflate(inflater, container, false)
-
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
-
-		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

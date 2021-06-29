@@ -2,9 +2,7 @@ package com.example.tasklist.view.taskListList
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -12,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
+import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
 import com.example.tasklist.view.base.BaseFragment
@@ -25,26 +24,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
-class TaskListListFragment :
-	BaseFragment<FragmentTaskListListBinding, TaskListListViewModel>() {
-
+class TaskListListFragment(
+	override val layoutId: Int = R.layout.fragment_task_list_list,
+	override val bindingVariableName: Int = BR.viewModel,
 	override val viewModelClass: Class<TaskListListViewModel> = TaskListListViewModel::class.java
-
+) : BaseFragment<FragmentTaskListListBinding, TaskListListViewModel>() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+
 		enterTransition = MaterialFadeThrough()
-	}
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		binding = FragmentTaskListListBinding.inflate(inflater, container, false)
-
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
-		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
