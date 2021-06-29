@@ -6,24 +6,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentCreateTaskBinding
 import com.example.tasklist.dev.hideKeyboard
+import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
 import com.example.tasklist.viewModel.taskList.CreateTaskViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateTaskFragment : BottomSheetDialogFragment() {
-	private val viewModel: CreateTaskViewModel by viewModels()
+class CreateTaskFragment :
+	BaseBottomSheetDialogFragment<FragmentCreateTaskBinding, CreateTaskViewModel>() {
 	private val args: CreateTaskFragmentArgs by navArgs()
-	private lateinit var binding: FragmentCreateTaskBinding
+
+	override val viewModelClass: Class<CreateTaskViewModel> = CreateTaskViewModel::class.java
 
 	override fun onCreateView(
 		inflater: LayoutInflater,

@@ -1,6 +1,10 @@
 package com.example.tasklist.extensions
 
 import android.annotation.SuppressLint
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.RectF
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StrikethroughSpan
@@ -15,7 +19,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.tasklist.R
-import com.example.tasklist.dev.SingleLiveEvent
 import com.example.tasklist.view.adapter.BaseItemAdapter
 import com.example.tasklist.view.adapter.SwipeController
 import com.example.tasklist.view.itemModel.BaseItemModel
@@ -23,9 +26,9 @@ import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.api.client.util.DateTime
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import timber.log.Timber
-import com.google.api.client.util.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -110,10 +113,10 @@ fun TextView.bindingIsDue(due: String?) {
 	}
 }
 
-@BindingAdapter("itemTouchHelper", "onItemMoved")
+@BindingAdapter("itemTouchHelper", "onItemMoved", requireAll = false)
 fun RecyclerView.bindingItemTouchHelper(
-	onItemAdapter: SingleLiveEvent<Pair<String, Boolean>>,
-	onItemMoved: SingleLiveEvent<Pair<String, String?>>?
+	onItemAdapter: (Pair<String, Boolean>) -> Unit,
+	onItemMoved: ((Pair<String, String?>) -> Unit)?
 ) {
 	val adapter = adapter ?: return
 	var startPos: Int? = null
@@ -122,7 +125,7 @@ fun RecyclerView.bindingItemTouchHelper(
 	val taskSubject = BehaviorSubject.create<Pair<String, String?>>().apply {
 		distinctUntilChanged()
 			.subscribe {
-				onItemMoved!!.postValue(it)
+				onItemMoved!!(it)
 				startPos = null
 			}
 	}
@@ -170,7 +173,7 @@ fun RecyclerView.bindingItemTouchHelper(
 				else -> throw IllegalStateException("Position is not correct")
 			}
 
-			onItemAdapter.postValue(pair)
+			onItemAdapter(pair)
 		}
 
 		override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
@@ -199,8 +202,8 @@ fun RecyclerView.bindingItemTouchHelper(
 }
 
 @BindingAdapter("onClick")
-fun RadioButton.bindingOnClick(onRadioButtonChoose: SingleLiveEvent<Int>) {
+fun RadioButton.bindingOnClick(callback: (Int) -> Unit) {
 	this.setOnClickListener {
-		onRadioButtonChoose.postValue(it.id)
+		callback(it.id)
 	}
 }

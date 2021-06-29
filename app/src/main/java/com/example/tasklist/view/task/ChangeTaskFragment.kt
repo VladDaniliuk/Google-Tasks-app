@@ -8,22 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.databinding.FragmentChangeTaskBinding
 import com.example.tasklist.dev.hideKeyboard
+import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
 import com.example.tasklist.view.adapter.TaskListAdapter
 import com.example.tasklist.viewModel.task.ChangeTaskViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChangeTaskFragment : BottomSheetDialogFragment() {
-	private val viewModel: ChangeTaskViewModel by viewModels()
+class ChangeTaskFragment :
+	BaseBottomSheetDialogFragment<FragmentChangeTaskBinding, ChangeTaskViewModel>() {
 	private val args: ChangeTaskFragmentArgs by navArgs()
-	private lateinit var binding: FragmentChangeTaskBinding
+
+	override val viewModelClass: Class<ChangeTaskViewModel> = ChangeTaskViewModel::class.java
 
 	override fun onCreateView(
 		inflater: LayoutInflater,

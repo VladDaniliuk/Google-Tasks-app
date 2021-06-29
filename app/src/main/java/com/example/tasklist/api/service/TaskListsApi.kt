@@ -11,9 +11,6 @@ interface TaskListsApi {
 	@DELETE("/tasks/v1/users/@me/lists/{taskListId}")
 	fun deleteTaskList(@Path("taskListId") taskListId: String): Completable
 
-	/*@GET("/tasks/v1/users/@me/lists/{taskListId}")
-	fun getTaskList(@Path("taskListId") taskListId: String): Call<TaskList>*/
-
 	@POST("/tasks/v1/users/@me/lists")
 	fun insertTaskList(@Body taskList: TaskList): Single<TaskList>
 
@@ -25,11 +22,4 @@ interface TaskListsApi {
 		@Path("taskList") taskListId: String,
 		@Body taskList: TaskList
 	): Single<TaskList>
-
-	/*@PUT("/tasks/v1/users/@me/lists/{taskList}")
-	fun updateTaskList(@Path("taskList") taskListId: String, @Body taskList: TaskList):
-			Call<TaskList>
-
-	@POST("/tasks/v1/lists/{taskList}/clear")
-	fun clearTaskList(@Path("taskList") taskListId: String)*/
 }

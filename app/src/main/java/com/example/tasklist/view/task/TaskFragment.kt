@@ -7,15 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskBinding
 import com.example.tasklist.dev.themeColor
-import com.example.tasklist.view.taskList.CreateTaskFragment
+import com.example.tasklist.view.base.BaseFragment
 import com.example.tasklist.viewModel.task.TaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
@@ -26,10 +24,11 @@ import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TaskFragment : Fragment() {
+class TaskFragment :
+	BaseFragment<FragmentTaskBinding, TaskViewModel>() {
 	private val args: TaskFragmentArgs by navArgs()
-	private lateinit var binding: FragmentTaskBinding
-	private val viewModel: TaskViewModel by viewModels()
+
+	override val viewModelClass: Class<TaskViewModel> = TaskViewModel::class.java
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -94,7 +93,7 @@ class TaskFragment : Fragment() {
 		}
 
 		viewModel.onDeleteBaseClick.observe(viewLifecycleOwner) {
-				viewModel.deleteSubTask(it.first, !it.second)
+			viewModel.deleteSubTask(it.first, !it.second)
 		}
 
 		viewModel.onDeleteSubTaskResult.observe(viewLifecycleOwner) {
@@ -129,7 +128,7 @@ class TaskFragment : Fragment() {
 			picker.show(childFragmentManager, null)
 			picker.addOnPositiveButtonClickListener {
 				picker.selection?.let {
-					viewModel.changeTask(DateTime(it,0).toString())
+					viewModel.changeTask(DateTime(it, 0).toString())
 				}
 			}
 		}

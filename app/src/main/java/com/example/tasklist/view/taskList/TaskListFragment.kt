@@ -8,15 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.dev.themeColor
+import com.example.tasklist.view.base.BaseFragment
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.taskList.TaskListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -26,10 +25,11 @@ import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TaskListFragment : Fragment() {
+class TaskListFragment :
+	BaseFragment<FragmentTaskListBinding, TaskListViewModel>() {
 	private val args: TaskListFragmentArgs by navArgs()
-	private lateinit var binding: FragmentTaskListBinding
-	private val viewModel: TaskListViewModel by viewModels()
+
+	override val viewModelClass: Class<TaskListViewModel> = TaskListViewModel::class.java
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -147,6 +147,10 @@ class TaskListFragment : Fragment() {
 			viewModel.deleteBase(it.first, !it.second)
 		}
 
+		viewModel.onMixTasksError.observe(viewLifecycleOwner) {
+			showSnackBarMixWarning()
+		}
+
 		viewModel.onItemMoved.observe(viewLifecycleOwner) {
 			viewModel.setting.value?.let { setting ->
 				if (setting.second != R.id.my_order) {
@@ -228,5 +232,24 @@ class TaskListFragment : Fragment() {
 				)
 			}.setAnchorView(binding.insertTask).show()
 		}
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarMixWarning() {
+		Snackbar.make(
+			requireView(),
+			getString(R.string.mix_warnig),
+			Snackbar.LENGTH_SHORT
+		).setAnchorView(binding.insertTask)
+			.setAction(getString(R.string.mix_decision)) {
+				viewModel.setting.value?.let { setting ->
+					viewModel.setting
+						.postValue(
+							setting.copy(
+								first = getString(R.string.hide)
+							)
+						)
+				}
+			}.show()
 	}
 }

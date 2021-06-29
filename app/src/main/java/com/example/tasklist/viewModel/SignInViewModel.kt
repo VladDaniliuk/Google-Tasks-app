@@ -1,6 +1,5 @@
 package com.example.tasklist.viewModel
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +9,7 @@ import com.example.tasklist.model.PreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,13 +33,13 @@ class SignInViewModel @Inject constructor(
 	fun continueAuth(
 		clientId: String, secret: String, authCode: String?, authorizationCode: String, link: String
 	) {
-		logInRepository.onLogIn(clientId, secret, authCode, authorizationCode, link)
+		logInRepository.logIn(clientId, secret, authCode, authorizationCode, link)
 			.subscribeOn(Schedulers.io())
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe({
 				onLoginSuccessEvent.call()
 			}, {
-				Log.e("LOG", null, it)
+				Timber.e(it)
 			})
 	}
 

@@ -39,6 +39,11 @@ class TaskListViewModel @Inject constructor(
 	val onTaskListDelete = SingleLiveEvent<Unit>()
 	val onTaskListEdit = SingleLiveEvent<Unit>()
 	val onTaskSort = SingleLiveEvent<Unit>()
+	val onMixTasksError = SingleLiveEvent<Unit>()
+
+	val onItemMovedEvent: (Pair<String, String?>) -> Unit = {
+		onItemMoved.postValue(it)
+	}
 
 	val onMenuItemClickListener = Toolbar.OnMenuItemClickListener {
 		onItemClicked(it)
@@ -172,11 +177,19 @@ class TaskListViewModel @Inject constructor(
 
 	fun moveTask(task: String, previousTask: String?) {
 		parentId?.let { parentId ->
-			taskRepository.moveTask(parentId, task, previousTask).subscribeOn(Schedulers.io())
-				.subscribe({}, { e -> Timber.v(e) })
+			taskRepository.moveTask(parentId, task, previousTask)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(
+					{},
+					{
+						Timber.e(it)
+						fetchBase(false)
+						onMixTasksError.call()
+					})
 		}
-  }
- 
+	}
+
 	/*
 	* Filter all tasks by id
 	* So make it clickable/unclickable

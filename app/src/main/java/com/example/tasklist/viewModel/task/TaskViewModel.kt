@@ -34,7 +34,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	val onAddSubTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskClick = SingleLiveEvent<Unit>()
 	val onCompleteTaskError = SingleLiveEvent<String>()
-	val onDeleteBaseClick = SingleLiveEvent<Pair<String,Boolean>>()
+	val onDeleteBaseClick = SingleLiveEvent<Pair<String, Boolean>>()
 	val onDeleteSubTaskResult = SingleLiveEvent<Triple<String, Boolean, Boolean>>()
 	val onDeleteDueDateClick = SingleLiveEvent<Unit>()
 	val onDeleteTaskResult = SingleLiveEvent<Boolean>()
@@ -44,15 +44,16 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
 	val onNoteEdit = SingleLiveEvent<String>()
 	var dueDate = MutableLiveData<String>()
 
-	private var addSubTaskAdapter = AddSubTaskAdapter {
-		onAddSubTaskClick.call()
+	val onDeleteBaseClickEvent: (Pair<String, Boolean>) -> Unit = {
+		onDeleteBaseClick.postValue(it)
 	}
+
+	private var addSubTaskAdapter = AddSubTaskAdapter { onAddSubTaskClick.call() }
 	private var taskControlsAdapter = TaskAdapter(
 		{ onAddDueDateClick.call() },
-		{ onDeleteDueDateClick.call() }
-	) {
-		onNoteEdit.postValue(it)
-	}
+		{ onDeleteDueDateClick.call() },
+		{ onNoteEdit.postValue(it) }
+	)
 	val taskAdapter = BaseItemAdapter<TaskItemModel, LayoutSubTaskBinding>(
 		BR.model,
 		R.layout.layout_sub_task

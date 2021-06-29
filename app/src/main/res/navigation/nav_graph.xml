@@ -6,8 +6,9 @@
 	app:startDestination="@id/signInFragment">
 
 	<fragment
+		tools:layout="@layout/fragment_sign_in"
 		android:id="@+id/signInFragment"
-		android:name="com.example.tasklist.view.SignInFragment"
+		android:name="com.example.tasklist.view.signIn.SignInFragment"
 		android:label="SignInFragment">
 		<action
 			android:id="@+id/action_signInFragment_to_taskListListFragment"

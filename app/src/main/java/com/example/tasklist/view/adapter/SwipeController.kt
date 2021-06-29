@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasklist.R
+import com.example.tasklist.dev.dpToPx
 import com.example.tasklist.view.itemModel.TaskItemModel
 
 open class SwipeController(
@@ -100,7 +101,7 @@ open class SwipeController(
 					drawableDelete.intrinsicHeight
 		)
 
-		canvas.drawRoundRect(background, dpToPx(), dpToPx(), paint)
+		canvas.drawRoundRect(background, context.dpToPx(8.4F), context.dpToPx(8.4F), paint)
 
 		drawableDelete.draw(canvas)
 
@@ -113,9 +114,5 @@ open class SwipeController(
 			actionState,
 			isCurrentlyActive
 		)
-	}
-
-	private fun dpToPx(): Float {
-		return 8.4F * context.resources.displayMetrics.density
 	}
 }

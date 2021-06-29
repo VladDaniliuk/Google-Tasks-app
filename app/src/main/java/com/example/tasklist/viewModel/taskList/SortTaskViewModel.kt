@@ -12,6 +12,10 @@ class SortTaskViewModel : ViewModel() {
 
 	val onRadioButtonChoose = SingleLiveEvent<Int>()
 
+	val onRadioButtonPost: (Int) -> Unit = {
+		onRadioButtonChoose.postValue(it)
+	}
+
 	val completedTaskClickListener = View.OnClickListener {
 		setting.value?.let { setting ->
 			postSetting.postValue(

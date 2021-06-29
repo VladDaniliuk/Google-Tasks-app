@@ -48,7 +48,6 @@ class TaskItemModel(
 		result = 31 * result + (list?.hashCode() ?: 0)
 		result = 31 * result + notes?.hashCode()!!
 		result = 31 * result + deleted?.hashCode()!!
-		//result = 31 * result + clickable.hashCode()
 		return result
 	}
 
@@ -67,7 +66,6 @@ class TaskItemModel(
 		if (list != other.list) return false
 		if (notes != other.notes) return false
 		if (deleted != other.deleted) return false
-		//if (clickable != other.clickable) return false
 
 		return true
 	}

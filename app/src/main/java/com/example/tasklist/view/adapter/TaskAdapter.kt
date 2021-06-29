@@ -1,7 +1,6 @@
 package com.example.tasklist.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -15,8 +14,8 @@ import com.example.tasklist.extensions.bindingIsDue
 import com.example.tasklist.view.itemModel.TaskItemModel
 
 class TaskAdapter(
-	private val onChipClick: View.OnClickListener,
-	private val onChipClose: View.OnClickListener,
+	private val onChipClick: () -> Unit,
+	private val onChipClose: () -> Unit,
 	private val callback: (String) -> Unit
 ) :
 	RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
@@ -83,8 +82,8 @@ class TaskAdapter(
 				val binding = holder.binding as LayoutDueDateBinding
 				binding.chip4.bindingIsDue(taskItemModel?.dueDate)
 				binding.textView.bindingIsDue(taskItemModel?.dueDate)
-				binding.chip4.setOnCloseIconClickListener(onChipClose)
-				binding.onClick = onChipClick
+				binding.chip4.setOnCloseIconClickListener { onChipClose() }
+				binding.setOnClick { onChipClick() }
 			}
 			else -> {
 			}

@@ -27,17 +27,6 @@ class TaskListListViewModel @Inject constructor(
 		R.layout.layout_task_list
 	)
 
-	/*Log.e("GET", "Start")
-			taskListRepository.fetchTaskLists().andThen(
-				taskListRepository.getTaskLists().firstOrError()
-			).flatMapCompletable { tasks ->
-				Completable.merge(tasks.map {
-					Log.e("Task", it.id)
-					taskRepository.fetchTasks(it.id).subscribeOn(Schedulers.io())
-				})
-			}.subscribeOn(Schedulers.io())
-				.subscribe({ Log.e("GET", "Good") }, { Log.e("GET", it.toString()) })
-			Log.e("GET", "End")*/
 	init {
 		taskListRepository.getTaskLists()
 			.subscribeOn(Schedulers.io())

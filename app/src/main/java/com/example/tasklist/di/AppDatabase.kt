@@ -8,7 +8,6 @@ import com.example.tasklist.db.dao.TaskDao
 import com.example.tasklist.db.dao.TaskListDao
 
 @Database(entities = [Task::class, TaskList::class], version = 1)
-//@TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 	abstract fun taskListDao(): TaskListDao
 
