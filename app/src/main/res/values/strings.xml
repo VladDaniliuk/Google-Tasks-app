@@ -55,4 +55,6 @@
 	<string name="sort_by">Sort by</string>
 	<string name="sort_in_my_order">Sort in my order</string>
 	<string name="snacbar_sort_change">Can\'t change order of tasks with this sorting settings</string>
+	<string name="mix_warnig">You should mix only uncompleted tasks</string>
+	<string name="mix_decision">Hide completed tasks</string>
 </resources>

@@ -147,6 +147,10 @@ class TaskListFragment :
 			viewModel.deleteBase(it.first, !it.second)
 		}
 
+		viewModel.onMixTasksError.observe(viewLifecycleOwner) {
+			showSnackBarMixWarning()
+		}
+
 		viewModel.onItemMoved.observe(viewLifecycleOwner) {
 			viewModel.setting.value?.let { setting ->
 				if (setting.second != R.id.my_order) {
@@ -228,5 +232,24 @@ class TaskListFragment :
 				)
 			}.setAnchorView(binding.insertTask).show()
 		}
+	}
+
+	@SuppressLint("ShowToast")
+	private fun showSnackBarMixWarning() {
+		Snackbar.make(
+			requireView(),
+			getString(R.string.mix_warnig),
+			Snackbar.LENGTH_SHORT
+		).setAnchorView(binding.insertTask)
+			.setAction(getString(R.string.mix_decision)) {
+				viewModel.setting.value?.let { setting ->
+					viewModel.setting
+						.postValue(
+							setting.copy(
+								first = getString(R.string.hide)
+							)
+						)
+				}
+			}.show()
 	}
 }
