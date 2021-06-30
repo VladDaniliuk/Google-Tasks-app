@@ -3,12 +3,9 @@ package com.example.tasklist.view.taskList
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentChangeTaskListBinding
 import com.example.tasklist.dev.hideKeyboard
@@ -20,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChangeTaskListFragment(
 	override val layoutId: Int = R.layout.fragment_change_task_list,
-	override val bindingVariableName: Int = BR.viewModel,
 	override val viewModelClass: Class<ChangeTaskListViewModel> =
 		ChangeTaskListViewModel::class.java
 ) : BaseBottomSheetDialogFragment<FragmentChangeTaskListBinding, ChangeTaskListViewModel>() {

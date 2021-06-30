@@ -3,14 +3,11 @@ package com.example.tasklist.view.task
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskBinding
 import com.example.tasklist.dev.themeColor
@@ -27,7 +24,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TaskFragment(
 	override val layoutId: Int = R.layout.fragment_task,
-	override val bindingVariableName: Int = BR.viewModel,
 	override val viewModelClass: Class<TaskViewModel> = TaskViewModel::class.java
 ) : BaseFragment<FragmentTaskBinding, TaskViewModel>() {
 	private val args: TaskFragmentArgs by navArgs()

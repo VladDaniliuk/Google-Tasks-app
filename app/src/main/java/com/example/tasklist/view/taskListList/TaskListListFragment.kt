@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
-import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
 import com.example.tasklist.view.base.BaseFragment
@@ -26,7 +25,6 @@ import java.util.concurrent.TimeUnit
 @AndroidEntryPoint
 class TaskListListFragment(
 	override val layoutId: Int = R.layout.fragment_task_list_list,
-	override val bindingVariableName: Int = BR.viewModel,
 	override val viewModelClass: Class<TaskListListViewModel> = TaskListListViewModel::class.java
 ) : BaseFragment<FragmentTaskListListBinding, TaskListListViewModel>() {
 	override fun onCreate(savedInstanceState: Bundle?) {

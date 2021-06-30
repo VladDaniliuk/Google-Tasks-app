@@ -8,15 +8,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.tasklist.BR
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 abstract class BaseBottomSheetDialogFragment<V : ViewDataBinding, VM : ViewModel> :
 	BottomSheetDialogFragment() {
 
-	lateinit var binding: V
-	abstract val viewModelClass: Class<VM>
 	abstract val layoutId: Int
-	abstract val bindingVariableName: Int
+	abstract val viewModelClass: Class<VM>
+	lateinit var binding: V
 
 	val viewModel by lazy { ViewModelProvider(this).get(viewModelClass) }
 
@@ -31,7 +31,7 @@ abstract class BaseBottomSheetDialogFragment<V : ViewDataBinding, VM : ViewModel
 			container,
 			false
 		)
-		binding.setVariable(bindingVariableName, viewModel)
+		binding.setVariable(BR.viewModel, viewModel)
 		binding.lifecycleOwner = viewLifecycleOwner
 		return binding.root
 	}

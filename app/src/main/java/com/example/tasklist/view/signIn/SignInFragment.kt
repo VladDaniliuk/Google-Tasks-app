@@ -6,7 +6,6 @@ import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
-import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentSignInBinding
 import com.example.tasklist.view.base.BaseFragment
@@ -23,7 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignInFragment(
 	override val layoutId: Int = R.layout.fragment_sign_in,
-	override val bindingVariableName: Int = BR.viewModel,
 	override val viewModelClass: Class<SignInViewModel> = SignInViewModel::class.java
 ) : BaseFragment<FragmentSignInBinding, SignInViewModel>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

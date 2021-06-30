@@ -8,7 +8,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentChangeTaskBinding
 import com.example.tasklist.dev.hideKeyboard
@@ -21,7 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChangeTaskFragment(
 	override val layoutId: Int = R.layout.fragment_change_task,
-	override val bindingVariableName: Int = BR.viewModel,
 	override val viewModelClass: Class<ChangeTaskViewModel> = ChangeTaskViewModel::class.java
 ) : BaseBottomSheetDialogFragment<FragmentChangeTaskBinding, ChangeTaskViewModel>() {
 	private val args: ChangeTaskFragmentArgs by navArgs()

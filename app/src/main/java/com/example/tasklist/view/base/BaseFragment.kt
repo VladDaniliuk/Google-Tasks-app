@@ -9,13 +9,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.tasklist.BR
 
 
 abstract class BaseFragment<V : ViewDataBinding, VM : ViewModel> : Fragment() {
-	lateinit var binding: V
-	abstract val viewModelClass: Class<VM>
 	abstract val layoutId: Int
-	abstract val bindingVariableName: Int
+	abstract val viewModelClass: Class<VM>
+	lateinit var binding: V
 
 	val viewModel by lazy { ViewModelProvider(this).get(viewModelClass) }
 
@@ -30,7 +30,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : ViewModel> : Fragment() {
 			container,
 			false
 		)
-		binding.setVariable(bindingVariableName, viewModel)
+		binding.setVariable(BR.viewModel, viewModel)
 		binding.lifecycleOwner = viewLifecycleOwner
 		return binding.root
 	}

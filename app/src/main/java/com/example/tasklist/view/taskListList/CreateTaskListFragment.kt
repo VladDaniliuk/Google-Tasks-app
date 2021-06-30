@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentCreateTaskListBinding
 import com.example.tasklist.dev.hideKeyboard
@@ -17,8 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CreateTaskListFragment(
 	override val viewModelClass: Class<CreateTaskListViewModel> = CreateTaskListViewModel::class.java,
-	override val layoutId: Int = R.layout.fragment_create_task_list,
-	override val bindingVariableName: Int = BR.viewModel
+	override val layoutId: Int = R.layout.fragment_create_task_list
 ) : BaseBottomSheetDialogFragment<FragmentCreateTaskListBinding, CreateTaskListViewModel>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		binding.textInputEditText.requestFocus()

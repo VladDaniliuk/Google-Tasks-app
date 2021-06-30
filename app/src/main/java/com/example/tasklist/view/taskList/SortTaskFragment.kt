@@ -1,12 +1,9 @@
 package com.example.tasklist.view.taskList
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentSortTaskBinding
 import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
@@ -16,8 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SortTaskFragment(
 	override val viewModelClass: Class<SortTaskViewModel> = SortTaskViewModel::class.java,
-	override val layoutId: Int = R.layout.fragment_sort_task,
-	override val bindingVariableName: Int = BR.viewModel
+	override val layoutId: Int = R.layout.fragment_sort_task
 ) : BaseBottomSheetDialogFragment<FragmentSortTaskBinding, SortTaskViewModel>() {
 	private val args: SortTaskFragmentArgs by navArgs()
 

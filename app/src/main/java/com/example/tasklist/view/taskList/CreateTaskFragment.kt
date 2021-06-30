@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.tasklist.BR
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentCreateTaskBinding
 import com.example.tasklist.dev.hideKeyboard
@@ -20,8 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CreateTaskFragment(
 	override val viewModelClass: Class<CreateTaskViewModel> = CreateTaskViewModel::class.java,
-	override val layoutId: Int = R.layout.fragment_create_task,
-	override val bindingVariableName: Int = BR.viewModel
+	override val layoutId: Int = R.layout.fragment_create_task
 ) : BaseBottomSheetDialogFragment<FragmentCreateTaskBinding, CreateTaskViewModel>() {
 	private val args: CreateTaskFragmentArgs by navArgs()
 
