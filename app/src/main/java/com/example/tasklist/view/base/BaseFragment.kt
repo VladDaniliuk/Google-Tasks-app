@@ -32,6 +32,9 @@ abstract class BaseFragment<V : ViewDataBinding, VM : ViewModel> : Fragment() {
 		)
 		binding.setVariable(BR.viewModel, viewModel)
 		binding.lifecycleOwner = viewLifecycleOwner
+
+		binding.root.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+				View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 		return binding.root
 	}
 }

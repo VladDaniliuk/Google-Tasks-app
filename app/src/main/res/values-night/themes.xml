@@ -11,11 +11,13 @@
 		<item name="colorSecondaryVariant">@color/teal_200</item>
 		<item name="colorOnSecondary">@color/black</item>
 		<!-- Status bar color. -->
-		<item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+		<item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
 		<!-- Customize your theme here. -->
 		<item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
 
 		<item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
+
+		<item name="android:navigationBarColor">#80000000</item>
 	</style>
 
 	<style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
