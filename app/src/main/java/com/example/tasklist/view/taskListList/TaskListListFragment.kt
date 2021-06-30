@@ -2,9 +2,7 @@ package com.example.tasklist.view.taskListList
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -25,26 +23,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
-class TaskListListFragment :
-	BaseFragment<FragmentTaskListListBinding, TaskListListViewModel>() {
-
+class TaskListListFragment(
+	override val layoutId: Int = R.layout.fragment_task_list_list,
 	override val viewModelClass: Class<TaskListListViewModel> = TaskListListViewModel::class.java
-
+) : BaseFragment<FragmentTaskListListBinding, TaskListListViewModel>() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+
 		enterTransition = MaterialFadeThrough()
-	}
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		binding = FragmentTaskListListBinding.inflate(inflater, container, false)
-
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
-		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

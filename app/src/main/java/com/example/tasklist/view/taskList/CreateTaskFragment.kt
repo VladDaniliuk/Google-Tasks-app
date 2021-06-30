@@ -3,9 +3,7 @@ package com.example.tasklist.view.taskList
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
@@ -19,31 +17,22 @@ import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateTaskFragment :
-	BaseBottomSheetDialogFragment<FragmentCreateTaskBinding, CreateTaskViewModel>() {
+class CreateTaskFragment(
+	override val viewModelClass: Class<CreateTaskViewModel> = CreateTaskViewModel::class.java,
+	override val layoutId: Int = R.layout.fragment_create_task
+) : BaseBottomSheetDialogFragment<FragmentCreateTaskBinding, CreateTaskViewModel>() {
 	private val args: CreateTaskFragmentArgs by navArgs()
 
-	override val viewModelClass: Class<CreateTaskViewModel> = CreateTaskViewModel::class.java
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		binding = FragmentCreateTaskBinding.inflate(inflater, container, false)
-
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
 		viewModel.taskListId = args.taskListId
 		viewModel.taskParentId = args.parentId
-
-		binding.textInputEditText.requestFocus()
-
-		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		binding.textInputEditText.requestFocus()
+
 		viewModel.onCreateBaseClick.observe(viewLifecycleOwner) {
 			viewModel.onCreateBaseClick()
 		}

@@ -1,9 +1,7 @@
 package com.example.tasklist.view.taskList
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
@@ -13,27 +11,15 @@ import com.example.tasklist.viewModel.taskList.SortTaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SortTaskFragment :
-	BaseBottomSheetDialogFragment<FragmentSortTaskBinding, SortTaskViewModel>() {
+class SortTaskFragment(
+	override val viewModelClass: Class<SortTaskViewModel> = SortTaskViewModel::class.java,
+	override val layoutId: Int = R.layout.fragment_sort_task
+) : BaseBottomSheetDialogFragment<FragmentSortTaskBinding, SortTaskViewModel>() {
 	private val args: SortTaskFragmentArgs by navArgs()
-
-	override val viewModelClass: Class<SortTaskViewModel> = SortTaskViewModel::class.java
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		viewModel.setting.postValue(Triple(args.completedTasks, args.sortByDate, args.deletedTasks))
-	}
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		binding = FragmentSortTaskBinding.inflate(inflater, container, false)
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
-
-		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

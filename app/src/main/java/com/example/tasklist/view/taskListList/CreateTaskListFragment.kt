@@ -3,10 +3,9 @@ package com.example.tasklist.view.taskListList
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentCreateTaskListBinding
 import com.example.tasklist.dev.hideKeyboard
 import com.example.tasklist.view.base.BaseBottomSheetDialogFragment
@@ -15,27 +14,13 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateTaskListFragment :
-	BaseBottomSheetDialogFragment<FragmentCreateTaskListBinding, CreateTaskListViewModel>() {
-	override val viewModelClass: Class<CreateTaskListViewModel> =
-		CreateTaskListViewModel::class.java
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		binding = FragmentCreateTaskListBinding.inflate(inflater, container, false)
-
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
-
+class CreateTaskListFragment(
+	override val viewModelClass: Class<CreateTaskListViewModel> = CreateTaskListViewModel::class.java,
+	override val layoutId: Int = R.layout.fragment_create_task_list
+) : BaseBottomSheetDialogFragment<FragmentCreateTaskListBinding, CreateTaskListViewModel>() {
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		binding.textInputEditText.requestFocus()
 
-		return binding.root
-	}
-
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		viewModel.onCreateBaseClick.observe(viewLifecycleOwner) {
 			viewModel.onCreateBaseClick()
 		}

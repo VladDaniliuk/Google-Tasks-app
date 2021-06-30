@@ -2,9 +2,7 @@ package com.example.tasklist.view.signIn
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
@@ -22,22 +20,11 @@ import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignInFragment : BaseFragment<FragmentSignInBinding, SignInViewModel>() {
+class SignInFragment(
+	override val layoutId: Int = R.layout.fragment_sign_in,
 	override val viewModelClass: Class<SignInViewModel> = SignInViewModel::class.java
-
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-	): View {
-		binding = FragmentSignInBinding.inflate(inflater, container, false)
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
-
-		return binding.root
-	}
-
+) : BaseFragment<FragmentSignInBinding, SignInViewModel>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-
 		viewModel.onSignInClick.observe(viewLifecycleOwner) {
 			onSignInClick()
 		}

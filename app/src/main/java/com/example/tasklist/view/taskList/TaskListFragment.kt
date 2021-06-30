@@ -3,9 +3,7 @@ package com.example.tasklist.view.taskList
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.setFragmentResult
@@ -25,14 +23,15 @@ import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TaskListFragment :
-	BaseFragment<FragmentTaskListBinding, TaskListViewModel>() {
-	private val args: TaskListFragmentArgs by navArgs()
-
+class TaskListFragment(
+	override val layoutId: Int = R.layout.fragment_task_list,
 	override val viewModelClass: Class<TaskListViewModel> = TaskListViewModel::class.java
+) : BaseFragment<FragmentTaskListBinding, TaskListViewModel>() {
+	private val args: TaskListFragmentArgs by navArgs()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+
 		enterTransition = MaterialFadeThrough()
 		sharedElementEnterTransition = MaterialContainerTransform().apply {
 			scrimColor = Color.TRANSPARENT
@@ -47,19 +46,6 @@ class TaskListFragment :
 			)
 		)
 		viewModel.parentId = args.parentId
-	}
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		binding = FragmentTaskListBinding.inflate(inflater, container, false)
-
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
-
-		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

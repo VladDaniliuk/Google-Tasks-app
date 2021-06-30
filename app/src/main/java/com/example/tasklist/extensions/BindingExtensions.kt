@@ -1,10 +1,6 @@
 package com.example.tasklist.extensions
 
 import android.annotation.SuppressLint
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.RectF
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StrikethroughSpan

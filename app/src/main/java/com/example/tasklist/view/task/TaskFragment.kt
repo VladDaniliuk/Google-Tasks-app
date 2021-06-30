@@ -3,9 +3,7 @@ package com.example.tasklist.view.task
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -24,34 +22,21 @@ import com.google.api.client.util.DateTime
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TaskFragment :
-	BaseFragment<FragmentTaskBinding, TaskViewModel>() {
-	private val args: TaskFragmentArgs by navArgs()
-
+class TaskFragment(
+	override val layoutId: Int = R.layout.fragment_task,
 	override val viewModelClass: Class<TaskViewModel> = TaskViewModel::class.java
+) : BaseFragment<FragmentTaskBinding, TaskViewModel>() {
+	private val args: TaskFragmentArgs by navArgs()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+
 		enterTransition = MaterialFadeThrough()
 		sharedElementEnterTransition = MaterialContainerTransform().apply {
 			scrimColor = Color.TRANSPARENT
 			setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
 		}
-	}
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		binding = FragmentTaskBinding.inflate(inflater, container, false)
-
-		binding.viewModel = viewModel
-		binding.lifecycleOwner = viewLifecycleOwner
-
 		viewModel.id = Pair(args.taskListId, args.taskId)
-
-		return binding.root
 	}
 
 	@SuppressLint("SimpleDateFormat")
