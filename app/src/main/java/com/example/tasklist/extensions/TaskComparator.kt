@@ -3,6 +3,7 @@ package com.example.tasklist.extensions
 import android.annotation.SuppressLint
 import com.example.tasklist.R
 import com.example.tasklist.api.model.response.TaskWithSubTasks
+import java.math.BigInteger
 import java.text.SimpleDateFormat
 
 class TaskComparator(private val setting: Int?) : Comparator<TaskWithSubTasks> {
@@ -16,7 +17,7 @@ class TaskComparator(private val setting: Int?) : Comparator<TaskWithSubTasks> {
 				o2.task.due == null -> -1
 				else -> dateFormat.parse(o1.task.due)!!.compareTo(dateFormat.parse(o2.task.due))
 			}
-			else -> (o1.task.position?.toInt() ?: 0).compareTo(o2.task.position?.toInt() ?: 0)
+			else -> (BigInteger(o1.task.position ?: "0")).compareTo(BigInteger(o2.task.position ?: "0"))
 		}
 	}
 }
