@@ -72,11 +72,11 @@ class TaskAdapter(
 		when (position) {
 			0 -> {
 				val binding = holder.binding as LayoutAdditionalInfoBinding
-				val cursorPosition = binding.textInputEditText2.selectionEnd
-				binding.textInputEditText2.setText(taskItemModel?.notes)
-				binding.textInputEditText2.setSelection(cursorPosition)
-				binding.textInputEditText2.removeTextChangedListener(listenerTextChanged)
-				binding.textInputEditText2.addTextChangedListener(listenerTextChanged)
+				val cursorPosition = binding.text.selectionEnd
+				binding.text.setText(taskItemModel?.notes)
+				binding.text.setSelection(cursorPosition)
+				binding.text.removeTextChangedListener(listenerTextChanged)
+				binding.text.addTextChangedListener(listenerTextChanged)
 			}
 			1 -> {
 				val binding = holder.binding as LayoutDueDateBinding

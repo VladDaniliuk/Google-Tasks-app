@@ -18,17 +18,23 @@
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="@+id/textInputEditText2" />
 
-		<com.google.android.material.textfield.TextInputEditText
+		<com.google.android.material.textfield.TextInputLayout
 			android:id="@+id/textInputEditText2"
+			style="@style/TextInputLayoutStyle"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginHorizontal="@dimen/default_margin_start"
-			android:hint="@string/add_additional_info"
-			android:paddingStart="0dp"
-			android:theme="@style/TextInputLayoutStyle"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toEndOf="@+id/imageButton"
-			app:layout_constraintTop_toTopOf="parent"
-			tools:ignore="RtlSymmetry" />
+			app:layout_constraintTop_toTopOf="parent">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/text"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/add_additional_info"
+				android:paddingStart="0dp"
+				tools:ignore="RtlSymmetry" />
+		</com.google.android.material.textfield.TextInputLayout>
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

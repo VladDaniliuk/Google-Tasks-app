@@ -49,7 +49,8 @@
 	</style>
 
 	<style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-		<item name="boxStrokeColor">@color/white_0</item>
+		<item name="boxBackgroundMode">none</item>
+		<item name="hintEnabled">false</item>
 	</style>
 
 	<color name="Icon.Background">@color/black</color>
