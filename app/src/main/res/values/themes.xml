@@ -16,6 +16,7 @@
 		<item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
 
 		<item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
+		<item name="android:navigationBarColor">@color/white_0</item>
 	</style>
 
 	<style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
@@ -25,6 +26,9 @@
 	<style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
 		<item name="android:windowSoftInputMode">adjustResize</item>
 		<item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
+		<item name="android:windowIsFloating">false</item>
+		<item name="android:navigationBarColor">?colorSurface</item>
 	</style>
 
 	<style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
@@ -44,12 +48,9 @@
 		<item name="fontWeight">900</item>
 	</style>
 
-<!--	<style name="Widget.MaterialComponents.AppBarLayout.Primary.Color" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
-<!--		<item name="android:background">@color/white</item>-->
-<!--	</style>-->
-	<color name="background">@color/black</color>
-
 	<style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-		<item name="boxStrokeColor">#00FFFFFF</item>
+		<item name="boxStrokeColor">@color/white_0</item>
 	</style>
+
+	<color name="Icon.Background">@color/black</color>
 </resources>

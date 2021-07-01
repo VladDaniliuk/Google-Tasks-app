@@ -11,11 +11,13 @@
 		<item name="colorSecondaryVariant">@color/teal_200</item>
 		<item name="colorOnSecondary">@color/black</item>
 		<!-- Status bar color. -->
-		<item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+		<item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
 		<!-- Customize your theme here. -->
 		<item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
 
 		<item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
+
+		<item name="android:navigationBarColor">@color/black_50</item>
 	</style>
 
 	<style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
@@ -25,6 +27,9 @@
 	<style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
 		<item name="android:windowSoftInputMode">adjustResize</item>
 		<item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
+		<item name="android:windowIsFloating">false</item>
+		<item name="android:navigationBarColor">?colorSurface</item>
 	</style>
 
 	<style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
@@ -44,8 +49,5 @@
 		<item name="fontWeight">900</item>
 	</style>
 
-<!--	<style name="Widget.MaterialComponents.AppBarLayout.Primary.Color" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
-<!--		<item name="android:background">@color/black</item>-->
-<!--	</style>-->
-	<color name="background">@color/white</color>
+	<color name="Icon.Background">@color/white</color>
 </resources>
