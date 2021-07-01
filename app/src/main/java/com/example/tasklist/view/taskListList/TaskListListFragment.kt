@@ -12,10 +12,12 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListListBinding
+import com.example.tasklist.extensions.FabExtendingOnScrollListener
 import com.example.tasklist.view.base.BaseFragment
 import com.example.tasklist.view.itemModel.TaskListItemModel
 import com.example.tasklist.viewModel.taskListList.TaskListListViewModel
 import com.example.tasklist.worker.FetchWorker
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialFadeThrough
@@ -35,6 +37,8 @@ class TaskListListFragment(
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		binding.listView.addOnScrollListener(FabExtendingOnScrollListener(binding.insertTaskList))
 
 		context?.let { context ->
 			val uploadWorkRequest: WorkRequest =
