@@ -27,6 +27,9 @@
 	<style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
 		<item name="android:windowSoftInputMode">adjustResize</item>
 		<item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
+		<item name="android:windowIsFloating">false</item>
+		<item name="android:navigationBarColor">?colorSurface</item>
 	</style>
 
 	<style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
@@ -46,8 +49,5 @@
 		<item name="fontWeight">900</item>
 	</style>
 
-<!--	<style name="Widget.MaterialComponents.AppBarLayout.Primary.Color" parent="Widget.MaterialComponents.AppBarLayout.Primary">-->
-<!--		<item name="android:background">@color/black</item>-->
-<!--	</style>-->
-	<color name="background">@color/white</color>
+	<color name="Icon.Background">@color/white</color>
 </resources>
