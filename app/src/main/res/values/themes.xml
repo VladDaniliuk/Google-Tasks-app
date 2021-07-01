@@ -16,7 +16,7 @@
 		<item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
 
 		<item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
-		<item name="android:navigationBarColor">#00FFFFFF</item>
+		<item name="android:navigationBarColor">@color/white_0</item>
 	</style>
 
 	<style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
@@ -49,7 +49,7 @@
 	</style>
 
 	<style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-		<item name="boxStrokeColor">#00FFFFFF</item>
+		<item name="boxStrokeColor">@color/white_0</item>
 	</style>
 
 	<color name="Icon.Background">@color/black</color>

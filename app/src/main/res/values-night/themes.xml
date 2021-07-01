@@ -17,7 +17,7 @@
 
 		<item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
 
-		<item name="android:navigationBarColor">#80000000</item>
+		<item name="android:navigationBarColor">@color/black_50</item>
 	</style>
 
 	<style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
