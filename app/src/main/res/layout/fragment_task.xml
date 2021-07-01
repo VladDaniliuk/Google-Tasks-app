@@ -84,7 +84,6 @@
 			android:textAllCaps="false"
 			app:icon="@drawable/ic_baseline_done_24"
 			app:isCompletedButton="@{viewModel.task.status}"
-			app:layout_behavior=".extensions.FloatingActionButtonScrollReaction"
 			app:layout_marginBottomSystemWindowInsets="@{true}"
 			app:layout_marginLeftSystemWindowInsets="@{true}"
 			app:layout_marginRightSystemWindowInsets="@{true}" />

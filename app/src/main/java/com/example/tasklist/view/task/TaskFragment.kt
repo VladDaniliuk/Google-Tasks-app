@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskBinding
 import com.example.tasklist.dev.themeColor
+import com.example.tasklist.extensions.FabExtendingOnScrollListener
 import com.example.tasklist.view.base.BaseFragment
 import com.example.tasklist.viewModel.task.TaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -42,6 +43,8 @@ class TaskFragment(
 	@SuppressLint("SimpleDateFormat")
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		binding.recyclerView.addOnScrollListener(FabExtendingOnScrollListener(binding.completeTask))
 
 		postponeEnterTransition()
 		viewModel.onCompleteTaskClick.observe(viewLifecycleOwner) {

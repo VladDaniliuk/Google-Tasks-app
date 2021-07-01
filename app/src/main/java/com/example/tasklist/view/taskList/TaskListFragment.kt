@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.tasklist.R
 import com.example.tasklist.databinding.FragmentTaskListBinding
 import com.example.tasklist.dev.themeColor
+import com.example.tasklist.extensions.FabExtendingOnScrollListener
 import com.example.tasklist.view.base.BaseFragment
 import com.example.tasklist.view.itemModel.TaskItemModel
 import com.example.tasklist.viewModel.taskList.TaskListViewModel
@@ -50,6 +51,8 @@ class TaskListFragment(
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		binding.listView.addOnScrollListener(FabExtendingOnScrollListener(binding.insertTask))
 
 		postponeEnterTransition()
 		view.doOnPreDraw { startPostponedEnterTransition() }
